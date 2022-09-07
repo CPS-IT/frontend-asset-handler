@@ -1,6 +1,6 @@
 {
 	"name": "cpsit/frontend-asset-handler",
-	"description": "Composer plugin to download and extract Frontend assets in Composer projects",
+	"description": "Composer library to download and extract Frontend assets in Composer projects",
 	"license": "GPL-3.0-or-later",
 	"type": "library",
 	"authors": [
