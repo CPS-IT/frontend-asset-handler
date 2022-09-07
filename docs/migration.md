@@ -2,6 +2,9 @@
 
 ## 0.4.x → 1.0.0
 
+* Package is now publicly available.
+  - Package was renamed to `cpsit/frontend-asset-handler`.
+  - Root PSR-4 namespace is now `CPSIT\FrontendAssetHandler`.
 * Package was converted to Composer library.
   - Package does no longer act as Composer plugin.
   - Console commands are no longer available within Composer.
@@ -13,6 +16,21 @@
     (see following migration).
 * Console command `wait-for-assets` was rewritten.
   - Use `vendor/bin/frontend-assets inspect --wait-for-deployments` instead.
+* Configuration schema was hardened.
+  - Add a `type` configuration to all `source`, `target` and `vcs` definitions.
+  - Explicitly configure `url` and `revision-url` for the `source` definition.
+  - Migrate the `source.revision-file` configuration to `source.revision-url`:
+    ```diff
+     "source": {
+         "type": "http",
+         "url": "https://example.com/assets/{environment}.tar.gz",
+    -    "revision-url": "https://example.com/assets/{environment}/{revision-file}",
+    -    "revision-file": "REVISION"
+    +    "revision-url": "https://example.com/assets/{environment}/REVISION"
+     }
+    ```
+  - See [Configuration](config/index.md) for all available configuration options
+    and check out the updated [schema file](../resources/configuration.schema.json).
 * Minimum PHP version is now 8.1.
   - Upgrade your code base to PHP 8.1.
 
