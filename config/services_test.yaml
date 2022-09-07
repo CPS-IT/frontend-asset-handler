@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyProvider:
+  CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyProcessor:

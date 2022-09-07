@@ -1,0 +1,79 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  CPSIT\FrontendAssetHandler\:
+    resource: '../src/*'
+    exclude:
+      - '../src/Asset/Definition/{Source,Target,Vcs}.php'
+      - '../src/Asset/Environment/Map/{Map,Pair}.php'
+      - '../src/Asset/Environment/EnvironmentResolver.php'
+      - '../src/Asset/Revision/Revision.php'
+      - '../src/Asset/*Asset.php'
+      - '../src/Config/Parser/ParserInstructions.php'
+      - '../src/Config/Config.php'
+      - '../src/Console/*'
+      - '../src/Exception/*'
+      - '../src/DependencyInjection/*'
+      - '../src/Handler/*'
+      - '../src/Vcs/Dto/*'
+
+  _instanceof:
+    Symfony\Component\Console\Command\Command:
+      public: true
+      tags: ['console.command']
+      bind:
+        $cache: '@app.cache'
+    CPSIT\FrontendAssetHandler\Asset\Environment\Transformer\TransformerInterface:
+      autowire: false
+
+  CPSIT\FrontendAssetHandler\Asset\Environment\Map\MapFactory:
+    arguments:
+      $transformers: '%asset_environment.transformers%'
+
+  CPSIT\FrontendAssetHandler\Command\InitConfigCommand:
+    arguments:
+      $processors: !tagged_locator { tag: 'asset_handling.processor', default_index_method: 'getName' }
+      $providers: !tagged_locator { tag: 'asset_handling.provider', default_index_method: 'getName' }
+      $vcsProviders: !tagged_locator { tag: 'asset_handling.vcs_provider', default_index_method: 'getName' }
+
+  CPSIT\FrontendAssetHandler\Config\ConfigFacade:
+    public: true
+    arguments:
+      $loaders: !tagged_iterator config.loader
+      $writers: !tagged_iterator config.writer
+
+  CPSIT\FrontendAssetHandler\Provider\ProviderFactory:
+    public: true
+    arguments:
+      $providers: !tagged_locator { tag: 'asset_handling.provider', default_index_method: 'getName' }
+
+  CPSIT\FrontendAssetHandler\Processor\ProcessorFactory:
+    public: true
+    arguments:
+      $processors: !tagged_locator { tag: 'asset_handling.processor', default_index_method: 'getName' }
+
+  CPSIT\FrontendAssetHandler\Value\ValueProcessor:
+    arguments:
+      $placeholderProcessors: !tagged_iterator value.placeholder_processor
+
+  CPSIT\FrontendAssetHandler\Vcs\VcsProviderFactory:
+    arguments:
+      $providers: !tagged_locator { tag: 'asset_handling.vcs_provider', default_index_method: 'getName' }
+
+  app.cache:
+    class: 'CPSIT\FrontendAssetHandler\DependencyInjection\Cache\ContainerCache'
+    synthetic: true
+
+  # External services
+  Ergebnis\Json\Normalizer\Format\Formatter:
+  Ergebnis\Json\Printer\Printer:
+  Ergebnis\Json\Printer\PrinterInterface:
+    alias: 'Ergebnis\Json\Printer\Printer'
+  Ergebnis\Json\SchemaValidator\SchemaValidator:
+  GuzzleHttp\Client:
+  GuzzleHttp\ClientInterface:
+    alias: 'GuzzleHttp\Client'
+  Symfony\Component\Filesystem\Filesystem:

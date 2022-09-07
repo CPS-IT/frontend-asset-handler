@@ -1,0 +1,57 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Composer package "cpsit/frontend-asset-handler".
+ *
+ * Copyright (C) 2022 Elias Häußler <e.haeussler@familie-redlich.de>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+use CPSIT\FrontendAssetHandler\Console;
+use Symfony\Component\Console as SymfonyConsole;
+
+// Check Composer autoloader
+$autoloadFile = null;
+foreach ([
+    __DIR__.'/../../../autoload.php',
+    __DIR__.'/../vendor/autoload.php',
+    __DIR__.'/vendor/autoload.php',
+] as $file) {
+    if (file_exists($file)) {
+        $autoloadFile = $file;
+        break;
+    }
+}
+if (null === $autoloadFile) {
+    $message = 'Unable to determine path to Composer autoload file. Please set up your project using Composer.';
+    fwrite(STDERR, $message);
+    exit(1);
+}
+
+// Require Composer autoloader
+require $autoloadFile;
+unset($autoloadFile, $file);
+
+// Create IO components
+$argv = $_SERVER['argv'];
+$input = new Console\Input\DynamicArgvInput($argv);
+$output = new Console\Output\TrackableOutput(new SymfonyConsole\Output\ConsoleOutput());
+
+// Run application
+$application = new Console\Application();
+$application->run($input, $output);

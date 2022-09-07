@@ -1,0 +1,167 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"id": "https://github.com/CPS-IT/frontend-asset-handler/blob/main/resources/configuration.schema.json",
+	"type": "object",
+	"title": "Frontend asset handler configuration",
+	"required": [
+		"frontend-assets"
+	],
+	"properties": {
+		"frontend-assets": {
+			"type": "array",
+			"title": "Frontend assets",
+			"description": "A list of all Frontend asset definitions that are supported by the associated project.",
+			"minItems": 1,
+			"items": {
+				"$ref": "#/definitions/asset-definition"
+			}
+		}
+	},
+	"definitions": {
+		"asset-definition": {
+			"type": "object",
+			"title": "Frontend asset definition",
+			"description": "A Frontend asset definition with mandatory source and target and optional configuration for VCS and available environments.",
+			"required": [
+				"source",
+				"target"
+			],
+			"properties": {
+				"source": {
+					"$ref": "#/definitions/source"
+				},
+				"target": {
+					"$ref": "#/definitions/target"
+				},
+				"vcs": {
+					"$ref": "#/definitions/vcs"
+				},
+				"environments": {
+					"$ref": "#/definitions/environments"
+				}
+			}
+		},
+		"source": {
+			"type": "object",
+			"title": "Frontend asset source",
+			"description": "Definition of the Frontend asset source of a concrete Frontend asset definition.",
+			"required": [
+				"type",
+				"url"
+			],
+			"properties": {
+				"type": {
+					"type": "string",
+					"title": "Asset source type",
+					"description": "Type of a concrete Frontend asset source (an appropriate Provider must exist).",
+					"default": "http"
+				},
+				"url": {
+					"type": "string",
+					"title": "Asset source URL",
+					"description": "An URL representing the remote asset source for a concrete Frontend asset."
+				},
+				"version": {
+					"type": "string",
+					"title": "Asset source version",
+					"description": "Locked version of the asset source for a concrete Frontend asset."
+				},
+				"revision-url": {
+					"type": "string",
+					"title": "Asset source revision URL",
+					"description": "An URL representing the revision of a remote asset source for a concrete Frontend asset."
+				}
+			},
+			"additionalProperties": true
+		},
+		"target": {
+			"type": "object",
+			"title": "Frontend asset target",
+			"description": "Definition of the Frontend asset target of a concrete Frontend asset definition.",
+			"required": [
+				"type",
+				"path"
+			],
+			"properties": {
+				"type": {
+					"type": "string",
+					"title": "Asset target type",
+					"description": "Type of a concrete Frontend asset target (an appropriate Processor must exist).",
+					"default": "archive"
+				},
+				"path": {
+					"type": "string",
+					"title": "Asset target path",
+					"description": "The target path where to extract provided Frontend assets."
+				},
+				"revision-file": {
+					"type": "string",
+					"title": "Asset target revision file",
+					"description": "The filename of the local revision file representing this Frontend asset target.",
+					"default": "REVISION"
+				}
+			},
+			"additionalProperties": true
+		},
+		"vcs": {
+			"type": "object",
+			"title": "Frontend asset VCS configuration",
+			"description": "An optional configuration about the VCS of a concrete Frontend asset definition.",
+			"required": [
+				"type"
+			],
+			"properties": {
+				"type": {
+					"type": "string",
+					"title": "Asset VCS type",
+					"description": "Type of a concrete Frontend asset VCS provider (an appropriate Provider must exist).",
+					"default": "gitlab"
+				}
+			},
+			"additionalProperties": true
+		},
+		"environments": {
+			"type": "object",
+			"title": "Frontend asset environments",
+			"description": "An optional configuration about supported environments of a concrete Frontend asset definition.",
+			"properties": {
+				"merge": {
+					"type": "boolean",
+					"title": "Merge asset environments",
+					"description": "Defines whether to merge the given environments map with the default map provided by the MapFactory.",
+					"default": false
+				},
+				"map": {
+					"type": "object",
+					"title": "Asset environment map",
+					"description": "Mapping table between branches an their appropriate Frontend asset environments.",
+					"additionalProperties": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "object",
+								"required": [
+									"transformer"
+								],
+								"properties": {
+									"transformer": {
+										"type": "string",
+										"title": "Environment transformer name",
+										"description": "The name of the environment transformer to be used for transforming the branch name to an appropriate asset environment."
+									},
+									"options": {
+										"type": "object",
+										"title": "Transformer options",
+										"description": "Additional options passed to the environment transformer."
+									}
+								}
+							}
+						]
+					}
+				}
+			}
+		}
+	}
+}

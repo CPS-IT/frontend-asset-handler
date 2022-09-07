@@ -1,0 +1,15 @@
+includes:
+	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
+	- vendor/phpstan/phpstan-phpunit/extension.neon
+	- vendor/phpstan/phpstan-symfony/extension.neon
+parameters:
+	level: 8
+	paths:
+		- bin
+		- src
+		- tests
+	symfony:
+		consoleApplicationLoader: tests/Build/console-application.php
+		containerXmlPath: var/cache/container_test.xml
+	scanFiles:
+		- var/cache/container_test.php
