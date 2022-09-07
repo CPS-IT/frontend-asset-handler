@@ -43,7 +43,7 @@ final class StaticTransformer implements TransformerInterface
     /**
      * @param array{value?: string} $config
      */
-    public static function fromArray(array $config): TransformerInterface
+    public static function fromArray(array $config): static
     {
         if (!is_string($value = $config['value'] ?? null)) {
             throw MissingConfigurationException::forKey('value');

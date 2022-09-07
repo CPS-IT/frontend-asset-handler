@@ -33,10 +33,8 @@ interface TransformerInterface
 {
     /**
      * @param array<string, mixed> $config
-     *
-     * @return static
      */
-    public static function fromArray(array $config): self;
+    public static function fromArray(array $config): static;
 
     /**
      * @return array<string, mixed>
