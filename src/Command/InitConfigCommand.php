@@ -155,7 +155,6 @@ final class InitConfigCommand extends Console\Command\Command
 
         $this->selectConfigFileAndDefinitionId($input, $output);
 
-        $this->io->newLine();
         $this->io->title('Source');
 
         $question = $this->createChoiceQuestion(
@@ -320,6 +319,7 @@ final class InitConfigCommand extends Console\Command\Command
         }
 
         $output->writeln([
+            '',
             sprintf('You have configured the file <info>%s</info> for your Frontend assets.', $configFile),
             sprintf('A file with the name <info>%s</info> already exists.', $configFile),
             'You can <comment>add a new asset definition</comment> to the existing config file or <comment>create a new config file</comment>.',
@@ -339,7 +339,6 @@ final class InitConfigCommand extends Console\Command\Command
 
             $output->writeln([
                 sprintf('Alright, the config file <info>%s</info> will be extended by a new asset definition.', $configFile),
-                '',
             ]);
 
             return;
@@ -352,7 +351,6 @@ final class InitConfigCommand extends Console\Command\Command
 
         $output->writeln([
             sprintf('Alright, the config file <info>%s</info> will be used for the new asset definition.', $input->getOption('config')),
-            '',
         ]);
     }
 
