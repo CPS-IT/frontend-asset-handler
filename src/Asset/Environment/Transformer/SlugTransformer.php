@@ -45,7 +45,7 @@ final class SlugTransformer implements TransformerInterface
     /**
      * @param array{pattern?: string} $config
      */
-    public static function fromArray(array $config): TransformerInterface
+    public static function fromArray(array $config): static
     {
         if (!isset($config['pattern'])) {
             return new self();

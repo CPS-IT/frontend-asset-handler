@@ -43,7 +43,7 @@ final class VersionTransformer implements TransformerInterface
     /**
      * @param array{version?: string} $config
      */
-    public static function fromArray(array $config): TransformerInterface
+    public static function fromArray(array $config): static
     {
         if (!is_string($version = $config['version'] ?? null)) {
             throw MissingConfigurationException::forKey('version');
