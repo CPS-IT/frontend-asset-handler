@@ -1,5 +1,7 @@
 <div align="center">
 
+![Logo](docs/assets/logo.png)
+
 # Frontend Asset Handler
 
 [![Coverage](https://codecov.io/gh/CPS-IT/frontend-asset-handler/branch/develop/graph/badge.svg?token=P4F5YYWAJX)](https://codecov.io/gh/CPS-IT/frontend-asset-handler)
@@ -76,6 +78,10 @@ vendor/bin/frontend-assets fetch
 ## :technologist: Contributing
 
 Please have a look at [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+## :gem: Credits
+
+[Direct download icons created by Pixel perfect - Flaticon](https://www.flaticon.com/free-icons/direct-download)
 
 ## :star: License
 
