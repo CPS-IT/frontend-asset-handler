@@ -65,6 +65,7 @@ services:
       $placeholderProcessors: !tagged_iterator value.placeholder_processor
 
   CPSIT\FrontendAssetHandler\Vcs\VcsProviderFactory:
+    public: true
     arguments:
       $providers: !tagged_locator { tag: 'asset_handling.vcs_provider', default_index_method: 'getName' }
 
