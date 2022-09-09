@@ -54,6 +54,7 @@ final class InitConfigCommand extends Console\Command\Command
         private readonly Config\ConfigFacade $configFacade,
         private readonly Config\Parser\Parser $configParser,
         private readonly Json\SchemaValidator $validator,
+        private readonly DependencyInjection\ServiceLocator $handlers,
         private readonly DependencyInjection\ServiceLocator $processors,
         private readonly DependencyInjection\ServiceLocator $providers,
         private readonly DependencyInjection\ServiceLocator $vcsProviders,
@@ -114,6 +115,13 @@ final class InitConfigCommand extends Console\Command\Command
             null,
             Console\Input\InputOption::VALUE_REQUIRED,
             'Additional configuration for the asset target definition, should be a JSON-encoded string',
+        );
+
+        $this->addOption(
+            'handler-type',
+            null,
+            Console\Input\InputOption::VALUE_REQUIRED,
+            'Type of the asset handler, resolves to a supported asset handler',
         );
 
         $this->addOption(
@@ -200,6 +208,16 @@ final class InitConfigCommand extends Console\Command\Command
         $input->setOption('target-config-extra', $helper->ask($input, $output, $question));
 
         $this->io->newLine();
+        $this->io->title('Handler');
+
+        $question = $this->createChoiceQuestion(
+            'Handler',
+            $this->handlers->getProvidedServices(),
+            $input->getOption('handler-type'),
+        );
+        $input->setOption('handler-type', $helper->ask($input, $output, $question));
+
+        $this->io->newLine();
         $this->io->title('VCS');
 
         $continue = true;
@@ -266,6 +284,11 @@ final class InitConfigCommand extends Console\Command\Command
             ),
         );
         $config['frontend-assets'][$definitionId]['target'] = $target->getConfig();
+
+        // Build handler
+        if (null !== $input->getOption('handler-type')) {
+            $config['frontend-assets'][$definitionId]['handler'] = $input->getOption('handler-type');
+        }
 
         // Build VCS
         if ($input->getOption('vcs-type')) {

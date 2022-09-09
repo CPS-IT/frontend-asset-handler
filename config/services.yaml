@@ -34,6 +34,7 @@ services:
 
   CPSIT\FrontendAssetHandler\Command\InitConfigCommand:
     arguments:
+      $handlers: !tagged_locator { tag: 'asset_handling.handler', default_index_method: 'getName' }
       $processors: !tagged_locator { tag: 'asset_handling.processor', default_index_method: 'getName' }
       $providers: !tagged_locator { tag: 'asset_handling.provider', default_index_method: 'getName' }
       $vcsProviders: !tagged_locator { tag: 'asset_handling.vcs_provider', default_index_method: 'getName' }
