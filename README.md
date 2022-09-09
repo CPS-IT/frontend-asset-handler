@@ -8,6 +8,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/c4b7516380091c1e11a4/maintainability)](https://codeclimate.com/github/CPS-IT/frontend-asset-handler/maintainability)
 [![Tests](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/tests.yaml/badge.svg)](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/tests.yaml)
 [![CGL](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/cgl.yaml/badge.svg)](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/cgl.yaml)
+[![Release](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/release.yaml/badge.svg)](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/release.yaml)
 [![Latest Stable Version](http://poser.pugx.org/cpsit/frontend-asset-handler/v)](https://packagist.org/packages/cpsit/frontend-asset-handler)
 [![Total Downloads](http://poser.pugx.org/cpsit/frontend-asset-handler/downloads)](https://packagist.org/packages/cpsit/frontend-asset-handler)
 [![License](http://poser.pugx.org/cpsit/frontend-asset-handler/license)](LICENSE.md)
