@@ -48,6 +48,17 @@ Treat the value passed with `newValue` argument as JSON.
 * Shorthand: **–**
 * Default: **no**
 
+## `--process-values`
+
+Run [value processors](../components/placeholder-processors.md) when reading or
+validating asset configuration.
+
+> :warning: This option has no effect with the `newValue` argument.
+
+* Required: **no**
+* Shorthand: **–**
+* Default: **no**
+
 ## `path`
 
 The path to the configuration value to be read or written inside the configuration

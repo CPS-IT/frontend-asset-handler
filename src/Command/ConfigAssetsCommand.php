@@ -71,30 +71,36 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
         $this->addArgument(
             'path',
             Console\Input\InputArgument::OPTIONAL,
-            'Configuration path to be read or written'
+            'Configuration path to be read or written',
         );
         $this->addArgument(
             'newValue',
             Console\Input\InputArgument::OPTIONAL,
-            'New value to be written to given configuration path'
+            'New value to be written to given configuration path',
         );
         $this->addOption(
             'unset',
             null,
             Console\Input\InputOption::VALUE_NONE,
-            'Unset given asset configuration'
+            'Unset given asset configuration',
         );
         $this->addOption(
             'validate',
             null,
             Console\Input\InputOption::VALUE_NONE,
-            'Validate given asset configuration'
+            'Validate given asset configuration',
         );
         $this->addOption(
             'json',
             null,
             Console\Input\InputOption::VALUE_NONE,
-            'Treat new value as JSON-encoded string'
+            'Treat new value as JSON-encoded string',
+        );
+        $this->addOption(
+            'process-values',
+            null,
+            Console\Input\InputOption::VALUE_NONE,
+            'Run value processors when reading or validating asset configuration',
         );
     }
 
@@ -107,6 +113,7 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
         $unset = $input->getOption('unset');
         $validate = $input->getOption('validate');
         $json = $input->getOption('json');
+        $processValues = $input->getOption('process-values');
 
         // Strip "frontend-assets" prefix
         $path = preg_replace(self::PATH_PREFIX_PATTERN, '', $path);
@@ -149,7 +156,7 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
         // Validate configuration value
         if ($validate) {
             try {
-                $this->readConfiguration();
+                $this->readConfiguration(processValues: $processValues);
             } catch (Exception\InvalidConfigurationException $exception) {
                 $validationResult = $this->configParser->getLastValidationErrors();
 
@@ -173,7 +180,7 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
 
         // Read configuration value
         if (null === $newValue) {
-            [$finalPath, $value] = $this->readConfiguration($path);
+            [$finalPath, $value] = $this->readConfiguration($path, $processValues);
 
             $this->io->writeln([
                 sprintf(
@@ -233,9 +240,9 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
      * @throws Exception\MissingConfigurationException
      * @throws JsonException
      */
-    private function readConfiguration(string $path = ''): array
+    private function readConfiguration(string $path = '', bool $processValues = false): array
     {
-        $config = $this->loadConfig();
+        $config = $this->loadConfig(processValues: $processValues);
         $assetDefinitions = $config['frontend-assets'];
 
         if ('' === $path) {
