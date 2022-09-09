@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Json;
 
+use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Exception;
 use Ergebnis\Json\SchemaValidator as ErgebnisSchemaValidator;
 use JsonException;
@@ -52,13 +53,11 @@ final class SchemaValidator
     }
 
     /**
-     * @param array<string, mixed> $jsonArray
-     *
      * @throws JsonException
      */
-    public function validate(array $jsonArray): bool
+    public function validate(Config\Config $config): bool
     {
-        $json = ErgebnisSchemaValidator\Json::fromString(json_encode($jsonArray, JSON_THROW_ON_ERROR));
+        $json = ErgebnisSchemaValidator\Json::fromString(json_encode($config, JSON_THROW_ON_ERROR));
         $schema = ErgebnisSchemaValidator\Json::fromFile($this->schemaFile);
         $jsonPointer = ErgebnisSchemaValidator\JsonPointer::empty();
 

@@ -265,7 +265,7 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
         $config['frontend-assets'] = array_values($config['frontend-assets']);
 
         // Validate new config
-        if (!$this->validator->validate($config->asArray())) {
+        if (!$this->validator->validate($config)) {
             throw Exception\InvalidConfigurationException::asReported($this->validator->getLastValidationErrors()->errors());
         }
 
