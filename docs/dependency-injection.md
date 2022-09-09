@@ -31,7 +31,8 @@ achieved by adding a `services` array to your [assets configuration file](config
 }
 ```
 
-:bulb: **Note:** Only `yaml` and `php` files are supported.
+:bulb: **Note:** Only `yaml` and `php` files are supported. Take a look at the
+[official Symfony documentation][1] to get an overview about service configuration.
 
 ## Service container
 
@@ -57,3 +58,5 @@ Otherwise, a failsafe container will be created which can only be used for some 
 
 If the config file parameter is omitted, a failsafe container is built. This container is mainly
 used in the command application and testing environment. It should not be used anywhere else.
+
+[1]: https://symfony.com/doc/current/configuration.html#configuration-formats
