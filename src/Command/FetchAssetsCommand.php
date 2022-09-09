@@ -200,12 +200,6 @@ final class FetchAssetsCommand extends BaseAssetsCommand
             return false;
         }
 
-        if (!($asset instanceof Asset\ProcessedAsset)) {
-            $this->io->error('Error while fetching assets: The asset handler was unable to handle this asset source.');
-
-            return false;
-        }
-
         $this->io->success(sprintf('Assets successfully downloaded to %s', $asset->getProcessedTargetPath()));
 
         return true;

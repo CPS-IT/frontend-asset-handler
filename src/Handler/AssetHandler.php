@@ -49,7 +49,7 @@ final class AssetHandler implements HandlerInterface
         Asset\Definition\Source $source,
         Asset\Definition\Target $target,
         Strategy\Strategy $strategy = null,
-    ): Asset\Asset {
+    ): Asset\ExistingAsset|Asset\ProcessedAsset {
         if (null === $strategy) {
             $strategy = $this->decisionMaker->decide($source, $target);
         }
