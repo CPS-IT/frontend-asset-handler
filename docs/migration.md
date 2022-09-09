@@ -31,6 +31,16 @@
     ```
   - See [Configuration](config/index.md) for all available configuration options
     and check out the updated [schema file](../resources/configuration.schema.json).
+* Asset handlers are now configurable.
+  - Implement the [`HandlerInterface`](../src/Handler/HandlerInterface.php) for custom handlers.
+  - Reference the handler type within the asset definition:
+    ```diff
+     {
+    +    "handler": "my-custom-handler",
+         "source": { /* ... */ },
+         "target": { /* ... */ }
+     }
+    ```
 * Minimum PHP version is now 8.1.
   - Upgrade your code base to PHP 8.1.
 

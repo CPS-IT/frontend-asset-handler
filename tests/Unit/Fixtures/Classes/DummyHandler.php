@@ -21,24 +21,41 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace CPSIT\FrontendAssetHandler\Handler;
+namespace CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes;
 
 use CPSIT\FrontendAssetHandler\Asset;
+use CPSIT\FrontendAssetHandler\ChattyInterface;
+use CPSIT\FrontendAssetHandler\Handler;
 use CPSIT\FrontendAssetHandler\Strategy;
+use Symfony\Component\Console;
 
 /**
- * HandlerInterface.
+ * DummyHandler.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
+ *
+ * @internal
  */
-interface HandlerInterface
+final class DummyHandler implements Handler\HandlerInterface, ChattyInterface
 {
+    public ?Console\Output\OutputInterface $output = null;
+
+    public static function getName(): string
+    {
+        return 'dummy';
+    }
+
     public function handle(
         Asset\Definition\Source $source,
         Asset\Definition\Target $target,
         Strategy\Strategy $strategy = null,
-    ): Asset\Asset;
+    ): Asset\Asset {
+        return new Asset\Asset($source, $target);
+    }
 
-    public static function getName(): string;
+    public function setOutput(Console\Output\OutputInterface $output): void
+    {
+        $this->output = $output;
+    }
 }

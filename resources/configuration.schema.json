@@ -38,6 +38,9 @@
 				},
 				"environments": {
 					"$ref": "#/definitions/environments"
+				},
+				"handler": {
+					"$ref": "#/definitions/handler"
 				}
 			}
 		},
@@ -162,6 +165,12 @@
 					}
 				}
 			}
+		},
+		"handler": {
+			"type": "string",
+			"title": "Frontend asset handler type",
+			"description": "Type of a concrete Frontend asset handler (an appropriate Handler must exist).",
+			"default": "default"
 		}
 	}
 }

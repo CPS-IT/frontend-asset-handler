@@ -25,17 +25,20 @@ namespace CPSIT\FrontendAssetHandler\DependencyInjection;
 
 use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Config;
-use CPSIT\FrontendAssetHandler\DependencyInjection;
+use CPSIT\FrontendAssetHandler\Handler;
 use CPSIT\FrontendAssetHandler\Processor;
 use CPSIT\FrontendAssetHandler\Provider;
 use CPSIT\FrontendAssetHandler\Value;
 use CPSIT\FrontendAssetHandler\Vcs;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection;
 
-return static function (ContainerConfigurator $configurator, ContainerBuilder $container): void {
+return static function (
+    DependencyInjection\Loader\Configurator\ContainerConfigurator $configurator,
+    DependencyInjection\ContainerBuilder $container,
+): void {
     $container->registerForAutoconfiguration(Config\Loader\ConfigLoaderInterface::class)->addTag('config.loader');
     $container->registerForAutoconfiguration(Config\Writer\ConfigWriterInterface::class)->addTag('config.writer');
+    $container->registerForAutoconfiguration(Handler\HandlerInterface::class)->addTag('asset_handling.handler');
     $container->registerForAutoconfiguration(Processor\ProcessorInterface::class)->addTag('asset_handling.processor');
     $container->registerForAutoconfiguration(Provider\ProviderInterface::class)->addTag('asset_handling.provider');
     $container->registerForAutoconfiguration(Value\Placeholder\PlaceholderProcessorInterface::class)->addTag('value.placeholder_processor');
@@ -43,5 +46,5 @@ return static function (ContainerConfigurator $configurator, ContainerBuilder $c
     $container->registerForAutoconfiguration(Vcs\VcsProviderInterface::class)->addTag('asset_handling.vcs_provider');
 
     // Compiler passes
-    $container->addCompilerPass(new DependencyInjection\CompilerPass\EnvironmentTransformerCompilerPass());
+    $container->addCompilerPass(new CompilerPass\EnvironmentTransformerCompilerPass());
 };

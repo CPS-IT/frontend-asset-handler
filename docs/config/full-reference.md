@@ -25,7 +25,8 @@ by external asset handlers.
             "environments": {
                 "merge": "<merge>",
                 "map": "<map>"
-            }
+            },
+            "handler": "<type>"
         }
     ]
 }
