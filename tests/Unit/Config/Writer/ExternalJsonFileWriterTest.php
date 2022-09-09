@@ -147,6 +147,8 @@ final class ExternalJsonFileWriterTest extends ContainerAwareTestCase
 
         self::assertFileExists($targetFile);
         self::assertJsonStringEqualsJsonFile($targetFile, $expected);
+
+        $this->filesystem->remove($targetFile);
     }
 
     /**
