@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Handler;
 
 use CPSIT\FrontendAssetHandler\ChattyInterface;
 use CPSIT\FrontendAssetHandler\Exception;
+use CPSIT\FrontendAssetHandler\Traits;
 use Symfony\Component\Console;
 use Symfony\Component\DependencyInjection;
 
@@ -34,13 +35,14 @@ use Symfony\Component\DependencyInjection;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class HandlerFactory
+final class HandlerFactory implements ChattyInterface
 {
-    private ?Console\Output\OutputInterface $output = null;
+    use Traits\OutputAwareTrait;
 
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $handlers,
     ) {
+        $this->setOutput(new Console\Output\NullOutput());
     }
 
     /**
@@ -62,7 +64,7 @@ final class HandlerFactory
         }
 
         // Pass output to handler
-        if ($handler instanceof ChattyInterface && null !== $this->output) {
+        if ($handler instanceof ChattyInterface) {
             $handler->setOutput($this->output);
         }
 
@@ -72,12 +74,5 @@ final class HandlerFactory
     public function has(string $type): bool
     {
         return $this->handlers->has($type);
-    }
-
-    public function setOutput(Console\Output\OutputInterface $output): self
-    {
-        $this->output = $output;
-
-        return $this;
     }
 }

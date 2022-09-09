@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Provider;
 
 use CPSIT\FrontendAssetHandler\ChattyInterface;
 use CPSIT\FrontendAssetHandler\Exception;
+use CPSIT\FrontendAssetHandler\Traits;
 use Symfony\Component\Console;
 use Symfony\Component\DependencyInjection;
 
@@ -34,13 +35,14 @@ use Symfony\Component\DependencyInjection;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class ProviderFactory
+final class ProviderFactory implements ChattyInterface
 {
-    private ?Console\Output\OutputInterface $output = null;
+    use Traits\OutputAwareTrait;
 
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $providers,
     ) {
+        $this->setOutput(new Console\Output\NullOutput());
     }
 
     /**
@@ -62,7 +64,7 @@ final class ProviderFactory
         }
 
         // Pass output to chatty providers
-        if ($provider instanceof ChattyInterface && null !== $this->output) {
+        if ($provider instanceof ChattyInterface) {
             $provider->setOutput($this->output);
         }
 
@@ -72,12 +74,5 @@ final class ProviderFactory
     public function has(string $type): bool
     {
         return $this->providers->has($type);
-    }
-
-    public function setOutput(Console\Output\OutputInterface $output): self
-    {
-        $this->output = $output;
-
-        return $this;
     }
 }

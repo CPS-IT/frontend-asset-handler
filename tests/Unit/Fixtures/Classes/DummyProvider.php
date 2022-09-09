@@ -48,6 +48,11 @@ final class DummyProvider implements Provider\ProviderInterface, ChattyInterface
      */
     public array $expectedExceptions = [];
 
+    /**
+     * @var list<Asset\Asset>
+     */
+    public array $expectedAssets = [];
+
     public static function getName(): string
     {
         return 'dummy';
@@ -57,6 +62,10 @@ final class DummyProvider implements Provider\ProviderInterface, ChattyInterface
     {
         if ([] !== $this->expectedExceptions) {
             throw array_shift($this->expectedExceptions);
+        }
+
+        if ([] !== $this->expectedAssets) {
+            return array_shift($this->expectedAssets);
         }
 
         return new Asset\Asset($source);
