@@ -22,6 +22,8 @@ use Symfony\Component\DependencyInjection;
  *
  * @internal Only to be used for testing purposes
  *
+ * @codeCoverageIgnore
+ *
  * @see https://github.com/symfony/framework-bundle/blob/5.4/DependencyInjection/Compiler/ContainerBuilderDebugDumpPass.php
  */
 final class ContainerBuilderDebugDumpPass implements DependencyInjection\Compiler\CompilerPassInterface
