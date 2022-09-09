@@ -33,23 +33,23 @@ a dedicated CLI application.
 
 ## :fire: Getting started
 
-1\. [Install](docs/installation.md) the library:
+1. [Install](docs/installation.md) the library:
 
-```bash
-composer require cpsit/frontend-asset-handler
-```
+   ```bash
+   composer require cpsit/frontend-asset-handler
+   ```
 
-2\. [Initialize](docs/usage/cli-init-config.md) a new `assets.json` file:
+2. [Initialize](docs/usage/cli-init-config.md) a new `assets.json` file:
 
-```bash
-vendor/bin/frontend-assets init
-```
+   ```bash
+   vendor/bin/frontend-assets init
+   ```
 
-3\. [Fetch](docs/usage/cli-fetch-assets.md) Frontend assets:
+3. [Fetch](docs/usage/cli-fetch-assets.md) Frontend assets:
 
-```bash
-vendor/bin/frontend-assets fetch
-```
+   ```bash
+   vendor/bin/frontend-assets fetch
+   ```
 
 ## :book: Documentation
 
