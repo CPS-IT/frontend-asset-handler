@@ -23,15 +23,12 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Provider;
 
-use CPSIT\FrontendAssetHandler\Exception\UnsupportedClassException;
-use CPSIT\FrontendAssetHandler\Exception\UnsupportedTypeException;
-use CPSIT\FrontendAssetHandler\Provider\HttpFileProvider;
-use CPSIT\FrontendAssetHandler\Provider\ProviderFactory;
-use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
-use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyProvider;
-use Exception;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\DependencyInjection\ServiceLocator;
+use CPSIT\FrontendAssetHandler\Console;
+use CPSIT\FrontendAssetHandler\Exception;
+use CPSIT\FrontendAssetHandler\Provider;
+use CPSIT\FrontendAssetHandler\Tests;
+use Symfony\Component\Console as SymfonyConsole;
+use Symfony\Component\DependencyInjection;
 
 /**
  * ProviderFactoryTest.
@@ -39,23 +36,23 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class ProviderFactoryTest extends ContainerAwareTestCase
+final class ProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
 {
-    private NullOutput $output;
-    private ProviderFactory $subject;
+    private SymfonyConsole\Output\NullOutput $output;
+    private Provider\ProviderFactory $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->output = new NullOutput();
-        $this->subject = new ProviderFactory(
-            new ServiceLocator([
+        $this->output = new SymfonyConsole\Output\NullOutput();
+        $this->subject = new Provider\ProviderFactory(
+            new DependencyInjection\ServiceLocator([
                 // Default provider
-                'http' => fn (): HttpFileProvider => $this->container->get(HttpFileProvider::class),
+                'http' => fn () => $this->container->get(Provider\HttpFileProvider::class),
                 // Dummy providers
-                'dummy' => fn (): DummyProvider => new DummyProvider(),
-                'invalid' => fn (): Exception => new Exception(),
+                'dummy' => fn () => new Tests\Unit\Fixtures\Classes\DummyProvider(),
+                'invalid' => fn () => new \Exception(),
             ])
         );
         $this->subject->setOutput($this->output);
@@ -66,9 +63,7 @@ final class ProviderFactoryTest extends ContainerAwareTestCase
      */
     public function getThrowsExceptionIfGivenTypeIsNotSupported(): void
     {
-        $this->expectException(UnsupportedTypeException::class);
-        $this->expectExceptionCode(1624618683);
-        $this->expectExceptionMessage('The given type "foo" is not supported by this factory.');
+        $this->expectExceptionObject(Exception\UnsupportedTypeException::create('foo'));
 
         $this->subject->get('foo');
     }
@@ -78,9 +73,7 @@ final class ProviderFactoryTest extends ContainerAwareTestCase
      */
     public function getThrowsExceptionIfResolvedProviderClassIsInvalid(): void
     {
-        $this->expectException(UnsupportedClassException::class);
-        $this->expectExceptionCode(1623911858);
-        $this->expectExceptionMessage('The given class "Exception" is either not available or not supported.');
+        $this->expectExceptionObject(Exception\UnsupportedClassException::create(\Exception::class));
 
         $this->subject->get('invalid');
     }
@@ -92,8 +85,19 @@ final class ProviderFactoryTest extends ContainerAwareTestCase
     {
         $actual = $this->subject->get('dummy');
 
-        self::assertInstanceOf(DummyProvider::class, $actual);
-        self::assertSame($this->output, $actual->output);
+        self::assertInstanceOf(Tests\Unit\Fixtures\Classes\DummyProvider::class, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function getAppliesOutputToChattyProviders(): void
+    {
+        $actual = $this->subject->get('dummy');
+
+        self::assertInstanceOf(Tests\Unit\Fixtures\Classes\DummyProvider::class, $actual);
+        self::assertInstanceOf(Console\Output\TrackableOutput::class, $actual->output);
+        self::assertSame($this->output, $actual->output->getOutput());
     }
 
     /**

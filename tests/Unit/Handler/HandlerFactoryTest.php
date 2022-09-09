@@ -23,10 +23,11 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Handler;
 
+use CPSIT\FrontendAssetHandler\Console;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Handler;
 use CPSIT\FrontendAssetHandler\Tests;
-use Symfony\Component\Console;
+use Symfony\Component\Console as SymfonyConsole;
 use Symfony\Component\DependencyInjection;
 
 /**
@@ -37,14 +38,14 @@ use Symfony\Component\DependencyInjection;
  */
 final class HandlerFactoryTest extends Tests\Unit\ContainerAwareTestCase
 {
-    private Console\Output\NullOutput $output;
+    private SymfonyConsole\Output\NullOutput $output;
     private Handler\HandlerFactory $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->output = new Console\Output\NullOutput();
+        $this->output = new SymfonyConsole\Output\NullOutput();
         $this->subject = new Handler\HandlerFactory(
             new DependencyInjection\ServiceLocator([
                 // Default handler
@@ -85,7 +86,18 @@ final class HandlerFactoryTest extends Tests\Unit\ContainerAwareTestCase
         $actual = $this->subject->get('dummy');
 
         self::assertInstanceOf(Tests\Unit\Fixtures\Classes\DummyHandler::class, $actual);
-        self::assertSame($this->output, $actual->output);
+    }
+
+    /**
+     * @test
+     */
+    public function getAppliesOutputToChattyHandlers(): void
+    {
+        $actual = $this->subject->get('dummy');
+
+        self::assertInstanceOf(Tests\Unit\Fixtures\Classes\DummyHandler::class, $actual);
+        self::assertInstanceOf(Console\Output\TrackableOutput::class, $actual->output);
+        self::assertSame($this->output, $actual->output->getOutput());
     }
 
     /**

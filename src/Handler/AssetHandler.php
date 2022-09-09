@@ -24,10 +24,13 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Handler;
 
 use CPSIT\FrontendAssetHandler\Asset;
+use CPSIT\FrontendAssetHandler\ChattyInterface;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Processor;
 use CPSIT\FrontendAssetHandler\Provider;
 use CPSIT\FrontendAssetHandler\Strategy;
+use CPSIT\FrontendAssetHandler\Traits;
+use Symfony\Component\Console;
 
 /**
  * AssetHandler.
@@ -35,13 +38,18 @@ use CPSIT\FrontendAssetHandler\Strategy;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class AssetHandler implements HandlerInterface
+final class AssetHandler implements HandlerInterface, ChattyInterface
 {
+    use Traits\OutputAwareTrait {
+        setOutput as private doSetOutput;
+    }
+
     public function __construct(
         private readonly Provider\ProviderFactory $providerFactory,
         private readonly Processor\ProcessorFactory $processorFactory,
         private readonly Strategy\DecisionMaker $decisionMaker,
     ) {
+        $this->setOutput(new Console\Output\NullOutput());
     }
 
     public static function getName(): string
@@ -87,5 +95,13 @@ final class AssetHandler implements HandlerInterface
         }
 
         return new Asset\ProcessedAsset($source, $target, $processedTargetPath);
+    }
+
+    public function setOutput(Console\Output\OutputInterface $output): void
+    {
+        $this->doSetOutput($output);
+
+        $this->providerFactory->setOutput($this->output);
+        $this->processorFactory->setOutput($this->output);
     }
 }

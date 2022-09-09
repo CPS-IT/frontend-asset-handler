@@ -23,15 +23,12 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Processor;
 
-use CPSIT\FrontendAssetHandler\Exception\UnsupportedClassException;
-use CPSIT\FrontendAssetHandler\Exception\UnsupportedTypeException;
-use CPSIT\FrontendAssetHandler\Processor\FileArchiveProcessor;
-use CPSIT\FrontendAssetHandler\Processor\ProcessorFactory;
-use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
-use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyProcessor;
-use Exception;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\DependencyInjection\ServiceLocator;
+use CPSIT\FrontendAssetHandler\Console;
+use CPSIT\FrontendAssetHandler\Exception;
+use CPSIT\FrontendAssetHandler\Processor;
+use CPSIT\FrontendAssetHandler\Tests;
+use Symfony\Component\Console as SymfonyConsole;
+use Symfony\Component\DependencyInjection;
 
 /**
  * ProcessorFactoryTest.
@@ -39,24 +36,24 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class ProcessorFactoryTest extends ContainerAwareTestCase
+final class ProcessorFactoryTest extends Tests\Unit\ContainerAwareTestCase
 {
-    private NullOutput $output;
-    private ProcessorFactory $subject;
+    private SymfonyConsole\Output\NullOutput $output;
+    private Processor\ProcessorFactory $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->output = new NullOutput();
-        $this->subject = new ProcessorFactory(
-            new ServiceLocator([
+        $this->output = new SymfonyConsole\Output\NullOutput();
+        $this->subject = new Processor\ProcessorFactory(
+            new DependencyInjection\ServiceLocator([
                 // Default processor
-                'archive' => fn (): FileArchiveProcessor => $this->container->get(FileArchiveProcessor::class),
+                'archive' => fn () => $this->container->get(Processor\FileArchiveProcessor::class),
                 // Dummy processors
-                'dummy' => fn (): DummyProcessor => new DummyProcessor(),
-                'existing' => fn (): DummyProcessor => new DummyProcessor(),
-                'invalid' => fn (): Exception => new Exception(),
+                'dummy' => fn () => new Tests\Unit\Fixtures\Classes\DummyProcessor(),
+                'existing' => fn () => new Tests\Unit\Fixtures\Classes\DummyProcessor(),
+                'invalid' => fn () => new \Exception(),
             ])
         );
         $this->subject->setOutput($this->output);
@@ -67,9 +64,7 @@ final class ProcessorFactoryTest extends ContainerAwareTestCase
      */
     public function getThrowsExceptionIfGivenTypeIsNotSupported(): void
     {
-        $this->expectException(UnsupportedTypeException::class);
-        $this->expectExceptionCode(1624618683);
-        $this->expectExceptionMessage('The given type "foo" is not supported by this factory.');
+        $this->expectExceptionObject(Exception\UnsupportedTypeException::create('foo'));
 
         $this->subject->get('foo');
     }
@@ -79,9 +74,7 @@ final class ProcessorFactoryTest extends ContainerAwareTestCase
      */
     public function getThrowsExceptionIfResolvedProcessorClassIsInvalid(): void
     {
-        $this->expectException(UnsupportedClassException::class);
-        $this->expectExceptionCode(1623911858);
-        $this->expectExceptionMessage('The given class "Exception" is either not available or not supported.');
+        $this->expectExceptionObject(Exception\UnsupportedClassException::create(\Exception::class));
 
         $this->subject->get('invalid');
     }
@@ -93,8 +86,19 @@ final class ProcessorFactoryTest extends ContainerAwareTestCase
     {
         $actual = $this->subject->get('dummy');
 
-        self::assertInstanceOf(DummyProcessor::class, $actual);
-        self::assertSame($this->output, $actual->output);
+        self::assertInstanceOf(Tests\Unit\Fixtures\Classes\DummyProcessor::class, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function getAppliesOutputToChattyProcessors(): void
+    {
+        $actual = $this->subject->get('dummy');
+
+        self::assertInstanceOf(Tests\Unit\Fixtures\Classes\DummyProcessor::class, $actual);
+        self::assertInstanceOf(Console\Output\TrackableOutput::class, $actual->output);
+        self::assertSame($this->output, $actual->output->getOutput());
     }
 
     /**
