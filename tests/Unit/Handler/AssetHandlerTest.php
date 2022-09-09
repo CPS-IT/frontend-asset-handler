@@ -27,18 +27,14 @@ use CPSIT\FrontendAssetHandler\Asset\Definition\Source;
 use CPSIT\FrontendAssetHandler\Asset\Definition\Target;
 use CPSIT\FrontendAssetHandler\Asset\ExistingAsset;
 use CPSIT\FrontendAssetHandler\Asset\ProcessedAsset;
-use CPSIT\FrontendAssetHandler\Asset\Revision\RevisionProvider;
 use CPSIT\FrontendAssetHandler\Exception\AssetHandlerFailedException;
 use CPSIT\FrontendAssetHandler\Handler\AssetHandler;
-use CPSIT\FrontendAssetHandler\Processor\ProcessorFactory;
+use CPSIT\FrontendAssetHandler\Processor\ExistingAssetProcessor;
+use CPSIT\FrontendAssetHandler\Strategy\DecisionMaker;
 use CPSIT\FrontendAssetHandler\Strategy\Strategy;
 use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
 use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyDecisionMaker;
 use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyProcessor;
-use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyProvider;
-use Exception;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 
 use function sprintf;
 
@@ -50,7 +46,6 @@ use function sprintf;
  */
 final class AssetHandlerTest extends ContainerAwareTestCase
 {
-    private DummyProvider $provider;
     private DummyProcessor $processor;
     private DummyDecisionMaker $decisionMaker;
     private AssetHandler $subject;
@@ -59,21 +54,13 @@ final class AssetHandlerTest extends ContainerAwareTestCase
     {
         parent::setUp();
 
-        $processorFactory = new ProcessorFactory(
-            new ServiceLocator([
-                'dummy' => fn (): DummyProcessor => new DummyProcessor(),
-                'existing' => fn (): DummyProcessor => new DummyProcessor(),
-                'invalid' => fn (): Exception => new Exception(),
-            ])
-        );
-        $processorFactory->setOutput(new NullOutput());
+        $this->decisionMaker = $this->container->get(DummyDecisionMaker::class);
+        $this->processor = $this->container->get(DummyProcessor::class);
 
-        $this->subject = new AssetHandler(
-            $this->provider = new DummyProvider(),
-            $this->processor = new DummyProcessor(),
-            $processorFactory,
-            $this->decisionMaker = new DummyDecisionMaker($this->container->get(RevisionProvider::class))
-        );
+        $this->container->set(DecisionMaker::class, $this->decisionMaker);
+        $this->container->set(ExistingAssetProcessor::class, $this->processor);
+
+        $this->subject = $this->container->get(AssetHandler::class);
     }
 
     /**
@@ -84,7 +71,7 @@ final class AssetHandlerTest extends ContainerAwareTestCase
         $this->decisionMaker->expectedStrategy = Strategy::UseExisting;
 
         $source = new Source([]);
-        $target = new Target([]);
+        $target = new Target(['type' => 'dummy']);
 
         /** @var ExistingAsset $actual */
         $actual = $this->subject->handle($source, $target);
@@ -98,26 +85,10 @@ final class AssetHandlerTest extends ContainerAwareTestCase
     /**
      * @test
      */
-    public function handleThrowsExceptionIfProviderErrors(): void
-    {
-        $source = new Source(['environment' => 'foo']);
-        $target = new Target([]);
-
-        $exception = new Exception();
-        $this->provider->expectedExceptions[] = $exception;
-
-        $this->expectExceptionObject($exception);
-
-        $this->subject->handle($source, $target, Strategy::FetchNew);
-    }
-
-    /**
-     * @test
-     */
     public function handleThrowsExceptionIfProcessedTargetPathIsInvalid(): void
     {
-        $source = new Source(['foo' => 'baz']);
-        $target = new Target(['foo' => 'baz']);
+        $source = new Source(['type' => 'dummy', 'foo' => 'baz']);
+        $target = new Target(['type' => 'dummy', 'foo' => 'baz']);
 
         $this->expectException(AssetHandlerFailedException::class);
         $this->expectExceptionCode(1623861520);
@@ -132,8 +103,8 @@ final class AssetHandlerTest extends ContainerAwareTestCase
      */
     public function handleReturnsProcessedAsset(): void
     {
-        $source = new Source(['foo' => 'baz']);
-        $target = new Target(['foo' => 'baz']);
+        $source = new Source(['type' => 'dummy', 'foo' => 'baz']);
+        $target = new Target(['type' => 'dummy', 'foo' => 'baz']);
 
         /** @var ProcessedAsset $actual */
         $actual = $this->subject->handle($source, $target, Strategy::FetchNew);

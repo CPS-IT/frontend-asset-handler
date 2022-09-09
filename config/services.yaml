@@ -17,7 +17,6 @@ services:
       - '../src/Console/*'
       - '../src/Exception/*'
       - '../src/DependencyInjection/*'
-      - '../src/Handler/*'
       - '../src/Vcs/Dto/*'
 
   _instanceof:
@@ -44,6 +43,11 @@ services:
     arguments:
       $loaders: !tagged_iterator config.loader
       $writers: !tagged_iterator config.writer
+
+  CPSIT\FrontendAssetHandler\Handler\HandlerFactory:
+    public: true
+    arguments:
+      $handlers: !tagged_locator { tag: 'asset_handling.handler', default_index_method: 'getName' }
 
   CPSIT\FrontendAssetHandler\Provider\ProviderFactory:
     public: true

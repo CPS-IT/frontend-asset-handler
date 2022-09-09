@@ -38,11 +38,15 @@ use CPSIT\FrontendAssetHandler\Strategy;
 final class AssetHandler implements HandlerInterface
 {
     public function __construct(
-        private readonly Provider\ProviderInterface $provider,
-        private readonly Processor\ProcessorInterface $processor,
+        private readonly Provider\ProviderFactory $providerFactory,
         private readonly Processor\ProcessorFactory $processorFactory,
         private readonly Strategy\DecisionMaker $decisionMaker,
     ) {
+    }
+
+    public static function getName(): string
+    {
+        return 'default';
     }
 
     public function handle(
@@ -50,10 +54,16 @@ final class AssetHandler implements HandlerInterface
         Asset\Definition\Target $target,
         Strategy\Strategy $strategy = null,
     ): Asset\ExistingAsset|Asset\ProcessedAsset {
+        // We use the decision maker to decide which strategy to use to
+        // handle the given asset. If a strategy is already passed to the
+        // asset handler, we use this one instead of the one resulting from
+        // the decision maker.
         if (null === $strategy) {
             $strategy = $this->decisionMaker->decide($source, $target);
         }
 
+        // In case an asset already exists in the target path, we run the
+        // existing asset processor
         if (Strategy\Strategy::UseExisting === $strategy) {
             $asset = new Asset\Asset($source, $target);
             $processor = $this->processorFactory->get(Processor\ExistingAssetProcessor::getName());
@@ -62,10 +72,16 @@ final class AssetHandler implements HandlerInterface
             return new Asset\ExistingAsset($source, $target, $targetPath);
         }
 
-        $asset = $this->provider->fetchAsset($source);
-        $asset->setTarget($target);
-        $processedTargetPath = $this->processor->processAsset($asset);
+        // Create provider and processor
+        $provider = $this->providerFactory->get($source->getType());
+        $processor = $this->processorFactory->get($target->getType());
 
+        // Fetch and process asset
+        $asset = $provider->fetchAsset($source);
+        $asset->setTarget($target);
+        $processedTargetPath = $processor->processAsset($asset);
+
+        // Throw exception if processed target path is invalid
         if ('' === trim($processedTargetPath)) {
             throw Exception\AssetHandlerFailedException::create($asset);
         }
