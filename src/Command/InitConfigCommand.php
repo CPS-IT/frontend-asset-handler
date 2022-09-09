@@ -27,7 +27,7 @@ use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Helper;
-use CPSIT\FrontendAssetHandler\Vcs;
+use CPSIT\FrontendAssetHandler\Json;
 use Symfony\Component\Console;
 use Symfony\Component\DependencyInjection;
 
@@ -53,6 +53,7 @@ final class InitConfigCommand extends Console\Command\Command
     public function __construct(
         private readonly Config\ConfigFacade $configFacade,
         private readonly Config\Parser\Parser $configParser,
+        private readonly Json\SchemaValidator $validator,
         private readonly DependencyInjection\ServiceLocator $processors,
         private readonly DependencyInjection\ServiceLocator $providers,
         private readonly DependencyInjection\ServiceLocator $vcsProviders,
@@ -278,6 +279,11 @@ final class InitConfigCommand extends Console\Command\Command
                 ),
             );
             $config['frontend-assets'][$definitionId]['vcs'] = $vcs->getConfig();
+        }
+
+        // Validate config
+        if (!$this->validator->validate($config)) {
+            throw Exception\InvalidConfigurationException::asReported($this->validator->getLastValidationErrors()->errors());
         }
 
         // Write config
