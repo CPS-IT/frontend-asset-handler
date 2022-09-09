@@ -55,7 +55,7 @@ abstract class BaseAssetsCommand extends Console\Command\Command
      */
     protected function loadConfig(
         array $requiredKeys = [],
-        bool $processValues = true
+        bool $processValues = true,
     ): Config\Config {
         $configFile = $this->cache->getConfigFile();
 
