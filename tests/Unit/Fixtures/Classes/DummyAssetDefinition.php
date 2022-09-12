@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes;
 
-use CPSIT\FrontendAssetHandler\Asset\Definition\AssetDefinition;
+use CPSIT\FrontendAssetHandler\Asset;
 
 /**
  * DummyAssetDefinition.
@@ -33,7 +33,7 @@ use CPSIT\FrontendAssetHandler\Asset\Definition\AssetDefinition;
  *
  * @internal
  */
-final class DummyAssetDefinition extends AssetDefinition
+final class DummyAssetDefinition extends Asset\Definition\AssetDefinition
 {
     public function getType(): string
     {

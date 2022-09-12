@@ -20,27 +20,6 @@
 				"type": "dummy",
 				"foo": "foo"
 			}
-		},
-		{
-			"handler": "dummy",
-			"source": {
-				"type": "dummy",
-				"url": "https://www.example.com/assets/{environment}.tar.gz",
-				"revision-url": "https://www.example.com/assets/{environment}/REVISION"
-			},
-			"target": {
-				"type": "dummy",
-				"path": "baz"
-			},
-			"environments": {
-				"map": {
-					"baz": "baz"
-				}
-			},
-			"vcs": {
-				"type": "dummy",
-				"baz": "baz"
-			}
 		}
 	]
 }

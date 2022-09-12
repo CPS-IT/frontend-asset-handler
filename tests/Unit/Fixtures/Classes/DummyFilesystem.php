@@ -25,7 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes;
 
 use Exception;
 use SplFileInfo;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem;
 use Traversable;
 
 /**
@@ -36,12 +36,12 @@ use Traversable;
  *
  * @internal
  */
-final class DummyFilesystem extends Filesystem
+final class DummyFilesystem extends Filesystem\Filesystem
 {
     /**
-     * @var string[]
+     * @var list<string>
      */
-    public $expectedExceptionStack = [];
+    public array $expectedExceptionStack = [];
 
     /**
      * @param string|iterable<string> $files

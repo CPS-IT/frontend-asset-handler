@@ -1,0 +1,25 @@
+{
+	"frontend-assets": [
+		{
+			"handler": "dummy",
+			"source": {
+				"type": "%env(SOURCE_TYPE)%",
+				"url": "https://www.example.com/assets/{environment}.tar.gz",
+				"revision-url": "https://www.example.com/assets/{environment}/REVISION"
+			},
+			"target": {
+				"type": "dummy",
+				"path": "foo"
+			},
+			"environments": {
+				"map": {
+					"foo": "foo"
+				}
+			},
+			"vcs": {
+				"type": "dummy",
+				"foo": "foo"
+			}
+		}
+	]
+}

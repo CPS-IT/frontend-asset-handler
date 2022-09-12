@@ -28,6 +28,9 @@ use CPSIT\FrontendAssetHandler\ChattyInterface;
 use CPSIT\FrontendAssetHandler\Handler;
 use CPSIT\FrontendAssetHandler\Strategy;
 use Symfony\Component\Console;
+use Throwable;
+
+use function array_shift;
 
 /**
  * DummyHandler.
@@ -41,6 +44,11 @@ final class DummyHandler implements Handler\HandlerInterface, ChattyInterface
 {
     public ?Console\Output\OutputInterface $output = null;
 
+    /**
+     * @var list<Throwable|Asset\Asset>
+     */
+    public array $returnQueue = [];
+
     public static function getName(): string
     {
         return 'dummy';
@@ -51,6 +59,16 @@ final class DummyHandler implements Handler\HandlerInterface, ChattyInterface
         Asset\Definition\Target $target,
         Strategy\Strategy $strategy = null,
     ): Asset\Asset {
+        $nextReturn = array_shift($this->returnQueue);
+
+        if ($nextReturn instanceof Throwable) {
+            throw $nextReturn;
+        }
+
+        if ($nextReturn instanceof Asset\Asset) {
+            return $nextReturn;
+        }
+
         return new Asset\Asset($source, $target);
     }
 

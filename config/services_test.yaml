@@ -8,3 +8,4 @@ services:
   CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyHandler:
   CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyProvider:
   CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyProcessor:
+  CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyRevisionProvider:

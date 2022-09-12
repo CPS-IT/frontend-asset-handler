@@ -23,10 +23,8 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes;
 
-use CPSIT\FrontendAssetHandler\Asset\Definition\Source;
-use CPSIT\FrontendAssetHandler\Asset\Definition\Target;
-use CPSIT\FrontendAssetHandler\Strategy\DecisionMaker;
-use CPSIT\FrontendAssetHandler\Strategy\Strategy;
+use CPSIT\FrontendAssetHandler\Asset;
+use CPSIT\FrontendAssetHandler\Strategy;
 
 /**
  * DummyDecisionMaker.
@@ -36,11 +34,11 @@ use CPSIT\FrontendAssetHandler\Strategy\Strategy;
  *
  * @internal
  */
-final class DummyDecisionMaker extends DecisionMaker
+final class DummyDecisionMaker extends Strategy\DecisionMaker
 {
-    public Strategy $expectedStrategy = Strategy::FetchNew;
+    public Strategy\Strategy $expectedStrategy = Strategy\Strategy::FetchNew;
 
-    public function decide(Source $source, Target $target): Strategy
+    public function decide(Asset\Definition\Source $source, Asset\Definition\Target $target): Strategy\Strategy
     {
         return $this->expectedStrategy;
     }

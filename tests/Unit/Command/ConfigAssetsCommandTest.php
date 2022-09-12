@@ -27,6 +27,8 @@ use CPSIT\FrontendAssetHandler\Command;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Tests;
 use Generator;
+use Symfony\Component\Filesystem;
+use UnexpectedValueException;
 
 use function dirname;
 use function json_encode;
@@ -39,6 +41,15 @@ use function json_encode;
  */
 final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
 {
+    private Filesystem\Filesystem $filesystem;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->filesystem = $this->container->get(Filesystem\Filesystem::class);
+    }
+
     /**
      * @test
      */
@@ -77,6 +88,23 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         $this->commandTester->execute([
             'path' => 'foo',
             '--unset' => true,
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function executeThrowsExceptionIfPlaceholderProcessorsAreFailing(): void
+    {
+        $this->initializeCommandTester(dirname(__DIR__).'/Fixtures/JsonFiles/placeholder-assets.json');
+
+        $this->expectExceptionObject(
+            new UnexpectedValueException('The environment variable "SOURCE_TYPE" is not available.', 1628147471)
+        );
+
+        $this->commandTester->execute([
+            '--validate' => true,
+            '--process-values' => true,
         ]);
     }
 
@@ -153,6 +181,134 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
     }
 
     /**
+     * @test
+     */
+    public function executeThrowsExceptionIfGivenPathIsAmbiguous(): void
+    {
+        $this->expectExceptionObject(Exception\InvalidConfigurationException::forAmbiguousKey('source'));
+
+        $this->commandTester->execute([
+            'path' => 'source',
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function executeThrowsExceptionIfGivenPathDoesNotExist(): void
+    {
+        $this->expectExceptionObject(Exception\MissingConfigurationException::forKey('0/foo'));
+
+        $this->commandTester->execute([
+            'path' => '0/foo',
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function executeFallsBackToFirstAssetDefinitionIfOnlyASingleAssetDefinitionIsConfigured(): void
+    {
+        $this->initializeCommandTester(dirname(__DIR__).'/Fixtures/JsonFiles/single-assets.json');
+
+        $exitCode = $this->commandTester->execute([
+            'path' => 'source/type',
+        ]);
+        $output = $this->commandTester->getDisplay();
+
+        self::assertSame(0, $exitCode);
+        self::assertStringContainsString(
+            'Current configuration value of asset definition [0][source][type]:'.PHP_EOL.PHP_EOL.'"dummy',
+            $output,
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function executeReturnsConfigurationForGivenPath(): void
+    {
+        $exitCode = $this->commandTester->execute([
+            'path' => '1/source/type',
+        ]);
+        $output = $this->commandTester->getDisplay();
+
+        self::assertSame(0, $exitCode);
+        self::assertStringContainsString(
+            'Current configuration value of asset definition [1][source][type]:'.PHP_EOL.PHP_EOL.'"dummy',
+            $output,
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function executeThrowsExceptionIfNewConfigIsInvalid(): void
+    {
+        $this->expectException(Exception\InvalidConfigurationException::class);
+
+        $this->commandTester->execute([
+            'path' => '0',
+            'newValue' => '{"foo":"bar"}',
+            '--json' => true,
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function executeWritesNewValueToGivenPath(): void
+    {
+        $originalFile = $this->container->get('app.cache')->getConfigFile()
+            ?? $this->fail('No config file given.');
+        $targetFile = $this->filesystem->tempnam(sys_get_temp_dir(), 'fah_assets.json_', '.json');
+
+        $this->filesystem->copy($originalFile, $targetFile, true);
+
+        $this->initializeCommandTester($targetFile);
+
+        $exitCode = $this->commandTester->execute([
+            'path' => '0/source/type',
+            'newValue' => 'foo',
+        ]);
+        $output = $this->commandTester->getDisplay();
+
+        self::assertSame(0, $exitCode);
+        self::assertStringContainsString('Configuration at [0][source][type] was successfully set to "foo".', $output);
+
+        $this->filesystem->remove($targetFile);
+    }
+
+    /**
+     * @test
+     */
+    public function executeWritesJsonEncodedNewValueToGivenPath(): void
+    {
+        $originalFile = $this->container->get('app.cache')->getConfigFile()
+            ?? $this->fail('No config file given.');
+        $targetFile = $this->filesystem->tempnam(sys_get_temp_dir(), 'fah_assets.json_', '.json');
+
+        $this->filesystem->copy($originalFile, $targetFile, true);
+
+        $this->initializeCommandTester($targetFile);
+
+        $exitCode = $this->commandTester->execute([
+            'path' => '0/source',
+            'newValue' => '{"type":"foo","url":"foo","revision-url":"foo"}',
+            '--json' => true,
+        ]);
+        $output = $this->commandTester->getDisplay();
+
+        self::assertSame(0, $exitCode);
+        self::assertStringContainsString('Configuration at [0][source] was successfully written:', $output);
+        self::assertStringContainsString('"type": "foo"', $output);
+        self::assertStringContainsString('"url": "foo"', $output);
+        self::assertStringContainsString('"revision-url": "foo"', $output);
+
+        $this->filesystem->remove($targetFile);
+    }
+
+    /**
      * @return \Generator<string, array{array<string, bool|string>, string}>
      */
     public function executeFailsAndWritesErrorIfConflictingParametersAreGivenDataProvider(): Generator
@@ -193,11 +349,12 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
     }
 
     /**
-     * @return \Generator<string, array{string, array{frontend-assets: list<array<string, array<string, mixed>>>}}>
+     * @return \Generator<string, array{string, array{frontend-assets: list<array<string, string|array<string, mixed>>>}}>
      */
     public function executeUnsetsConfigurationAtGivenPathDataProvider(): Generator
     {
         $firstAssetDefinition = [
+            'handler' => 'dummy',
             'source' => [
                 'type' => 'dummy',
                 'url' => 'https://www.example.com/assets/{environment}.tar.gz',
@@ -218,6 +375,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
             ],
         ];
         $secondAssetDefinition = [
+            'handler' => 'dummy',
             'source' => [
                 'type' => 'dummy',
                 'url' => 'https://www.example.com/assets/{environment}.tar.gz',

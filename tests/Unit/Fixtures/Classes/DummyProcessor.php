@@ -23,10 +23,10 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes;
 
-use CPSIT\FrontendAssetHandler\Asset\Asset;
+use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\ChattyInterface;
-use CPSIT\FrontendAssetHandler\Processor\ProcessorInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use CPSIT\FrontendAssetHandler\Processor;
+use Symfony\Component\Console;
 
 /**
  * DummyProcessor.
@@ -36,9 +36,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @internal
  */
-final class DummyProcessor implements ProcessorInterface, ChattyInterface
+final class DummyProcessor implements Processor\ProcessorInterface, ChattyInterface
 {
-    public ?OutputInterface $output = null;
+    public ?Console\Output\OutputInterface $output = null;
     public bool $shouldReturnValidPath = true;
 
     public static function getName(): string
@@ -46,7 +46,7 @@ final class DummyProcessor implements ProcessorInterface, ChattyInterface
         return 'dummy';
     }
 
-    public function processAsset(Asset $asset): string
+    public function processAsset(Asset\Asset $asset): string
     {
         if (!$this->shouldReturnValidPath) {
             return '';
@@ -55,12 +55,12 @@ final class DummyProcessor implements ProcessorInterface, ChattyInterface
         return 'foo';
     }
 
-    public function getAssetPath(Asset $asset): string
+    public function getAssetPath(Asset\Asset $asset): string
     {
         return '/tmp';
     }
 
-    public function setOutput(OutputInterface $output): void
+    public function setOutput(Console\Output\OutputInterface $output): void
     {
         $this->output = $output;
     }

@@ -23,9 +23,13 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Command;
 
+use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Command;
 use CPSIT\FrontendAssetHandler\Exception;
+use CPSIT\FrontendAssetHandler\Processor;
 use CPSIT\FrontendAssetHandler\Tests;
+
+use function dirname;
 
 /**
  * FetchAssetsCommandTest.
@@ -35,13 +39,27 @@ use CPSIT\FrontendAssetHandler\Tests;
  */
 final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
 {
-    private Tests\Unit\Fixtures\Classes\DummyProvider $provider;
+    private Tests\Unit\Fixtures\Classes\DummyHandler $handler;
+    private Asset\ProcessedAsset $processedAsset;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->provider = $this->container->get(Tests\Unit\Fixtures\Classes\DummyProvider::class);
+        $this->initializeCommandTester(
+            dirname(__DIR__).'/Fixtures/JsonFiles/assets.json',
+            [
+                Processor\ExistingAssetProcessor::class => $this->container->get(Tests\Unit\Fixtures\Classes\DummyProcessor::class),
+                Asset\Revision\RevisionProvider::class => $this->container->get(Tests\Unit\Fixtures\Classes\DummyRevisionProvider::class),
+            ],
+        );
+
+        $this->handler = $this->container->get(Tests\Unit\Fixtures\Classes\DummyHandler::class);
+        $this->processedAsset = new Asset\ProcessedAsset(
+            new Asset\Definition\Source([]),
+            new Asset\Definition\Target([]),
+            'foo',
+        );
     }
 
     /**
@@ -73,7 +91,8 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
      */
     public function executeFailsIfAssetsCannotBeDownloaded(): void
     {
-        $this->provider->expectedExceptions[] = Exception\DownloadFailedException::create('foo', 'baz');
+        $this->handler->returnQueue[] = $this->processedAsset;
+        $this->handler->returnQueue[] = Exception\DownloadFailedException::create('foo', 'baz');
 
         $exitCode = $this->commandTester->execute(
             [
@@ -86,12 +105,8 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         $output = $this->commandTester->getDisplay();
 
         self::assertSame(1, $exitCode);
-        self::assertStringContainsString('Project branch: main', $output);
-        self::assertStringContainsString('Processing of asset definition #1', $output);
         self::assertStringContainsString('An error occurred while downloading "foo" to "baz".', $output);
-        self::assertStringContainsString('Processing of asset definition #2', $output);
         self::assertStringContainsString('An error occurred while downloading "foo" to "baz".', $output);
-        self::assertStringContainsString('Asset environment: stable', $output);
         self::assertStringContainsString('Command finished with errors.', $output);
     }
 
@@ -100,7 +115,9 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
      */
     public function executeFallsBackToLatestAssetsIfAssetsCannotBeDownloadedAndFailsafeOptionIsGiven(): void
     {
-        $this->provider->expectedExceptions[] = Exception\DownloadFailedException::create('foo', 'baz');
+        $this->handler->returnQueue[] = $this->processedAsset;
+        $this->handler->returnQueue[] = Exception\DownloadFailedException::create('foo', 'baz');
+        $this->handler->returnQueue[] = $this->processedAsset;
 
         $exitCode = $this->commandTester->execute(
             [
@@ -114,12 +131,115 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         $output = $this->commandTester->getDisplay();
 
         self::assertSame(0, $exitCode);
-        self::assertStringContainsString('Project branch: main', $output);
-        self::assertStringContainsString('Processing of asset definition #1', $output);
         self::assertStringContainsString('Error while fetching assets, falling back to latest assets.', $output);
-        self::assertStringContainsString('Processing of asset definition #2', $output);
-        self::assertStringContainsString('Assets successfully downloaded', $output);
+        self::assertStringContainsString('Assets successfully downloaded to foo', $output);
+    }
+
+    /**
+     * @test
+     */
+    public function executeFailsIfAssetsAreAlreadyDownloaded(): void
+    {
+        $this->handler->returnQueue[] = $this->processedAsset;
+        $this->handler->returnQueue[] = new Asset\ExistingAsset(
+            new Asset\Definition\Source([]),
+            new Asset\Definition\Target([]),
+            'foo',
+            new Asset\Revision\Revision('1234567890'),
+        );
+
+        $exitCode = $this->commandTester->execute(
+            [
+                'branch' => 'main',
+            ],
+            [
+                'capture_stderr_separately' => true,
+            ],
+        );
+        $output = $this->commandTester->getDisplay();
+
+        self::assertSame(1, $exitCode);
+        self::assertStringContainsString(
+            'Assets of revision 1234567 are already downloaded. Use -f to re-download them.',
+            $output,
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function executeFailsIfAssetsCannotBeProcessed(): void
+    {
+        $this->handler->returnQueue[] = $this->processedAsset;
+
+        $exitCode = $this->commandTester->execute(
+            [
+                'branch' => 'main',
+            ],
+            [
+                'capture_stderr_separately' => true,
+            ],
+        );
+        $output = $this->commandTester->getDisplay();
+
+        self::assertSame(1, $exitCode);
+        self::assertStringContainsString(
+            'Error while fetching assets: The asset handler was unable to handle this asset source.',
+            $output,
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function executeFetchesAndProcessesExistingAssets(): void
+    {
+        $this->handler->returnQueue[] = $this->processedAsset;
+        $this->handler->returnQueue[] = $this->processedAsset;
+
+        $exitCode = $this->commandTester->execute(
+            [
+                'branch' => 'main',
+                '--force' => true,
+            ],
+            [
+                'capture_stderr_separately' => true,
+            ],
+        );
+        $output = $this->commandTester->getDisplay();
+
+        self::assertSame(0, $exitCode);
+        self::assertStringContainsString('Project branch: main', $output);
         self::assertStringContainsString('Asset environment: stable', $output);
+        self::assertStringContainsString('Processing of asset definition #1', $output);
+        self::assertStringContainsString('Processing of asset definition #2', $output);
+        self::assertStringContainsString('Assets successfully downloaded to foo', $output);
+    }
+
+    /**
+     * @test
+     */
+    public function executeSuccessfullyFetchesAndProcessesAllAssets(): void
+    {
+        $this->handler->returnQueue[] = $this->processedAsset;
+        $this->handler->returnQueue[] = $this->processedAsset;
+
+        $exitCode = $this->commandTester->execute(
+            [
+                'branch' => 'main',
+            ],
+            [
+                'capture_stderr_separately' => true,
+            ],
+        );
+        $output = $this->commandTester->getDisplay();
+
+        self::assertSame(0, $exitCode);
+        self::assertStringContainsString('Project branch: main', $output);
+        self::assertStringContainsString('Asset environment: stable', $output);
+        self::assertStringContainsString('Processing of asset definition #1', $output);
+        self::assertStringContainsString('Processing of asset definition #2', $output);
+        self::assertStringContainsString('Assets successfully downloaded to foo', $output);
     }
 
     protected static function getCoveredCommand(): string

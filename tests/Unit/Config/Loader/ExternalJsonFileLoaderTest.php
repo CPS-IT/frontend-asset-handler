@@ -86,6 +86,7 @@ final class ExternalJsonFileLoaderTest extends TestCase
         $expected = new Config([
             'frontend-assets' => [
                 [
+                    'handler' => 'dummy',
                     'source' => [
                         'type' => 'dummy',
                         'url' => 'https://www.example.com/assets/{environment}.tar.gz',
@@ -106,6 +107,7 @@ final class ExternalJsonFileLoaderTest extends TestCase
                     ],
                 ],
                 [
+                    'handler' => 'dummy',
                     'source' => [
                         'type' => 'dummy',
                         'url' => 'https://www.example.com/assets/{environment}.tar.gz',

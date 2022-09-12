@@ -23,10 +23,8 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes;
 
-use CPSIT\FrontendAssetHandler\Asset\Asset;
-use CPSIT\FrontendAssetHandler\Asset\TemporaryAsset;
-use CPSIT\FrontendAssetHandler\Processor\FileArchiveProcessor;
-use CPSIT\FrontendAssetHandler\Processor\ProcessorInterface;
+use CPSIT\FrontendAssetHandler\Asset;
+use CPSIT\FrontendAssetHandler\Processor;
 
 /**
  * DummyFileArchiveProcessor.
@@ -36,25 +34,25 @@ use CPSIT\FrontendAssetHandler\Processor\ProcessorInterface;
  *
  * @internal
  */
-final class DummyFileArchiveProcessor implements ProcessorInterface
+final class DummyFileArchiveProcessor implements Processor\ProcessorInterface
 {
     public bool $shouldOpenInvalidArchive = false;
 
     public function __construct(
-        private readonly FileArchiveProcessor $childProcessor,
+        private readonly Processor\FileArchiveProcessor $childProcessor,
     ) {
     }
 
-    public function processAsset(Asset $asset): string
+    public function processAsset(Asset\Asset $asset): string
     {
-        if ($this->shouldOpenInvalidArchive && $asset instanceof TemporaryAsset) {
+        if ($this->shouldOpenInvalidArchive && $asset instanceof Asset\TemporaryAsset) {
             $asset = $this->duplicate($asset, 'foo.tar');
         }
 
         return $this->childProcessor->processAsset($asset);
     }
 
-    public function getAssetPath(Asset $asset): string
+    public function getAssetPath(Asset\Asset $asset): string
     {
         return $this->childProcessor->getAssetPath($asset);
     }
@@ -64,9 +62,9 @@ final class DummyFileArchiveProcessor implements ProcessorInterface
         return 'dummy-archive';
     }
 
-    private function duplicate(TemporaryAsset $originalAsset, string $temporaryFile): TemporaryAsset
+    private function duplicate(Asset\TemporaryAsset $originalAsset, string $temporaryFile): Asset\TemporaryAsset
     {
-        $asset = new TemporaryAsset($originalAsset->getSource(), $temporaryFile);
+        $asset = new Asset\TemporaryAsset($originalAsset->getSource(), $temporaryFile);
 
         if (null !== $originalAsset->getTarget()) {
             $asset->setTarget($originalAsset->getTarget());
