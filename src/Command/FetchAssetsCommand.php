@@ -103,7 +103,7 @@ final class FetchAssetsCommand extends BaseAssetsCommand
         }
 
         // Fetch asset definitions
-        $config = $this->loadConfig(['source', 'target', 'environments']);
+        $config = $this->loadConfig(['source', 'target', 'environments', 'handler']);
         $assetDefinitions = $config['frontend-assets'];
         $assetCount = is_countable($assetDefinitions) ? count($assetDefinitions) : 0;
 
