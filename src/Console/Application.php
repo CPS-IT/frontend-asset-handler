@@ -39,6 +39,8 @@ use function in_array;
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
+ *
+ * @internal
  */
 final class Application extends Console\Application
 {
