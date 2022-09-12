@@ -11,6 +11,7 @@
 [![Latest Stable Version](http://poser.pugx.org/cpsit/frontend-asset-handler/v)](https://packagist.org/packages/cpsit/frontend-asset-handler)
 [![Total Downloads](http://poser.pugx.org/cpsit/frontend-asset-handler/downloads)](https://packagist.org/packages/cpsit/frontend-asset-handler)
 [![License](http://poser.pugx.org/cpsit/frontend-asset-handler/license)](LICENSE.md)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCPS-IT%2Ffrontend-asset-handler.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FCPS-IT%2Ffrontend-asset-handler?ref=badge_shield)
 
 :package:&nbsp;[Packagist](https://packagist.org/packages/cpsit/frontend-asset-handler) |
 :floppy_disk:&nbsp;[Repository](https://github.com/CPS-IT/frontend-asset-handler) |
@@ -86,3 +87,6 @@ Please have a look at [`CONTRIBUTING.md`](CONTRIBUTING.md).
 ## :star: License
 
 This project is licensed under [GNU General Public License 3.0 (or later)](LICENSE.md).
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCPS-IT%2Ffrontend-asset-handler.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FCPS-IT%2Ffrontend-asset-handler?ref=badge_large)
