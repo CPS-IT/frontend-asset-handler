@@ -26,6 +26,8 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes;
 use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Vcs;
 
+use function array_shift;
+
 /**
  * DummyVcsProvider.
  *
@@ -34,8 +36,13 @@ use CPSIT\FrontendAssetHandler\Vcs;
  *
  * @internal
  */
-final class DummyVcsProvider implements Vcs\VcsProviderInterface
+final class DummyVcsProvider implements Vcs\DeployableVcsProviderInterface
 {
+    /**
+     * @var list<list<Vcs\Dto\Deployment>>
+     */
+    public array $expectedDeployments = [];
+
     public function withVcs(Asset\Definition\Vcs $vcs): static
     {
         return clone $this;
@@ -48,7 +55,7 @@ final class DummyVcsProvider implements Vcs\VcsProviderInterface
 
     public function getSourceUrl(): string
     {
-        return '';
+        return 'https://example.com/assets.git';
     }
 
     public function getLatestRevision(string $environment = null): ?Asset\Revision\Revision
@@ -59,5 +66,14 @@ final class DummyVcsProvider implements Vcs\VcsProviderInterface
     public function hasRevision(Asset\Revision\Revision $revision): bool
     {
         return false;
+    }
+
+    public function getActiveDeployments(): array
+    {
+        if ([] === $this->expectedDeployments) {
+            return [];
+        }
+
+        return array_shift($this->expectedDeployments);
     }
 }

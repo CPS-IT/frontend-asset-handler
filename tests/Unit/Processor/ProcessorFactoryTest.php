@@ -54,7 +54,7 @@ final class ProcessorFactoryTest extends Tests\Unit\ContainerAwareTestCase
                 'dummy' => fn () => new Tests\Unit\Fixtures\Classes\DummyProcessor(),
                 'existing' => fn () => new Tests\Unit\Fixtures\Classes\DummyProcessor(),
                 'invalid' => fn () => new \Exception(),
-            ])
+            ]),
         );
         $this->subject->setOutput($this->output);
     }
