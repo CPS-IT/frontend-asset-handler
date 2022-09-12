@@ -21,26 +21,21 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace CPSIT\FrontendAssetHandler\Command\Validators;
+namespace CPSIT\FrontendAssetHandler\Console\Input\Validator;
 
 use Webmozart\Assert;
 
-use function json_decode;
-
 /**
- * JsonValidator.
+ * NotEmptyValidator.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class JsonValidator implements ValidatorInterface
+final class NotEmptyValidator implements ValidatorInterface
 {
     public static function validate(mixed $value): mixed
     {
-        if (null !== $value) {
-            Assert\Assert::string($value);
-            Assert\Assert::object(json_decode($value, flags: JSON_THROW_ON_ERROR));
-        }
+        Assert\Assert::notEmpty($value);
 
         return $value;
     }

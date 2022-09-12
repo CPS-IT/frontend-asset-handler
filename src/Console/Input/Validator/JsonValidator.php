@@ -21,28 +21,26 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace CPSIT\FrontendAssetHandler\Command\Validators;
+namespace CPSIT\FrontendAssetHandler\Console\Input\Validator;
 
 use Webmozart\Assert;
 
-use function filter_var;
+use function json_decode;
 
 /**
- * UrlValidator.
+ * JsonValidator.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class UrlValidator implements ValidatorInterface
+final class JsonValidator implements ValidatorInterface
 {
-    public static function validate(mixed $value): string
+    public static function validate(mixed $value): mixed
     {
-        Assert\Assert::stringNotEmpty($value);
-
-        // Allow placeholders in URLs. Those will be replaced later by string interpolation.
-        $normalizedUrl = preg_replace('/{[^}]+}/', 'placeholder', $value);
-
-        Assert\Assert::notFalse(filter_var($normalizedUrl, FILTER_VALIDATE_URL), 'The given URL is invalid.');
+        if (null !== $value) {
+            Assert\Assert::string($value);
+            Assert\Assert::object(json_decode($value, flags: JSON_THROW_ON_ERROR));
+        }
 
         return $value;
     }

@@ -21,22 +21,15 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace CPSIT\FrontendAssetHandler\Command\Validators;
-
-use Webmozart\Assert;
+namespace CPSIT\FrontendAssetHandler\Console\Input\Validator;
 
 /**
- * NotEmptyValidator.
+ * ValidatorInterface.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class NotEmptyValidator implements ValidatorInterface
+interface ValidatorInterface
 {
-    public static function validate(mixed $value): mixed
-    {
-        Assert\Assert::notEmpty($value);
-
-        return $value;
-    }
+    public static function validate(mixed $value): mixed;
 }
