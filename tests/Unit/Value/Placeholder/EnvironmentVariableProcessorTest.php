@@ -28,6 +28,8 @@ use CPSIT\FrontendAssetHandler\Value\Placeholder\EnvironmentVariableProcessor;
 use Generator;
 use UnexpectedValueException;
 
+use function putenv;
+
 /**
  * EnvironmentVariableProcessorTest.
  *
@@ -88,11 +90,15 @@ final class EnvironmentVariableProcessorTest extends ContainerAwareTestCase
     public function processReplacesEnvironmentPlaceholderWithEnvironmentVariable(string $placeholder, string $expected): void
     {
         putenv('foo=baz');
+        putenv('baz=boo');
+        putenv('dummy=New York');
 
         self::assertSame($expected, $this->subject->process($placeholder));
 
         // Unset temporary environment variable
         putenv('foo');
+        putenv('baz');
+        putenv('dummy');
     }
 
     /**
@@ -113,6 +119,10 @@ final class EnvironmentVariableProcessorTest extends ContainerAwareTestCase
     public function processReplacesEnvironmentPlaceholderWithEnvironmentVariableDataProvider(): Generator
     {
         yield 'placeholder only' => ['%env(foo)%', 'baz'];
-        yield 'placeholder with surrounding text' => ['Hello, %env(foo)%!', 'Hello, baz!'];
+        yield 'one placeholder with surrounding text' => ['Hello, %env(foo)%!', 'Hello, baz!'];
+        yield 'multiple placeholders with surrounding text' => [
+            'Hello, %env(foo)% %env(baz)%! Welcome to %env(dummy)%.',
+            'Hello, baz boo! Welcome to New York.',
+        ];
     }
 }
