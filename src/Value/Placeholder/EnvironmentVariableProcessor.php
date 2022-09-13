@@ -23,10 +23,11 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Value\Placeholder;
 
-use RuntimeException;
 use UnexpectedValueException;
 
+use function preg_match_all;
 use function sprintf;
+use function str_replace;
 
 /**
  * EnvironmentVariableProcessor.
@@ -45,11 +46,23 @@ final class EnvironmentVariableProcessor implements PlaceholderProcessorInterfac
 
     public function process(string $placeholder): string
     {
-        if (1 !== preg_match(self::REGEX, $placeholder, $matches)) {
+        if (0 === (int) preg_match_all(self::REGEX, $placeholder, $matches)) {
             throw new UnexpectedValueException('The given placeholder cannot be processed by this processor.', 1628147418);
         }
 
-        $envVariable = $matches[1];
+        foreach ($matches[1] as $key => $envVariable) {
+            $placeholder = str_replace(
+                $matches[0][$key],
+                $this->replaceEnvironmentVariable($envVariable),
+                $placeholder,
+            );
+        }
+
+        return $placeholder;
+    }
+
+    private function replaceEnvironmentVariable(string $envVariable): string
+    {
         $replacement = getenv($envVariable);
 
         if (false === $replacement) {
@@ -60,14 +73,6 @@ final class EnvironmentVariableProcessor implements PlaceholderProcessorInterfac
             throw new UnexpectedValueException(sprintf('The environment variable "%s" is not available.', $envVariable), 1628147471);
         }
 
-        $processedValue = preg_replace(self::REGEX, $replacement, $placeholder);
-
-        // @codeCoverageIgnoreStart
-        if (null === $processedValue) {
-            throw new RuntimeException(sprintf('An error occurred while replacing "%s".', $envVariable), 1661842097);
-        }
-        // @codeCoverageIgnoreEnd
-
-        return $processedValue;
+        return $replacement;
     }
 }
