@@ -23,26 +23,28 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Console\Input\Validator;
 
-use Webmozart\Assert;
-
-use function json_decode;
-
 /**
- * JsonValidator.
+ * ChainedValidator.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  *
  * @internal
  */
-final class JsonValidator implements ValidatorInterface
+final class ChainedValidator implements ValidatorInterface
 {
+    /**
+     * @param non-empty-list<ValidatorInterface> $validators
+     */
+    public function __construct(
+        private readonly array $validators,
+    ) {
+    }
+
     public function validate(mixed $value): mixed
     {
-        if (null !== $value) {
-            Assert\Assert::string($value);
-            Assert\Assert::notNull($json = json_decode((string) $value), 'JSON is invalid.');
-            Assert\Assert::object($json);
+        foreach ($this->validators as $validator) {
+            $value = $validator->validate($value);
         }
 
         return $value;

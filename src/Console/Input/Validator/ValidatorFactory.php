@@ -23,28 +23,39 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Console\Input\Validator;
 
-use Webmozart\Assert;
+use CPSIT\FrontendAssetHandler\Exception;
 
-use function json_decode;
+use function array_map;
 
 /**
- * JsonValidator.
+ * ValidatorFactory.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  *
  * @internal
  */
-final class JsonValidator implements ValidatorInterface
+final class ValidatorFactory
 {
-    public function validate(mixed $value): mixed
+    /**
+     * @throws Exception\UnsupportedTypeException
+     */
+    public function get(string $type): ValidatorInterface
     {
-        if (null !== $value) {
-            Assert\Assert::string($value);
-            Assert\Assert::notNull($json = json_decode((string) $value), 'JSON is invalid.');
-            Assert\Assert::object($json);
-        }
+        return match ($type) {
+            'integer' => new IntegerValidator(),
+            'json' => new JsonValidator(),
+            'notEmpty' => new NotEmptyValidator(),
+            'url' => new UrlValidator(),
+            default => throw Exception\UnsupportedTypeException::create($type),
+        };
+    }
 
-        return $value;
+    /**
+     * @param non-empty-list<string> $types
+     */
+    public function getForAll(array $types): ChainedValidator
+    {
+        return new ChainedValidator(array_map($this->get(...), $types));
     }
 }

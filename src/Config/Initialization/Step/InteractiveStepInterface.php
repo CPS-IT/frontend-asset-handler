@@ -21,30 +21,20 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace CPSIT\FrontendAssetHandler\Console\Input\Validator;
+namespace CPSIT\FrontendAssetHandler\Config\Initialization\Step;
 
-use Webmozart\Assert;
-
-use function json_decode;
+use Symfony\Component\Console;
 
 /**
- * JsonValidator.
+ * InteractiveStepInterface.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
- *
- * @internal
  */
-final class JsonValidator implements ValidatorInterface
+interface InteractiveStepInterface extends StepInterface
 {
-    public function validate(mixed $value): mixed
-    {
-        if (null !== $value) {
-            Assert\Assert::string($value);
-            Assert\Assert::notNull($json = json_decode((string) $value), 'JSON is invalid.');
-            Assert\Assert::object($json);
-        }
-
-        return $value;
-    }
+    /**
+     * @return list<Console\Input\InputOption>
+     */
+    public function getInputOptions(): array;
 }

@@ -21,30 +21,22 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace CPSIT\FrontendAssetHandler\Console\Input\Validator;
+namespace CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes;
 
-use Webmozart\Assert;
-
-use function json_decode;
+use CPSIT\FrontendAssetHandler\Config;
 
 /**
- * JsonValidator.
+ * DummyStep.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
- *
- * @internal
  */
-final class JsonValidator implements ValidatorInterface
+final class DummyStep implements Config\Initialization\Step\StepInterface
 {
-    public function validate(mixed $value): mixed
-    {
-        if (null !== $value) {
-            Assert\Assert::string($value);
-            Assert\Assert::notNull($json = json_decode((string) $value), 'JSON is invalid.');
-            Assert\Assert::object($json);
-        }
+    public bool $expectedReturn = true;
 
-        return $value;
+    public function execute(Config\Initialization\InitializationRequest $request): bool
+    {
+        return $this->expectedReturn;
     }
 }

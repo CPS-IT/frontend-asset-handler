@@ -28,8 +28,10 @@ namespace CPSIT\FrontendAssetHandler\Console\Input\Validator;
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
+ *
+ * @internal
  */
 interface ValidatorInterface
 {
-    public static function validate(mixed $value): mixed;
+    public function validate(mixed $value): mixed;
 }

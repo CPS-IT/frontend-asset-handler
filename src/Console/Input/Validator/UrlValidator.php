@@ -32,11 +32,17 @@ use function filter_var;
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
+ *
+ * @internal
  */
 final class UrlValidator implements ValidatorInterface
 {
-    public static function validate(mixed $value): string
+    public function validate(mixed $value): ?string
     {
+        if (null === $value) {
+            return null;
+        }
+
         Assert\Assert::stringNotEmpty($value);
 
         // Allow placeholders in URLs. Those will be replaced later by string interpolation.

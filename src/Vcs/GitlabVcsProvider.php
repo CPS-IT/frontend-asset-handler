@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Vcs;
 use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Helper;
+use CPSIT\FrontendAssetHandler\Traits;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\RequestOptions;
@@ -35,10 +36,8 @@ use Psr\Http\Message;
 use function array_replace_recursive;
 use function http_build_query;
 use function is_array;
-use function is_string;
 use function json_decode;
 use function parse_str;
-use function trim;
 
 /**
  * GitlabVcsProvider.
@@ -48,8 +47,16 @@ use function trim;
  */
 final class GitlabVcsProvider implements DeployableVcsProviderInterface
 {
+    use Traits\DefaultConfigurationAwareTrait;
+
     private const DEFAULT_BASE_URL = 'https://gitlab.com';
     private const BASE_API_PATH = '/api/v4';
+
+    private const DEFAULT_CONFIGURATION = [
+        'base-url' => self::DEFAULT_BASE_URL,
+        'access-token' => null,
+        'project-id' => null,
+    ];
 
     private Message\UriInterface $baseUrl;
     private ?string $accessToken = null;
@@ -67,24 +74,15 @@ final class GitlabVcsProvider implements DeployableVcsProviderInterface
      */
     public function withVcs(Asset\Definition\Vcs $vcs): static
     {
-        $baseUrl = $vcs['base-url'];
-        $accessToken = $vcs['access-token'];
-        $projectId = $vcs['project-id'];
+        // Validate and merge VCS configuration
+        $this->validateAssetDefinition($vcs);
+        $this->applyDefaultConfiguration($vcs);
 
-        if (!is_string($baseUrl) || '' === trim($baseUrl)) {
-            throw Exception\MissingConfigurationException::forKey('base-url');
-        }
-        if (!is_string($accessToken) || '' === trim($accessToken)) {
-            throw Exception\MissingConfigurationException::forKey('access-token');
-        }
-        if (!is_numeric($projectId) || (int) $projectId <= 0) {
-            throw Exception\MissingConfigurationException::forKey('project-id');
-        }
-
+        // Apply VCS configuration
         $clone = clone $this;
-        $clone->baseUrl = $this->createBaseUrl($baseUrl);
-        $clone->accessToken = $accessToken;
-        $clone->projectId = (int) $projectId;
+        $clone->baseUrl = $this->createBaseUrl((string) $vcs['base-url']);
+        $clone->accessToken = (string) $vcs['access-token'];
+        $clone->projectId = (int) $vcs['project-id'];
         $clone->environment = $vcs->getEnvironment();
 
         return $clone;
@@ -243,5 +241,13 @@ final class GitlabVcsProvider implements DeployableVcsProviderInterface
         $apiPath = rtrim($basePath, '/').self::BASE_API_PATH;
 
         return $baseUri->withPath($apiPath);
+    }
+
+    /**
+     * @return array{base-url: string|null, access-token: string|null, project-id: int|null}
+     */
+    protected function getDefaultConfiguration(): array
+    {
+        return self::DEFAULT_CONFIGURATION;
     }
 }

@@ -24,59 +24,40 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Console\Input\Validator;
 
 use CPSIT\FrontendAssetHandler\Console;
+use CPSIT\FrontendAssetHandler\Tests;
 use PHPUnit\Framework\TestCase;
-use Webmozart\Assert;
 
 /**
- * UrlValidatorTest.
+ * ChainedValidatorTest.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class UrlValidatorTest extends TestCase
+final class ChainedValidatorTest extends TestCase
 {
-    private Console\Input\Validator\UrlValidator $subject;
+    private Console\Input\Validator\ChainedValidator $subject;
+    private Tests\Unit\Fixtures\Classes\DummyValidator $firstValidator;
+    private Tests\Unit\Fixtures\Classes\DummyValidator $secondValidator;
 
     protected function setUp(): void
     {
-        $this->subject = new Console\Input\Validator\UrlValidator();
+        $this->subject = new Console\Input\Validator\ChainedValidator([
+            $this->firstValidator = new Tests\Unit\Fixtures\Classes\DummyValidator(),
+            $this->secondValidator = new Tests\Unit\Fixtures\Classes\DummyValidator(),
+        ]);
     }
 
     /**
      * @test
      */
-    public function validateDoesNothingIfValueIsNull(): void
+    public function validateIteratesThroughAllChainedValidators(): void
     {
-        self::assertNull($this->subject->validate(null));
-    }
-
-    /**
-     * @test
-     */
-    public function validateThrowsExceptionIfValueIsNotAString(): void
-    {
-        $this->expectExceptionObject(new Assert\InvalidArgumentException('Expected a string. Got: bool'));
-
-        $this->subject->validate(false);
-    }
-
-    /**
-     * @test
-     */
-    public function validateThrowsExceptionIfFilteredValueIsNotAValidUrl(): void
-    {
-        $this->expectExceptionObject(new Assert\InvalidArgumentException('The given URL is invalid.'));
+        self::assertFalse($this->firstValidator->hasBeenCalled);
+        self::assertFalse($this->secondValidator->hasBeenCalled);
 
         $this->subject->validate('foo');
-    }
 
-    /**
-     * @test
-     */
-    public function validateReturnsValueOnValidUrl(): void
-    {
-        $url = 'https://www.example.com';
-
-        self::assertSame($url, $this->subject->validate($url));
+        self::assertTrue($this->firstValidator->hasBeenCalled);
+        self::assertTrue($this->secondValidator->hasBeenCalled);
     }
 }

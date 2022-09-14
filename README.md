@@ -58,6 +58,7 @@ a dedicated CLI application.
   - Command-line usage
     + [Configure assets](docs/usage/cli-config-assets.md)
     + [Fetch assets](docs/usage/cli-fetch-assets.md)
+    + [Initialize config](docs/usage/cli-init-config.md)
     + [Inspect assets](docs/usage/cli-inspect-assets.md)
   - [API usage](docs/usage/api-usage.md)
 * [Configuration](docs/config/index.md)

@@ -30,10 +30,12 @@ use Webmozart\Assert;
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
+ *
+ * @internal
  */
 final class NotEmptyValidator implements ValidatorInterface
 {
-    public static function validate(mixed $value): mixed
+    public function validate(mixed $value): mixed
     {
         Assert\Assert::notEmpty($value);
 
