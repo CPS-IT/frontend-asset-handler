@@ -49,7 +49,6 @@
 			"title": "Frontend asset source",
 			"description": "Definition of the Frontend asset source of a concrete Frontend asset definition.",
 			"required": [
-				"type",
 				"url"
 			],
 			"properties": {
@@ -82,7 +81,6 @@
 			"title": "Frontend asset target",
 			"description": "Definition of the Frontend asset target of a concrete Frontend asset definition.",
 			"required": [
-				"type",
 				"path"
 			],
 			"properties": {
