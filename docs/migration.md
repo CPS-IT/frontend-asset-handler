@@ -41,6 +41,22 @@
          "target": { /* ... */ }
      }
     ```
+* Custom service configuration can now be configured.
+  - Add a `services.yaml` or `services.php` file to your code base.
+  - Reference the files in the asset configuration file:
+    ```diff
+     {
+         "frontend-assets": [
+             /* ... */
+    -    ]
+    +    ],
+    +    "services": [
+    +        "/path/to/my/services.php",
+    +        "/path/to/my/services.yaml"
+    +    ]
+     }
+    ```
+  - See [Dependency injection](dependency-injection.md) for a detailed overview.
 * Minimum PHP version is now 8.1.
   - Upgrade your code base to PHP 8.1.
 
