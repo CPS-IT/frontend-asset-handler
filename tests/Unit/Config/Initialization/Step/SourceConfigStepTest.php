@@ -62,7 +62,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
 
         self::assertInstanceOf(Console\Input\StreamableInputInterface::class, $input);
 
-        self::setInputs(['', 'https://www.example.com', '', ''], $input);
+        self::setInputs(['', 'https://www.example.com', '', '', ''], $input);
 
         self::assertTrue($this->subject->execute($this->request));
         self::assertSame(
@@ -80,7 +80,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
 
         self::assertInstanceOf(Console\Input\StreamableInputInterface::class, $input);
 
-        self::setInputs(['foo', '', 'https://www.example.com', '', ''], $input);
+        self::setInputs(['foo', '', 'https://www.example.com', '', '', ''], $input);
 
         self::assertTrue($this->subject->execute($this->request));
         self::assertSame(
@@ -102,7 +102,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
 
         self::assertInstanceOf(Console\Input\StreamableInputInterface::class, $input);
 
-        self::setInputs(['', 'https://www.example.com/{environment}/{foo}', 'foo', '', ''], $input);
+        self::setInputs(['', 'https://www.example.com/{environment}/{foo}', 'foo', '', '', ''], $input);
 
         self::assertTrue($this->subject->execute($this->request));
         self::assertSame(
@@ -129,7 +129,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertInstanceOf(Console\Input\StreamableInputInterface::class, $input);
 
         self::setInputs(
-            ['', 'https://www.example.com/', 'https://www.example.com/{revision-file}', 'revision.txt', ''],
+            ['', 'https://www.example.com/', 'https://www.example.com/{revision-file}', 'revision.txt', '', ''],
             $input,
         );
 
@@ -151,6 +151,31 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
     /**
      * @test
      */
+    public function executeAsksForSourceVersion(): void
+    {
+        $input = $this->request->getInput();
+
+        self::assertInstanceOf(Console\Input\StreamableInputInterface::class, $input);
+
+        self::setInputs(
+            ['', 'https://www.example.com/', 'https://www.example.com/REVISION', '1.0.0', ''],
+            $input,
+        );
+
+        self::assertTrue($this->subject->execute($this->request));
+        self::assertSame(
+            '1.0.0',
+            $this->request->getConfig()['frontend-assets'][0]['source']['version'],
+        );
+
+        $output = $this->output->fetch();
+
+        self::assertStringContainsString('Locked version', $output);
+    }
+
+    /**
+     * @test
+     */
     public function executeShowErrorIfGivenSourceConfigExtraIsNotValidJson(): void
     {
         $input = $this->request->getInput();
@@ -158,7 +183,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertInstanceOf(Console\Input\StreamableInputInterface::class, $input);
 
         self::setInputs(
-            ['', 'https://www.example.com/', '', 'foo', ''],
+            ['', 'https://www.example.com/', '', '', 'foo', ''],
             $input,
         );
 
@@ -179,7 +204,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertInstanceOf(Console\Input\StreamableInputInterface::class, $input);
 
         self::setInputs(
-            ['', 'https://www.example.com/{foo}', 'foo', 'https://www.example.com/{baz}', 'baz', '{"hello":"world"}'],
+            ['', 'https://www.example.com/{foo}', 'foo', 'https://www.example.com/{baz}', 'baz', '', '{"hello":"world"}'],
             $input,
         );
 
