@@ -7,7 +7,7 @@ $ vendor/bin/frontend-assets config [-c|--config CONFIG-FILE] [--unset] [--valid
 This command reads, writes or validates [configuration](../config/index.md) for the assets
 from the given configuration file.
 
-## `--config`
+## `-c|--config`
 
 Define the path to the assets configuration file.
 
@@ -16,7 +16,6 @@ Define the path to the assets configuration file.
 > and pass it via this command option.
 
 * Required: **yes**
-* Shorthand: **`-c`**
 * Default: **`assets.json`**
 
 ## `--unset`
@@ -45,7 +44,6 @@ configuration file.
 Treat the value passed with `newValue` argument as JSON.
 
 * Required: **no**
-* Shorthand: **–**
 * Default: **no**
 
 ## `--process-values`
@@ -56,7 +54,6 @@ validating asset configuration.
 > :warning: This option has no effect with the `newValue` argument.
 
 * Required: **no**
-* Shorthand: **–**
 * Default: **no**
 
 ## `path`

@@ -12,7 +12,7 @@ currently deployed. This is especially useful in CI to avoid fetching outdated
 assets in case more recent assets are currently built and/or deployed to the
 asset source location.
 
-## `--config`
+## `-c|--config`
 
 Define the path to the assets configuration file.
 
@@ -21,17 +21,15 @@ Define the path to the assets configuration file.
 > and pass it via this command option.
 
 * Required: **yes**
-* Shorthand: **`-c`**
 * Default: **`assets.json`**
 
-## `--wait-for-deployments`
+## `-w|--wait-for-deployments`
 
 Block further processes until active deployments of the current frontend asset
 are finished. Can be used to block following `frontend-assets fetch` commands
 to assure asset sources are up-to-date before fetching them.
 
 * Required: **no**
-* Shorthand: **`-w`**
 * Default: **no**
 
 ## `branch`

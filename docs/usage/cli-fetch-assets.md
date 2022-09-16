@@ -7,7 +7,7 @@ $ vendor/bin/frontend-assets fetch [-c|--config CONFIG-FILE] [-f|--force] [-s|--
 This command fetches Frontend assets for the given branch using the provided
 [configuration](../config/index.md).
 
-## `--config`
+## `-c|--config`
 
 Define the path to the assets configuration file.
 
@@ -16,26 +16,23 @@ Define the path to the assets configuration file.
 > and pass it via this command option.
 
 * Required: **yes**
-* Shorthand: **`-c`**
 * Default: **`assets.json`**
 
-## `--force`
+## `-f|--force`
 
 Enforce downloading and processing of the requested Frontend assets, even if they are
 already available locally.
 
 * Required: **no**
-* Shorthand: **`-f`**
 * Default: **no**
 
-## `--failsafe`
+## `-s|--failsafe`
 
 Fall back to the latest assets if the resolved asset environment is not available
 on the remote side. This can be especially useful in feature branches where no
 specific Frontend assets are available.
 
 * Required: **no**
-* Shorthand: **`-s`**
 * Default: **no**
 
 ## `branch`
