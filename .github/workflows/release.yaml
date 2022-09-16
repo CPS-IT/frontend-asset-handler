@@ -67,6 +67,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: phar
+          path: .build
       - name: Make PHAR executable
         run: chmod +x .build/frontend-asset-handler.phar
 
