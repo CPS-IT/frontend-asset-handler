@@ -1,3 +1,8 @@
+2022-09-16         [RELEASE] Release of frontend-asset-handler 1.0.1 (Elias Häußler)
+2022-09-16 ab10c18 [BUGFIX] Add `codecov.yml` (Elias Häußler)
+2022-09-16 7c8ffc0 [DOCS] Fix link in contribution guide (Elias Häußler)
+2022-09-16 f171921 [BUGFIX] Restore phar artifact in correct path (Elias Häußler)
+
 2022-09-16         [RELEASE] Release of frontend-asset-handler 1.0.0 (Elias Häußler)
 2022-09-16 b345a99 [DOCS] Add service parsing to migration guide (Elias Häußler)
 2022-09-16 315775e [BUGFIX] Respect replace path when writing configuration (Elias Häußler)
