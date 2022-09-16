@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes;
 
-use CPSIT\FrontendAssetHandler\Traits\DefaultConfigurationAwareTrait;
+use CPSIT\FrontendAssetHandler\Traits;
 
 /**
  * DefaultConfigurationAwareTraitTestClass.
@@ -35,7 +35,7 @@ use CPSIT\FrontendAssetHandler\Traits\DefaultConfigurationAwareTrait;
  */
 final class DefaultConfigurationAwareTraitTestClass
 {
-    use DefaultConfigurationAwareTrait {
+    use Traits\DefaultConfigurationAwareTrait {
         applyDefaultConfiguration as public runApplyDefaultConfiguration;
         validateAssetDefinition as public runValidateAssetDefinition;
     }

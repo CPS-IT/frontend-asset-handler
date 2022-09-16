@@ -31,6 +31,32 @@
     ```
   - See [Configuration](config/index.md) for all available configuration options
     and check out the updated [schema file](../resources/configuration.schema.json).
+* Asset handlers are now configurable.
+  - Implement the [`HandlerInterface`](../src/Handler/HandlerInterface.php) for custom handlers.
+  - Reference the handler type within the asset definition:
+    ```diff
+     {
+    +    "handler": "my-custom-handler",
+         "source": { /* ... */ },
+         "target": { /* ... */ }
+     }
+    ```
+* Custom service configuration can now be configured.
+  - Add a `services.yaml` or `services.php` file to your code base.
+  - Reference the files in the asset configuration file:
+    ```diff
+     {
+         "frontend-assets": [
+             /* ... */
+    -    ]
+    +    ],
+    +    "services": [
+    +        "/path/to/my/services.php",
+    +        "/path/to/my/services.yaml"
+    +    ]
+     }
+    ```
+  - See [Dependency injection](dependency-injection.md) for a detailed overview.
 * Minimum PHP version is now 8.1.
   - Upgrade your code base to PHP 8.1.
 

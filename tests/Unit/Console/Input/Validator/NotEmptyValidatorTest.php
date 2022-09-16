@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Composer package "cpsit/frontend-asset-handler".
  *
- * Copyright (C) 2021 Elias Häußler <e.haeussler@familie-redlich.de>
+ * Copyright (C) 2022 Elias Häußler <e.haeussler@familie-redlich.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,36 +21,42 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes;
+namespace CPSIT\FrontendAssetHandler\Tests\Unit\Console\Input\Validator;
 
-use CPSIT\FrontendAssetHandler\Value\Placeholder\PlaceholderProcessorInterface;
+use CPSIT\FrontendAssetHandler\Console;
+use PHPUnit\Framework\TestCase;
+use Webmozart\Assert;
 
 /**
- * DummyPlaceholderProcessor.
+ * NotEmptyValidatorTest.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
- *
- * @internal
  */
-final class DummyPlaceholderProcessor implements PlaceholderProcessorInterface
+final class NotEmptyValidatorTest extends TestCase
 {
-    public static bool $processed;
+    private Console\Input\Validator\NotEmptyValidator $subject;
 
-    public function __construct()
+    protected function setUp(): void
     {
-        self::$processed = false;
+        $this->subject = new Console\Input\Validator\NotEmptyValidator();
     }
 
-    public function canProcess(string $placeholder): bool
+    /**
+     * @test
+     */
+    public function validateThrowsExceptionIfValueIsEmpty(): void
     {
-        return true;
+        $this->expectExceptionObject(new Assert\InvalidArgumentException('Expected a non-empty value. Got: null'));
+
+        $this->subject->validate(null);
     }
 
-    public function process(string $placeholder): string
+    /**
+     * @test
+     */
+    public function validateReturnsValueOnNonEmptyValue(): void
     {
-        self::$processed = true;
-
-        return $placeholder;
+        self::assertSame('foo', $this->subject->validate('foo'));
     }
 }

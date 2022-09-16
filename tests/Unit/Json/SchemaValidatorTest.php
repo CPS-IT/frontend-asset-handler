@@ -23,8 +23,9 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Json;
 
-use CPSIT\FrontendAssetHandler\Json\SchemaValidator;
-use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
+use CPSIT\FrontendAssetHandler\Config;
+use CPSIT\FrontendAssetHandler\Json;
+use CPSIT\FrontendAssetHandler\Tests;
 
 /**
  * SchemaValidatorTest.
@@ -32,35 +33,33 @@ use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-class SchemaValidatorTest extends ContainerAwareTestCase
+class SchemaValidatorTest extends Tests\Unit\ContainerAwareTestCase
 {
-    private SchemaValidator $subject;
+    private Json\SchemaValidator $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->subject = $this->container->get(SchemaValidator::class);
+        $this->subject = $this->container->get(Json\SchemaValidator::class);
     }
 
     /**
      * @test
      */
-    public function validateReturnsFalseOnInvalidJsonArray(): void
+    public function validateReturnsFalseOnInvalidConfig(): void
     {
-        $jsonArray = [
-            'foo' => 'baz',
-        ];
+        $config = new Config\Config(['foo' => 'baz'], 'foo');
 
-        self::assertFalse($this->subject->validate($jsonArray));
+        self::assertFalse($this->subject->validate($config));
     }
 
     /**
      * @test
      */
-    public function validateReturnsTrueOnValidJsonArray(): void
+    public function validateReturnsTrueOnValidConfig(): void
     {
-        $jsonArray = [
+        $config = new Config\Config([
             'frontend-assets' => [
                 [
                     'source' => [
@@ -73,8 +72,8 @@ class SchemaValidatorTest extends ContainerAwareTestCase
                     ],
                 ],
             ],
-        ];
+        ], 'foo');
 
-        self::assertTrue($this->subject->validate($jsonArray));
+        self::assertTrue($this->subject->validate($config));
     }
 }

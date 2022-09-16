@@ -1,6 +1,7 @@
 {
 	"frontend-assets": [
 		{
+			"handler": "dummy",
 			"source": {
 				"type": "dummy",
 				"url": "https://www.example.com/assets/{environment}.tar.gz",
@@ -21,6 +22,7 @@
 			}
 		},
 		{
+			"handler": "dummy",
 			"source": {
 				"type": "dummy",
 				"url": "https://www.example.com/assets/{environment}.tar.gz",

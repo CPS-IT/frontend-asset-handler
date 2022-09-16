@@ -57,7 +57,7 @@ final class FileArchiveProcessor implements ProcessorInterface, ChattyInterface
     ];
 
     private const DEFAULT_CONFIGURATION = [
-        'base' => 'dist/',
+        'base' => '',
     ];
 
     public function __construct(

@@ -61,20 +61,6 @@ final class GitlabVcsProviderTest extends TestCase
     /**
      * @test
      */
-    public function withVcsThrowsExceptionIfBaseUrlIsMissing(): void
-    {
-        unset($this->vcs['base-url']);
-
-        $this->expectException(Exception\MissingConfigurationException::class);
-        $this->expectExceptionCode(1623867663);
-        $this->expectExceptionMessage('Configuration for key "base-url" is missing or invalid.');
-
-        $this->subject->withVcs($this->vcs);
-    }
-
-    /**
-     * @test
-     */
     public function withVcsThrowsExceptionIfAccessTokenIsMissing(): void
     {
         unset($this->vcs['access-token']);

@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Config;
 
 use ArrayIterator;
 use ArrayObject;
+use JsonSerializable;
 
 /**
  * Config.
@@ -32,9 +33,9 @@ use ArrayObject;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  *
- * @extends  \ArrayObject<string, mixed>
+ * @extends \ArrayObject<string, mixed>
  */
-final class Config extends ArrayObject
+final class Config extends ArrayObject implements JsonSerializable
 {
     /**
      * @param array<string, mixed> $config
@@ -57,5 +58,13 @@ final class Config extends ArrayObject
     public function asArray(): array
     {
         return (array) $this;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->asArray();
     }
 }

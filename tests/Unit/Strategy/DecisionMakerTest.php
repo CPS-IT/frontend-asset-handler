@@ -23,14 +23,9 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Strategy;
 
-use CPSIT\FrontendAssetHandler\Asset\Definition\Source;
-use CPSIT\FrontendAssetHandler\Asset\Definition\Target;
-use CPSIT\FrontendAssetHandler\Strategy\DecisionMaker;
-use CPSIT\FrontendAssetHandler\Strategy\Strategy;
-use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
-use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyRevisionProvider;
-use GuzzleHttp\ClientInterface;
-use Symfony\Component\Filesystem\Filesystem;
+use CPSIT\FrontendAssetHandler\Asset;
+use CPSIT\FrontendAssetHandler\Strategy;
+use CPSIT\FrontendAssetHandler\Tests;
 
 /**
  * DecisionMakerTest.
@@ -38,20 +33,17 @@ use Symfony\Component\Filesystem\Filesystem;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class DecisionMakerTest extends ContainerAwareTestCase
+final class DecisionMakerTest extends Tests\Unit\ContainerAwareTestCase
 {
-    private DummyRevisionProvider $revisionProvider;
-    private DecisionMaker $subject;
+    private Tests\Unit\Fixtures\Classes\DummyRevisionProvider $revisionProvider;
+    private Strategy\DecisionMaker $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->revisionProvider = new DummyRevisionProvider(
-            $this->container->get(ClientInterface::class),
-            $this->container->get(Filesystem::class)
-        );
-        $this->subject = new DecisionMaker($this->revisionProvider);
+        $this->revisionProvider = $this->container->get(Tests\Unit\Fixtures\Classes\DummyRevisionProvider::class);
+        $this->subject = new Strategy\DecisionMaker($this->revisionProvider);
     }
 
     /**
@@ -59,10 +51,10 @@ final class DecisionMakerTest extends ContainerAwareTestCase
      */
     public function decideReturnsFetchNewStrategyIfSourceRevisionCannotBeDetermined(): void
     {
-        $source = new Source([]);
-        $target = new Target([]);
+        $source = new Asset\Definition\Source([]);
+        $target = new Asset\Definition\Target([]);
 
-        self::assertEquals(Strategy::FetchNew, $this->subject->decide($source, $target));
+        self::assertEquals(Strategy\Strategy::FetchNew, $this->subject->decide($source, $target));
         self::assertNull($source->getRevision());
         self::assertNull($target->getRevision());
     }
@@ -74,10 +66,10 @@ final class DecisionMakerTest extends ContainerAwareTestCase
     {
         $this->revisionProvider->expectedRevisions = ['1234567890', null];
 
-        $source = new Source([]);
-        $target = new Target([]);
+        $source = new Asset\Definition\Source([]);
+        $target = new Asset\Definition\Target([]);
 
-        self::assertEquals(Strategy::FetchNew, $this->subject->decide($source, $target));
+        self::assertEquals(Strategy\Strategy::FetchNew, $this->subject->decide($source, $target));
         self::assertSame('1234567890', $source->getRevision()?->get());
         self::assertNull($target->getRevision());
     }
@@ -89,10 +81,10 @@ final class DecisionMakerTest extends ContainerAwareTestCase
     {
         $this->revisionProvider->expectedRevisions = ['1234567890', '1234567890'];
 
-        $source = new Source([]);
-        $target = new Target([]);
+        $source = new Asset\Definition\Source([]);
+        $target = new Asset\Definition\Target([]);
 
-        self::assertEquals(Strategy::UseExisting, $this->subject->decide($source, $target));
+        self::assertEquals(Strategy\Strategy::UseExisting, $this->subject->decide($source, $target));
         self::assertSame('1234567890', $source->getRevision()?->get());
         self::assertSame('1234567890', $target->getRevision()?->get());
     }
@@ -104,10 +96,10 @@ final class DecisionMakerTest extends ContainerAwareTestCase
     {
         $this->revisionProvider->expectedRevisions = ['1234567890', '0987654321'];
 
-        $source = new Source([]);
-        $target = new Target([]);
+        $source = new Asset\Definition\Source([]);
+        $target = new Asset\Definition\Target([]);
 
-        self::assertEquals(Strategy::FetchNew, $this->subject->decide($source, $target));
+        self::assertEquals(Strategy\Strategy::FetchNew, $this->subject->decide($source, $target));
         self::assertSame('1234567890', $source->getRevision()?->get());
         self::assertSame('0987654321', $target->getRevision()?->get());
     }

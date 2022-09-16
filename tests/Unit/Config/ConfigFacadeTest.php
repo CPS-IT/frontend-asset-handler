@@ -60,6 +60,7 @@ final class ConfigFacadeTest extends Tests\Unit\ContainerAwareTestCase
             [
                 'frontend-assets' => [
                     [
+                        'handler' => 'dummy',
                         'source' => [
                             'type' => 'dummy',
                             'url' => 'https://www.example.com/assets/{environment}.tar.gz',
@@ -80,6 +81,7 @@ final class ConfigFacadeTest extends Tests\Unit\ContainerAwareTestCase
                         ],
                     ],
                     [
+                        'handler' => 'dummy',
                         'source' => [
                             'type' => 'dummy',
                             'url' => 'https://www.example.com/assets/{environment}.tar.gz',

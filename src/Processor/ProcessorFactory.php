@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Processor;
 
 use CPSIT\FrontendAssetHandler\ChattyInterface;
 use CPSIT\FrontendAssetHandler\Exception;
+use CPSIT\FrontendAssetHandler\Traits;
 use Symfony\Component\Console;
 use Symfony\Component\DependencyInjection;
 
@@ -36,11 +37,12 @@ use Symfony\Component\DependencyInjection;
  */
 final class ProcessorFactory implements ChattyInterface
 {
-    private ?Console\Output\OutputInterface $output = null;
+    use Traits\OutputAwareTrait;
 
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $processors,
     ) {
+        $this->setOutput(new Console\Output\NullOutput());
     }
 
     /**
@@ -62,7 +64,7 @@ final class ProcessorFactory implements ChattyInterface
         }
 
         // Pass output to chatty processor
-        if ($processor instanceof ChattyInterface && null !== $this->output) {
+        if ($processor instanceof ChattyInterface) {
             $processor->setOutput($this->output);
         }
 
@@ -72,10 +74,5 @@ final class ProcessorFactory implements ChattyInterface
     public function has(string $type): bool
     {
         return $this->processors->has($type);
-    }
-
-    public function setOutput(Console\Output\OutputInterface $output): void
-    {
-        $this->output = $output;
     }
 }

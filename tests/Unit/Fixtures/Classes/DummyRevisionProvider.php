@@ -23,9 +23,7 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes;
 
-use CPSIT\FrontendAssetHandler\Asset\Definition\AssetDefinition;
-use CPSIT\FrontendAssetHandler\Asset\Revision\Revision;
-use CPSIT\FrontendAssetHandler\Asset\Revision\RevisionProvider;
+use CPSIT\FrontendAssetHandler\Asset;
 
 /**
  * DummyRevisionProvider.
@@ -35,19 +33,19 @@ use CPSIT\FrontendAssetHandler\Asset\Revision\RevisionProvider;
  *
  * @internal
  */
-final class DummyRevisionProvider extends RevisionProvider
+final class DummyRevisionProvider extends Asset\Revision\RevisionProvider
 {
     /**
-     * @var array<string|null>
+     * @var list<string|null>
      */
-    public $expectedRevisions = [];
+    public array $expectedRevisions = [];
 
-    public function getRevision(AssetDefinition $definition): ?Revision
+    public function getRevision(Asset\Definition\AssetDefinition $definition): ?Asset\Revision\Revision
     {
         $revision = array_shift($this->expectedRevisions);
 
         if (null !== $revision) {
-            return new Revision($revision);
+            return new Asset\Revision\Revision($revision);
         }
 
         return null;

@@ -55,7 +55,7 @@ class Parser
         $requiredKeys = $instructions->getRequiredKeys();
 
         // Validate config
-        if (!$this->validator->validate($config->asArray())) {
+        if (!$this->validator->validate($config)) {
             throw Exception\InvalidConfigurationException::asReported($this->validator->getLastValidationErrors()->errors());
         }
 

@@ -8,6 +8,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/c4b7516380091c1e11a4/maintainability)](https://codeclimate.com/github/CPS-IT/frontend-asset-handler/maintainability)
 [![Tests](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/tests.yaml/badge.svg)](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/tests.yaml)
 [![CGL](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/cgl.yaml/badge.svg)](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/cgl.yaml)
+[![Release](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/release.yaml/badge.svg)](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/release.yaml)
 [![Latest Stable Version](http://poser.pugx.org/cpsit/frontend-asset-handler/v)](https://packagist.org/packages/cpsit/frontend-asset-handler)
 [![Total Downloads](http://poser.pugx.org/cpsit/frontend-asset-handler/downloads)](https://packagist.org/packages/cpsit/frontend-asset-handler)
 [![License](http://poser.pugx.org/cpsit/frontend-asset-handler/license)](LICENSE.md)
@@ -32,23 +33,23 @@ a dedicated CLI application.
 
 ## :fire: Getting started
 
-1\. [Install](docs/installation.md) the library:
+1. [Install](docs/installation.md) the library:
 
-```bash
-composer require cpsit/frontend-asset-handler
-```
+   ```bash
+   composer require cpsit/frontend-asset-handler
+   ```
 
-2\. [Initialize](docs/usage/cli-init-config.md) a new `assets.json` file:
+2. [Initialize](docs/usage/cli-init-config.md) a new `assets.json` file:
 
-```bash
-vendor/bin/frontend-assets init
-```
+   ```bash
+   vendor/bin/frontend-assets init
+   ```
 
-3\. [Fetch](docs/usage/cli-fetch-assets.md) Frontend assets:
+3. [Fetch](docs/usage/cli-fetch-assets.md) Frontend assets:
 
-```bash
-vendor/bin/frontend-assets fetch
-```
+   ```bash
+   vendor/bin/frontend-assets fetch
+   ```
 
 ## :book: Documentation
 
@@ -57,6 +58,7 @@ vendor/bin/frontend-assets fetch
   - Command-line usage
     + [Configure assets](docs/usage/cli-config-assets.md)
     + [Fetch assets](docs/usage/cli-fetch-assets.md)
+    + [Initialize config](docs/usage/cli-init-config.md)
     + [Inspect assets](docs/usage/cli-inspect-assets.md)
   - [API usage](docs/usage/api-usage.md)
 * [Configuration](docs/config/index.md)
@@ -86,3 +88,5 @@ Please have a look at [`CONTRIBUTING.md`](CONTRIBUTING.md).
 ## :star: License
 
 This project is licensed under [GNU General Public License 3.0 (or later)](LICENSE.md).
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCPS-IT%2Ffrontend-asset-handler.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FCPS-IT%2Ffrontend-asset-handler?ref=badge_large)

@@ -21,15 +21,23 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace CPSIT\FrontendAssetHandler\Command\Validators;
+namespace CPSIT\FrontendAssetHandler\Exception;
+
+use function sprintf;
 
 /**
- * ValidatorInterface.
+ * UnexpectedValueException.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-interface ValidatorInterface
+final class UnexpectedValueException extends \UnexpectedValueException
 {
-    public static function validate(mixed $value): mixed;
+    public static function forInvalidString(string $string): self
+    {
+        return new self(
+            sprintf('The string "%s" is invalid and cannot be processed.', $string),
+            1663166818,
+        );
+    }
 }

@@ -23,10 +23,11 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\DependencyInjection;
 
-use CPSIT\FrontendAssetHandler\DependencyInjection\CompilerPass\PublicServicePass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection;
 
-return static function (ContainerConfigurator $configurator, ContainerBuilder $container): void {
-    $container->addCompilerPass(new PublicServicePass());
+return static function (
+    DependencyInjection\Loader\Configurator\ContainerConfigurator $configurator,
+    DependencyInjection\ContainerBuilder $container,
+): void {
+    $container->addCompilerPass(new CompilerPass\PublicServicePass());
 };

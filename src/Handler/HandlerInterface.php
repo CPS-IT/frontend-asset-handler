@@ -39,4 +39,6 @@ interface HandlerInterface
         Asset\Definition\Target $target,
         Strategy\Strategy $strategy = null,
     ): Asset\Asset;
+
+    public static function getName(): string;
 }

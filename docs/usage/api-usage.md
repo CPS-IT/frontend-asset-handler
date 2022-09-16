@@ -4,12 +4,10 @@ If asset handling is to be performed via PHP, the following steps are generally 
 
 1. Declare the config file
 2. Get the current container instance
-3. Fetch a Provider using the [`ProviderFactory`](../../src/Provider/ProviderFactory.php)
-4. Fetch a Processor using the [`ProcessorFactory`](../../src/Processor/ProcessorFactory.php)
-5. Instantiate a Handler that is suitable for Provider and Processor
-6. Resolve the requested asset environment
-7. Define [asset source](../config/source.md) and [asset target](../config/target.md)
-8. Execute the Handler, optionally with a freely selectable download strategy
+3. Resolve the requested asset environment
+4. Define [asset source](../config/source.md) and [asset target](../config/target.md)
+5. Fetch a Handler using the [`HandlerFactory`](../../src/Handler/HandlerFactory.php)
+6. Execute the Handler, optionally with a freely selectable download strategy
 
 ## Example
 
@@ -23,11 +21,9 @@ use CPSIT\FrontendAssetHandler\Provider;
 // Declare config file
 $configFile = '/path/to/assets.json';
 
-// Get services from container
+// Get the current service container
 $containerFactory = new DependencyInjection\ContainerFactory($configFile);
 $container = $containerFactory->get();
-$providerFactory = $container->get(Provider\ProviderFactory::class);
-$processorFactory = $container->get(Processor\ProcessorFactory::class);
 
 // Resolve environment
 $map = Asset\Environment\Map\MapFactory::createDefault();
@@ -46,9 +42,8 @@ $target = new Asset\Definition\Target([
 ]);
 
 // Instantiate components
-$provider = $providerFactory->get($source->getType());
-$processor = $processorFactory->get($target->getType());
-$handler = new Handler\AssetHandler($provider, $processor, $processorFactory);
+$handlerFactory = $container->get(Handler\HandlerFactory::class);
+$handler = $handlerFactory->get('default');
 
 // Optional: Define download strategy
 // $strategy = new \CPSIT\FrontendAssetHandler\Strategy\Strategy(\CPSIT\FrontendAssetHandler\Strategy\Strategy::FETCH_NEW);

@@ -29,8 +29,6 @@ use CPSIT\FrontendAssetHandler\DependencyInjection;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Handler;
 use CPSIT\FrontendAssetHandler\Helper;
-use CPSIT\FrontendAssetHandler\Processor;
-use CPSIT\FrontendAssetHandler\Provider;
 use CPSIT\FrontendAssetHandler\Strategy;
 use Symfony\Component\Console;
 
@@ -53,9 +51,7 @@ final class FetchAssetsCommand extends BaseAssetsCommand
         DependencyInjection\Cache\ContainerCache $cache,
         Config\ConfigFacade $configFacade,
         Config\Parser\Parser $configParser,
-        private readonly Provider\ProviderFactory $providerFactory,
-        private readonly Processor\ProcessorFactory $processorFactory,
-        private readonly Strategy\DecisionMaker $decisionMaker,
+        private readonly Handler\HandlerFactory $handlerFactory,
         private readonly Asset\Definition\AssetDefinitionFactory $assetDefinitionFactory,
     ) {
         parent::__construct('fetch', $cache, $configFacade, $configParser);
@@ -77,22 +73,24 @@ final class FetchAssetsCommand extends BaseAssetsCommand
             'force',
             'f',
             Console\Input\InputOption::VALUE_NONE,
-            'Force fresh download of Frontend assets even if local assets are alread up to date.'
+            'Force fresh download of Frontend assets even if local assets are already up to date.',
         );
         $this->addOption(
             'failsafe',
             's',
             Console\Input\InputOption::VALUE_NONE,
-            'Fall back to latest assets if download for the given environment fails.'
+            'Fall back to latest assets if download for the given environment fails.',
         );
+    }
+
+    protected function initialize(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): void
+    {
+        $this->io = new Console\Style\SymfonyStyle($input, $output);
+        $this->handlerFactory->setOutput($output);
     }
 
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
     {
-        $this->io = new Console\Style\SymfonyStyle($input, $output);
-        $this->providerFactory->setOutput($output);
-        $this->processorFactory->setOutput($output);
-
         $successful = true;
         $branch = $input->getArgument('branch');
 
@@ -105,7 +103,7 @@ final class FetchAssetsCommand extends BaseAssetsCommand
         }
 
         // Fetch asset definitions
-        $config = $this->loadConfig(['source', 'target', 'environments']);
+        $config = $this->loadConfig(['source', 'target', 'environments', 'handler']);
         $assetDefinitions = $config['frontend-assets'];
         $assetCount = is_countable($assetDefinitions) ? count($assetDefinitions) : 0;
 
@@ -123,6 +121,9 @@ final class FetchAssetsCommand extends BaseAssetsCommand
             if ($assetCount > 1) {
                 $this->io->section(sprintf('Processing of <info>asset definition #%d</info>', $key + 1));
             }
+
+            // Create handler
+            $handler = $this->handlerFactory->get($assetDefinition['handler'] ?? 'default');
 
             // Create source and target
             $source = $this->assetDefinitionFactory->buildSource($assetDefinition, $branch);
@@ -149,7 +150,7 @@ final class FetchAssetsCommand extends BaseAssetsCommand
             );
 
             // Perform asset handling
-            if (!$this->performAssetHandling($source, $target, $strategy, $input->getOption('failsafe'))) {
+            if (!$this->performAssetHandling($handler, $source, $target, $strategy, $input->getOption('failsafe'))) {
                 $successful = false;
             }
         }
@@ -164,15 +165,12 @@ final class FetchAssetsCommand extends BaseAssetsCommand
     }
 
     private function performAssetHandling(
+        Handler\HandlerInterface $handler,
         Asset\Definition\Source $source,
         Asset\Definition\Target $target,
         Strategy\Strategy $strategy = null,
-        bool $failsafe = false
+        bool $failsafe = false,
     ): bool {
-        $provider = $this->providerFactory->get($source->getType());
-        $processor = $this->processorFactory->get($target->getType());
-        $handler = new Handler\AssetHandler($provider, $processor, $this->processorFactory, $this->decisionMaker);
-
         try {
             $asset = $handler->handle($source, $target, $strategy);
         } catch (Exception\DownloadFailedException $exception) {
@@ -186,7 +184,7 @@ final class FetchAssetsCommand extends BaseAssetsCommand
 
             $source['environment'] = Asset\Environment\Environment::Latest->value;
 
-            return $this->performAssetHandling($source, $target);
+            return $this->performAssetHandling($handler, $source, $target);
         }
 
         if ($asset instanceof Asset\ExistingAsset) {

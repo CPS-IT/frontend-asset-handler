@@ -202,7 +202,7 @@ final class InspectAssetsCommand extends BaseAssetsCommand
 
         // Show revisions and asset URLs
         $definitionList[] = ['Source revision' => $sourceRevision ?? $unknown];
-        $definitionList[] = ['Source URL' => $provider->getAssetUrl($source)];
+        $definitionList[] = ['Source url' => $provider->getAssetUrl($source)];
         $definitionList[] = new Console\Helper\TableSeparator();
         $definitionList[] = ['Target revision' => sprintf('%s %s', $targetRevision ?? $unknown, $revisionDiffSymbol)];
         $definitionList[] = ['Target path' => $processor->getAssetPath(new Asset\Asset($source, $target))];
@@ -245,7 +245,7 @@ final class InspectAssetsCommand extends BaseAssetsCommand
 
         foreach ($deployments as $deployment) {
             $decoratedDeployments[] = ['Revision' => $deployment->getRevision()->get()];
-            $decoratedDeployments[] = ['Deployment URL' => (string) $deployment->getUri()];
+            $decoratedDeployments[] = ['Deployment url' => (string) $deployment->getUri()];
             $decoratedDeployments[] = new Console\Helper\TableSeparator();
         }
 

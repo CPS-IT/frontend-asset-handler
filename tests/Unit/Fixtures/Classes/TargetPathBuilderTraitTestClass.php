@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes;
 
-use CPSIT\FrontendAssetHandler\Traits\TargetPathBuilderTrait;
+use CPSIT\FrontendAssetHandler\Traits;
 
 /**
  * TargetPathBuilderTraitTestClass.
@@ -35,7 +35,7 @@ use CPSIT\FrontendAssetHandler\Traits\TargetPathBuilderTrait;
  */
 final class TargetPathBuilderTraitTestClass
 {
-    use TargetPathBuilderTrait {
+    use Traits\TargetPathBuilderTrait {
         buildTargetPath as public runBuildTargetPath;
     }
 }
