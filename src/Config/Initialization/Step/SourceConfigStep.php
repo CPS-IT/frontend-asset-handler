@@ -72,6 +72,12 @@ final class SourceConfigStep extends BaseStep implements InteractiveStepInterfac
                 'URL to locate the revision of asset source files, can contain placeholders in the form {<config key>}',
             ),
             new Console\Input\InputOption(
+                'source-version',
+                null,
+                Console\Input\InputOption::VALUE_REQUIRED,
+                'Locked version of an asset source to be used for the stable environment',
+            ),
+            new Console\Input\InputOption(
                 'source-config-extra',
                 null,
                 Console\Input\InputOption::VALUE_REQUIRED,
@@ -142,6 +148,17 @@ final class SourceConfigStep extends BaseStep implements InteractiveStepInterfac
             $additionalVariables,
         );
 
+        // Source version
+        $sourceVersion = $this->questionHelper->ask(
+            $input,
+            $this->output,
+            $this->createQuestion(
+                'Locked version',
+                $request->getOption('source-version'),
+            ),
+        );
+        $request->setOption('source-version', $sourceVersion);
+
         // Source config extra
         $sourceConfigExtra = $this->questionHelper->ask(
             $input,
@@ -182,6 +199,11 @@ final class SourceConfigStep extends BaseStep implements InteractiveStepInterfac
         // Add revision URL
         if (is_string($request->getOption('source-revision-url'))) {
             $sourceConfig['revision-url'] = $request->getOption('source-revision-url');
+        }
+
+        // Add version
+        if (is_string($request->getOption('source-version'))) {
+            $sourceConfig['version'] = $request->getOption('source-version');
         }
 
         // Merge additional source configuration
