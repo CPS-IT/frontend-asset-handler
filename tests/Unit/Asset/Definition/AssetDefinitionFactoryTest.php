@@ -144,7 +144,10 @@ final class AssetDefinitionFactoryTest extends ContainerAwareTestCase
      */
     public function buildVcsReturnsGeneratedVcsDataProvider(): Generator
     {
-        $buildVcs = fn (string $environment): Vcs => new Vcs(['environment' => $environment]);
+        $buildVcs = fn (string $environment): Vcs => new Vcs([
+            'type' => GitlabVcsProvider::getName(),
+            'environment' => $environment,
+        ]);
 
         yield 'custom map' => [
             [

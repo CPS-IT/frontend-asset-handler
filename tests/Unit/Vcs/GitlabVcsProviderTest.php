@@ -50,6 +50,7 @@ final class GitlabVcsProviderTest extends TestCase
     protected function setUp(): void
     {
         $this->vcs = new Asset\Definition\Vcs([
+            'type' => Vcs\GitlabVcsProvider::getName(),
             'base-url' => 'https://gitlab.example.com',
             'project-id' => 123,
             'access-token' => 'foo',

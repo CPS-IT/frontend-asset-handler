@@ -23,7 +23,8 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset\Definition;
 
-use CPSIT\FrontendAssetHandler\Asset\Definition\Vcs;
+use CPSIT\FrontendAssetHandler\Asset;
+use CPSIT\FrontendAssetHandler\Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,11 +35,21 @@ use PHPUnit\Framework\TestCase;
  */
 final class VcsTest extends TestCase
 {
-    private Vcs $subject;
+    private Asset\Definition\Vcs $subject;
 
     protected function setUp(): void
     {
-        $this->subject = new Vcs([]);
+        $this->subject = new Asset\Definition\Vcs(['type' => 'foo']);
+    }
+
+    /**
+     * @test
+     */
+    public function constructorThrowsExceptionIfTypeIsMissing(): void
+    {
+        $this->expectExceptionObject(Exception\MissingConfigurationException::forKey('vcs/type'));
+
+        new Asset\Definition\Vcs([]);
     }
 
     /**
@@ -46,10 +57,10 @@ final class VcsTest extends TestCase
      */
     public function getTypeReturnsType(): void
     {
-        self::assertSame('gitlab', $this->subject->getType());
-
-        $this->subject['type'] = 'foo';
         self::assertSame('foo', $this->subject->getType());
+
+        $this->subject['type'] = 'baz';
+        self::assertSame('baz', $this->subject->getType());
     }
 
     /**
