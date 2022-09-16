@@ -22,3 +22,12 @@ An access token to identify requests to the GitLab API. This token is supplied a
 `PRIVATE-TOKEN` header with each request.
 
 * Required: **yes**
+* Default: **–**
+
+### `project-id`
+
+ID of the project providing the Frontend assets. It is used to lookup revisions and
+current deployments.
+
+* Require: **yes**
+* Default: **–**
