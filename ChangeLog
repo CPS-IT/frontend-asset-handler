@@ -1,3 +1,13 @@
+2022-09-16         [RELEASE] Release of frontend-asset-handler 1.0.2 (Elias Häußler)
+2022-09-16 f24ab16 [BUGFIX] Follow-up: Require a type when building a Vcs object (Elias Häußler)
+2022-09-16 6615411 [BUGFIX] Respect default source and target types (Elias Häußler)
+2022-09-16 a9a0225 [DOCS] Make CLI input option shorthands more prominent (Elias Häußler)
+2022-09-16 0044216 [DOCS] Reflect changed CI detection in documentation (Elias Häußler)
+2022-09-16 bcfd95e [DOCS] Add missing `project-id` configuration to Gitlab vcs provider (Elias Häußler)
+2022-09-16 89b9ab4 [DOCS] Fix some invalid configurations of default values (Elias Häußler)
+2022-09-16 2503360 [BUGFIX] Include version in source config initialization step (Elias Häußler)
+2022-09-16 d7ecd23 [DOCS] Fix strategy declaration in API usage code example (Elias Häußler)
+
 2022-09-16         [RELEASE] Release of frontend-asset-handler 1.0.1 (Elias Häußler)
 2022-09-16 ab10c18 [BUGFIX] Add `codecov.yml` (Elias Häußler)
 2022-09-16 7c8ffc0 [DOCS] Fix link in contribution guide (Elias Häußler)

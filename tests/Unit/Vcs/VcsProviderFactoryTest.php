@@ -83,7 +83,7 @@ final class VcsProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
     {
         self::assertInstanceOf(
             Tests\Unit\Fixtures\Classes\DummyVcsProvider::class,
-            $this->subject->get('dummy', new Asset\Definition\Vcs([])),
+            $this->subject->get('dummy', new Asset\Definition\Vcs(['type' => 'dummy'])),
         );
     }
 

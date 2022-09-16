@@ -17,7 +17,7 @@
 * Console command `wait-for-assets` was rewritten.
   - Use `vendor/bin/frontend-assets inspect --wait-for-deployments` instead.
 * Configuration schema was hardened.
-  - Add a `type` configuration to all `source`, `target` and `vcs` definitions.
+  - Add a `type` configuration to the `vcs` definition.
   - Explicitly configure `url` and `revision-url` for the `source` definition.
   - Migrate the `source.revision-file` configuration to `source.revision-url`:
     ```diff

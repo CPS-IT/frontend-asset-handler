@@ -17,6 +17,7 @@ use CPSIT\FrontendAssetHandler\DependencyInjection;
 use CPSIT\FrontendAssetHandler\Handler;
 use CPSIT\FrontendAssetHandler\Processor;
 use CPSIT\FrontendAssetHandler\Provider;
+use CPSIT\FrontendAssetHandler\Strategy;
 
 // Declare config file
 $configFile = '/path/to/assets.json';
@@ -46,7 +47,7 @@ $handlerFactory = $container->get(Handler\HandlerFactory::class);
 $handler = $handlerFactory->get('default');
 
 // Optional: Define download strategy
-// $strategy = new \CPSIT\FrontendAssetHandler\Strategy\Strategy(\CPSIT\FrontendAssetHandler\Strategy\Strategy::FETCH_NEW);
+// $strategy = Strategy\Strategy::FetchNew;
 
 // Run asset handler
 /** @var Asset\ProcessedAsset $asset */

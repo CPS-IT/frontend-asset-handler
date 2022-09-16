@@ -139,11 +139,11 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         $this->expectException(Exception\InvalidConfigurationException::class);
         $this->expectExceptionCode(1643113965);
         $this->expectExceptionMessage(
-            'The configuration is invalid: '.PHP_EOL.'  * [/frontend-assets/0/source/type]: The property type is required'
+            'The configuration is invalid: '.PHP_EOL.'  * [/frontend-assets/0/source/url]: The property url is required'
         );
 
         $this->commandTester->execute([
-            'path' => '0/source/type',
+            'path' => '0/source/url',
             '--unset' => true,
         ]);
     }
@@ -163,7 +163,6 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         self::assertSame(8, $exitCode);
         self::assertStringContainsString('Your asset configuration is invalid.', $output);
         self::assertMatchesRegularExpression('/\[0]\[target]\s+The property target is required/', $output);
-        self::assertMatchesRegularExpression('/\[0]\[source]\[type]\s+The property type is required/', $output);
         self::assertMatchesRegularExpression('/\[0]\[source]\[url]\s+The property url is required/', $output);
     }
 

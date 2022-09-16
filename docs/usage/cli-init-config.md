@@ -10,7 +10,7 @@ In the end, a new config file is created.
 
 :warning: This command can only be used in interactive mode.
 
-## `--config`
+## `-c|--config`
 
 Define the path to the assets configuration file.
 
@@ -19,5 +19,4 @@ Define the path to the assets configuration file.
 > and pass it via this command option.
 
 * Required: **yes**
-* Shorthand: **`-c`**
 * Default: **`assets.json`**

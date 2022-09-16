@@ -19,6 +19,7 @@ Path where to extract fetched assets. This can be an absolute path or a path rel
 to the current working directory.
 
 * Required: **yes**
+* Default: **–**
 
 ### `revision-file`
 
