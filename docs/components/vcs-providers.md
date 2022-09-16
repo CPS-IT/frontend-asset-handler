@@ -1,5 +1,28 @@
 # VCS Providers
 
+## [`GithubVcsProvider`](../../src/Vcs/GithubVcsProvider.php)
+
+There exists a VCS provider to support Frontend assets hosted on github.com. For
+this, an access token with `repo` scope is required.
+
+It supports the following additional configuration:
+
+### `access-token`
+
+An access token to identify requests to the GitLab API. This token is supplied as a
+`Authorization` header with each request.
+
+* Required: **yes**
+* Default: **–**
+
+### `repository`
+
+Name of the project in the form `<owner>/<name>` providing the Frontend assets. It
+is used to lookup revisions and current deployments.
+
+* Require: **yes**
+* Default: **–**
+
 ## [`GitlabVcsProvider`](../../src/Vcs/GitlabVcsProvider.php)
 
 Using this VCS Provider, GitLab can be interacted with as the VCS for the requested
