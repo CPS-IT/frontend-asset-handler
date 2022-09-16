@@ -59,7 +59,11 @@ abstract class AbstractJsonFileWriter implements ConfigWriterInterface
             throw Exception\UnprocessableConfigFileException::create($filePath);
         }
 
-        $mergedJson = Helper\ArrayHelper::setArrayValueByPath($jsonArray, $path, $config['frontend-assets']);
+        $mergedJson = Helper\ArrayHelper::setArrayValueByPath(
+            $jsonArray,
+            $path,
+            Helper\ArrayHelper::getArrayValueByPath($config->asArray(), $path),
+        );
 
         return [
             Normalizer\Json::fromEncoded(json_encode($mergedJson, JSON_THROW_ON_ERROR)),
