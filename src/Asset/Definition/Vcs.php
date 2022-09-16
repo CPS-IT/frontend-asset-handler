@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Asset\Definition;
 
-use CPSIT\FrontendAssetHandler\Vcs\GitlabVcsProvider;
+use CPSIT\FrontendAssetHandler\Exception;
 
 /**
  * Vcs.
@@ -33,10 +33,17 @@ use CPSIT\FrontendAssetHandler\Vcs\GitlabVcsProvider;
  */
 class Vcs extends AssetDefinition
 {
-    protected array $defaults = [
-        /* @see GitlabVcsProvider::getName() */
-        'type' => 'gitlab',
-    ];
+    /**
+     * @throws Exception\MissingConfigurationException
+     */
+    public function __construct(array $config)
+    {
+        parent::__construct($config);
+
+        if (!isset($config['type'])) {
+            throw Exception\MissingConfigurationException::forKey('vcs/type');
+        }
+    }
 
     public function getType(): string
     {

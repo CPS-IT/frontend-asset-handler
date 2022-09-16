@@ -115,8 +115,7 @@
 				"type": {
 					"type": "string",
 					"title": "Asset VCS type",
-					"description": "Type of a concrete Frontend asset VCS provider (an appropriate Provider must exist).",
-					"default": "gitlab"
+					"description": "Type of a concrete Frontend asset VCS provider (an appropriate Provider must exist)."
 				}
 			},
 			"additionalProperties": true
