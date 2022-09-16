@@ -88,6 +88,16 @@ final class StringHelperTest extends TestCase
 
     /**
      * @test
+     */
+    public function extractPlaceholdersReturnsExtractedAndResolvedPlaceholdersFromGivenString(): void
+    {
+        $string = 'Hello, my name is {name}! I\'m living in {city}.';
+
+        self::assertSame(['name', 'city'], Helper\StringHelper::extractPlaceholders($string));
+    }
+
+    /**
+     * @test
      *
      * @dataProvider urlEncodeReturnsUrlEncodedValueDataProvider
      */

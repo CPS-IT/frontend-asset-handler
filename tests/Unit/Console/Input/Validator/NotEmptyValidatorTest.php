@@ -35,6 +35,13 @@ use Webmozart\Assert;
  */
 final class NotEmptyValidatorTest extends TestCase
 {
+    private Console\Input\Validator\NotEmptyValidator $subject;
+
+    protected function setUp(): void
+    {
+        $this->subject = new Console\Input\Validator\NotEmptyValidator();
+    }
+
     /**
      * @test
      */
@@ -42,7 +49,7 @@ final class NotEmptyValidatorTest extends TestCase
     {
         $this->expectExceptionObject(new Assert\InvalidArgumentException('Expected a non-empty value. Got: null'));
 
-        Console\Input\Validator\NotEmptyValidator::validate(null);
+        $this->subject->validate(null);
     }
 
     /**
@@ -50,6 +57,6 @@ final class NotEmptyValidatorTest extends TestCase
      */
     public function validateReturnsValueOnNonEmptyValue(): void
     {
-        self::assertSame('foo', Console\Input\Validator\NotEmptyValidator::validate('foo'));
+        self::assertSame('foo', $this->subject->validate('foo'));
     }
 }

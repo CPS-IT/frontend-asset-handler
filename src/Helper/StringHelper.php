@@ -39,6 +39,8 @@ use function rawurlencode;
  */
 final class StringHelper
 {
+    private const PLACEHOLDER_REGEX = '/{([\\w-]+)}/';
+
     /**
      * @see https://gist.github.com/liunian/9338301#gistcomment-3114711
      */
@@ -71,11 +73,25 @@ final class StringHelper
 
         $result = strtr($string, $normalizedPairs);
 
-        if (1 === preg_match('/{([\w-]+)}/', $result, $matches)) {
-            throw Exception\MissingConfigurationException::forKey($matches[1]);
+        if ($matches = self::extractPlaceholders($result)) {
+            throw Exception\MissingConfigurationException::forKey(reset($matches));
         }
 
         return $result;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public static function extractPlaceholders(string $string): array
+    {
+        if (false === preg_match_all(self::PLACEHOLDER_REGEX, $string, $matches)) {
+            // @codeCoverageIgnoreStart
+            throw Exception\UnexpectedValueException::forInvalidString($string);
+            // @codeCoverageIgnoreEnd
+        }
+
+        return $matches[1];
     }
 
     public static function urlEncode(mixed $value): mixed

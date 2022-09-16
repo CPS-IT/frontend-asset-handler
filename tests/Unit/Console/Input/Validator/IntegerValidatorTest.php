@@ -28,54 +28,24 @@ use PHPUnit\Framework\TestCase;
 use Webmozart\Assert;
 
 /**
- * JsonValidatorTest.
+ * IntegerValidatorTest.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class JsonValidatorTest extends TestCase
+final class IntegerValidatorTest extends TestCase
 {
-    private Console\Input\Validator\JsonValidator $subject;
+    private Console\Input\Validator\IntegerValidator $subject;
 
     protected function setUp(): void
     {
-        $this->subject = new Console\Input\Validator\JsonValidator();
+        $this->subject = new Console\Input\Validator\IntegerValidator();
     }
 
     /**
      * @test
      */
-    public function validateThrowsExceptionIfValueIsNotAString(): void
-    {
-        $this->expectExceptionObject(new Assert\InvalidArgumentException('Expected a string. Got: bool'));
-
-        $this->subject->validate(false);
-    }
-
-    /**
-     * @test
-     */
-    public function validateThrowsExceptionIfValueIsValidJson(): void
-    {
-        $this->expectExceptionObject(new Assert\InvalidArgumentException('JSON is invalid.'));
-
-        $this->subject->validate('foo');
-    }
-
-    /**
-     * @test
-     */
-    public function validateThrowsExceptionIfJsonDecodedValueIsNotAnObject(): void
-    {
-        $this->expectExceptionObject(new Assert\InvalidArgumentException('Expected an object. Got: integer'));
-
-        $this->subject->validate('1');
-    }
-
-    /**
-     * @test
-     */
-    public function validateReturnsValueOnNull(): void
+    public function validateDoesNothingIfValueIsNull(): void
     {
         self::assertNull($this->subject->validate(null));
     }
@@ -83,10 +53,26 @@ final class JsonValidatorTest extends TestCase
     /**
      * @test
      */
-    public function validateReturnsValueOnValidJson(): void
+    public function validateReturnsValueIfItIsAnInteger(): void
     {
-        $json = '{"foo":"baz"}';
+        self::assertSame(123, $this->subject->validate(123));
+    }
 
-        self::assertSame($json, $this->subject->validate($json));
+    /**
+     * @test
+     */
+    public function validateThrowsExceptionIfValueIsNotNumeric(): void
+    {
+        $this->expectExceptionObject(new Assert\InvalidArgumentException('Expected a numeric. Got: bool'));
+
+        $this->subject->validate(false);
+    }
+
+    /**
+     * @test
+     */
+    public function validateReturnsConvertedIntegerValueIfItIsANumericString(): void
+    {
+        self::assertSame(123, $this->subject->validate('123'));
     }
 }

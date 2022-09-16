@@ -21,30 +21,23 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace CPSIT\FrontendAssetHandler\Console\Input\Validator;
+namespace CPSIT\FrontendAssetHandler\Exception;
 
-use Webmozart\Assert;
-
-use function json_decode;
+use function sprintf;
 
 /**
- * JsonValidator.
+ * UnexpectedValueException.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
- *
- * @internal
  */
-final class JsonValidator implements ValidatorInterface
+final class UnexpectedValueException extends \UnexpectedValueException
 {
-    public function validate(mixed $value): mixed
+    public static function forInvalidString(string $string): self
     {
-        if (null !== $value) {
-            Assert\Assert::string($value);
-            Assert\Assert::notNull($json = json_decode((string) $value), 'JSON is invalid.');
-            Assert\Assert::object($json);
-        }
-
-        return $value;
+        return new self(
+            sprintf('The string "%s" is invalid and cannot be processed.', $string),
+            1663166818,
+        );
     }
 }

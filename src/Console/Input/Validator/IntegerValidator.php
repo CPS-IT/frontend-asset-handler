@@ -25,26 +25,30 @@ namespace CPSIT\FrontendAssetHandler\Console\Input\Validator;
 
 use Webmozart\Assert;
 
-use function json_decode;
+use function is_int;
 
 /**
- * JsonValidator.
+ * IntegerValidator.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  *
  * @internal
  */
-final class JsonValidator implements ValidatorInterface
+final class IntegerValidator implements ValidatorInterface
 {
-    public function validate(mixed $value): mixed
+    public function validate(mixed $value): ?int
     {
-        if (null !== $value) {
-            Assert\Assert::string($value);
-            Assert\Assert::notNull($json = json_decode((string) $value), 'JSON is invalid.');
-            Assert\Assert::object($json);
+        if (null === $value) {
+            return null;
         }
 
-        return $value;
+        if (is_int($value)) {
+            return $value;
+        }
+
+        Assert\Assert::numeric($value);
+
+        return (int) $value;
     }
 }

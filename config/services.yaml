@@ -12,6 +12,7 @@ services:
       - '../src/Asset/Environment/EnvironmentResolver.php'
       - '../src/Asset/Revision/Revision.php'
       - '../src/Asset/*Asset.php'
+      - '../src/Config/Initialization/InitializationRequest.php'
       - '../src/Config/Parser/ParserInstructions.php'
       - '../src/Config/Config.php'
       - '../src/Console/*'
@@ -32,12 +33,30 @@ services:
     arguments:
       $transformers: '%asset_environment.transformers%'
 
-  CPSIT\FrontendAssetHandler\Command\InitConfigCommand:
+  CPSIT\FrontendAssetHandler\Config\Initialization\Step\HandlerConfigStep:
     arguments:
       $handlers: !tagged_locator { tag: 'asset_handling.handler', default_index_method: 'getName' }
-      $processors: !tagged_locator { tag: 'asset_handling.processor', default_index_method: 'getName' }
+
+  CPSIT\FrontendAssetHandler\Config\Initialization\Step\SourceConfigStep:
+    arguments:
       $providers: !tagged_locator { tag: 'asset_handling.provider', default_index_method: 'getName' }
+
+  CPSIT\FrontendAssetHandler\Config\Initialization\Step\TargetConfigStep:
+    arguments:
+      $processors: !tagged_locator { tag: 'asset_handling.processor', default_index_method: 'getName' }
+
+  CPSIT\FrontendAssetHandler\Config\Initialization\Step\VcsConfigStep:
+    arguments:
       $vcsProviders: !tagged_locator { tag: 'asset_handling.vcs_provider', default_index_method: 'getName' }
+
+  CPSIT\FrontendAssetHandler\Command\InitConfigCommand:
+    arguments:
+      $initSteps:
+        - '@CPSIT\FrontendAssetHandler\Config\Initialization\Step\ConfigFileStep'
+        - '@CPSIT\FrontendAssetHandler\Config\Initialization\Step\SourceConfigStep'
+        - '@CPSIT\FrontendAssetHandler\Config\Initialization\Step\TargetConfigStep'
+        - '@CPSIT\FrontendAssetHandler\Config\Initialization\Step\HandlerConfigStep'
+        - '@CPSIT\FrontendAssetHandler\Config\Initialization\Step\VcsConfigStep'
 
   CPSIT\FrontendAssetHandler\Config\ConfigFacade:
     public: true
