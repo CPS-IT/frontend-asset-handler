@@ -28,6 +28,17 @@ body:
       placeholder: 'e.g. 1.0.0'
     validations:
       required: true
+  - type: dropdown
+    id: application
+    attributes:
+      label: Application
+      description: On which platform did the error occur?
+      options:
+        - Composer
+        - Phar
+        - PHIVE
+    validations:
+      required: true
   - type: input
     id: operating-system
     attributes:
