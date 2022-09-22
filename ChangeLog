@@ -1,3 +1,7 @@
+2022-09-22         [RELEASE] Release of frontend-asset-handler 1.0.3 (Elias Häußler)
+2022-09-22 4c3c381 [BUGFIX] Harden match for environment mapping branches (Elias Häußler)
+2022-09-21 5f7c7ba [TASK] Add application to bug report issue form (Elias Häußler)
+
 2022-09-16         [RELEASE] Release of frontend-asset-handler 1.0.2 (Elias Häußler)
 2022-09-16 f24ab16 [BUGFIX] Follow-up: Require a type when building a Vcs object (Elias Häußler)
 2022-09-16 6615411 [BUGFIX] Respect default source and target types (Elias Häußler)
