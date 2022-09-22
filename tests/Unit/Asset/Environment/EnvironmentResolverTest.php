@@ -64,6 +64,7 @@ final class EnvironmentResolverTest extends TestCase
         self::assertSame('preview', $this->subject->resolve('preview'));
         self::assertSame('integration', $this->subject->resolve('integration'));
         self::assertSame('1.0.0', $this->subject->resolve('1.0.0'));
+        self::assertSame(Environment::Stable->value, $this->subject->resolve('test/foo.foo.foo'));
     }
 
     /**
