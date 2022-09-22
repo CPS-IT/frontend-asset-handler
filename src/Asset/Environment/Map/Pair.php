@@ -73,6 +73,6 @@ final class Pair
 
     private function matches(string $input): bool
     {
-        return fnmatch($this->inputPattern, $input);
+        return fnmatch($this->inputPattern, $input, FNM_PATHNAME);
     }
 }
