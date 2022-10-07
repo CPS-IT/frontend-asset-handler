@@ -188,14 +188,14 @@ final class FetchAssetsCommand extends BaseAssetsCommand
         }
 
         if ($asset instanceof Asset\ExistingAsset) {
-            $this->io->error(
+            $this->io->warning(
                 sprintf(
                     'Assets%s are already downloaded. Use -f to re-download them.',
                     null !== $asset->getRevision() ? ' of revision '.$asset->getRevision()->getShort() : ''
                 )
             );
 
-            return false;
+            return true;
         }
 
         if (!($asset instanceof Asset\ProcessedAsset)) {

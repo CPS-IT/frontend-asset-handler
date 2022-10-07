@@ -158,7 +158,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         );
         $output = $this->commandTester->getDisplay();
 
-        self::assertSame(1, $exitCode);
+        self::assertSame(0, $exitCode);
         self::assertStringContainsString(
             'Assets of revision 1234567 are already downloaded. Use -f to re-download them.',
             $output,
