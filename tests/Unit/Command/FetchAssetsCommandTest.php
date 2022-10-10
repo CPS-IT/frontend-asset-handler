@@ -138,7 +138,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
     /**
      * @test
      */
-    public function executeFailsIfAssetsAreAlreadyDownloaded(): void
+    public function executeSucceedsWithWarningsIfAssetsAreAlreadyDownloaded(): void
     {
         $this->handler->returnQueue[] = $this->processedAsset;
         $this->handler->returnQueue[] = new Asset\ExistingAsset(
@@ -163,6 +163,41 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
             'Assets of revision 1234567 are already downloaded. Use -f to re-download them.',
             $output,
         );
+        self::assertStringContainsString('Command finished with warnings.', $output);
+    }
+
+    /**
+     * @test
+     */
+    public function executeFailsWithAdditionalWarningIfAssetsAreAlreadyDownloaded(): void
+    {
+        $this->handler->returnQueue[] = Exception\DownloadFailedException::create('foo', 'baz');
+        $this->handler->returnQueue[] = new Asset\ExistingAsset(
+            new Asset\Definition\Source([]),
+            new Asset\Definition\Target([]),
+            'foo',
+            new Asset\Revision\Revision('1234567890'),
+        );
+
+        $exitCodeFails = $this->commandTester->execute(
+            [
+                'branch' => 'main',
+            ],
+            [
+                'capture_stderr_separately' => true,
+            ],
+        );
+
+        self::assertSame(1, $exitCodeFails);
+
+        $output = $this->commandTester->getDisplay();
+
+        self::assertStringContainsString('An error occurred while downloading "foo" to "baz".', $output);
+        self::assertStringContainsString(
+            'Assets of revision 1234567 are already downloaded. Use -f to re-download them.',
+            $output,
+        );
+        self::assertStringContainsString('Command finished with errors and warnings.', $output);
     }
 
     /**

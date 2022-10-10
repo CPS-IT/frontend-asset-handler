@@ -45,6 +45,8 @@ final class FetchAssetsCommand extends BaseAssetsCommand
     private const SUCCESSFUL = 0;
     private const ERRONEOUS = 1;
 
+    private bool $hasWarnings = false;
+
     private Console\Style\SymfonyStyle $io;
 
     public function __construct(
@@ -156,9 +158,13 @@ final class FetchAssetsCommand extends BaseAssetsCommand
         }
 
         if (!$successful && $assetCount > 1) {
-            $this->io->warning('Command finished with errors.');
+            $this->io->warning(sprintf('Command finished with errors%s.', $this->hasWarnings ? ' and warnings' : ''));
 
             return self::ERRONEOUS;
+        }
+
+        if ($this->hasWarnings) {
+            $this->io->warning('Command finished with warnings.');
         }
 
         return self::SUCCESSFUL;
@@ -188,6 +194,7 @@ final class FetchAssetsCommand extends BaseAssetsCommand
         }
 
         if ($asset instanceof Asset\ExistingAsset) {
+            $this->hasWarnings = true;
             $this->io->warning(
                 sprintf(
                     'Assets%s are already downloaded. Use -f to re-download them.',
