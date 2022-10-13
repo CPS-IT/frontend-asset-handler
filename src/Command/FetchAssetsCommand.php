@@ -204,7 +204,7 @@ final class FetchAssetsCommand extends BaseAssetsCommand
             return false;
         }
 
-        $this->io->success(sprintf('Assets successfully downloaded to %s', $asset->getProcessedTargetPath()));
+        $this->io->success(sprintf('Assets successfully downloaded to %s.', $asset->getProcessedTargetPath()));
 
         return true;
     }

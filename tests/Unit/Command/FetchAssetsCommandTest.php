@@ -105,7 +105,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         $output = $this->commandTester->getDisplay();
 
         self::assertSame(1, $exitCode);
-        self::assertStringContainsString('An error occurred while downloading "foo" to "baz".', $output);
+        self::assertStringContainsString('Assets successfully downloaded to foo.', $output);
         self::assertStringContainsString('An error occurred while downloading "foo" to "baz".', $output);
         self::assertStringContainsString('Command finished with errors.', $output);
     }
@@ -132,7 +132,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
 
         self::assertSame(0, $exitCode);
         self::assertStringContainsString('Error while fetching assets, falling back to latest assets.', $output);
-        self::assertStringContainsString('Assets successfully downloaded to foo', $output);
+        self::assertStringContainsString('Assets successfully downloaded to foo.', $output);
     }
 
     /**
@@ -213,7 +213,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         self::assertStringContainsString('Asset environment: stable', $output);
         self::assertStringContainsString('Processing of asset definition #1', $output);
         self::assertStringContainsString('Processing of asset definition #2', $output);
-        self::assertStringContainsString('Assets successfully downloaded to foo', $output);
+        self::assertStringContainsString('Assets successfully downloaded to foo.', $output);
     }
 
     /**
@@ -239,7 +239,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         self::assertStringContainsString('Asset environment: stable', $output);
         self::assertStringContainsString('Processing of asset definition #1', $output);
         self::assertStringContainsString('Processing of asset definition #2', $output);
-        self::assertStringContainsString('Assets successfully downloaded to foo', $output);
+        self::assertStringContainsString('Assets successfully downloaded to foo.', $output);
     }
 
     protected static function getCoveredCommand(): string

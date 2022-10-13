@@ -187,7 +187,7 @@ final class MapFactoryTest extends ContainerAwareTestCase
     }
 
     /**
-     * @return \Generator<string, array{string|null, Map}>
+     * @return Generator<string, array{string|null, Map}>
      */
     public function createDefaultReturnsDefaultMapDataProvider(): Generator
     {
@@ -199,7 +199,7 @@ final class MapFactoryTest extends ContainerAwareTestCase
             new Pair('feature/*', new SlugTransformer('fe-{slug}')),
             new Pair('preview', new PassthroughTransformer()),
             new Pair('integration', new PassthroughTransformer()),
-            new Pair('*.*.*', new PassthroughTransformer()),
+            new Pair('/^v?\\d+\\.\\d+\\.\\d+$/', new PassthroughTransformer()),
         ]);
 
         yield 'no version' => [null, $defaultMap(new StaticTransformer(Environment::Stable->value))];

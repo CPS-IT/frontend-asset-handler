@@ -46,6 +46,8 @@ use function is_string;
  */
 final class MapFactory
 {
+    private const REGEX_PATTERN_VERSION = '/^v?\\d+\\.\\d+\\.\\d+$/';
+
     /**
      * @param array<string, class-string<TransformerInterface>> $transformers
      */
@@ -68,7 +70,7 @@ final class MapFactory
             new Pair('feature/*', new SlugTransformer('fe-{slug}')),
             new Pair('preview', $passthroughTransformer),
             new Pair('integration', $passthroughTransformer),
-            new Pair('*.*.*', $passthroughTransformer),
+            new Pair(self::REGEX_PATTERN_VERSION, $passthroughTransformer),
         ]);
     }
 
