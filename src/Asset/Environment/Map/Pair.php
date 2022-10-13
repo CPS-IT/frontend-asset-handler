@@ -73,6 +73,10 @@ final class Pair
 
     private function matches(string $input): bool
     {
-        return fnmatch($this->inputPattern, $input, FNM_PATHNAME);
+        if (str_starts_with($this->inputPattern, '/') && str_ends_with($this->inputPattern, '/')) {
+            return 1 === preg_match($this->inputPattern, $input);
+        }
+
+        return fnmatch($this->inputPattern, $input);
     }
 }
