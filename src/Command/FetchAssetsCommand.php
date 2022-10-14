@@ -163,7 +163,7 @@ final class FetchAssetsCommand extends BaseAssetsCommand
             return self::ERRONEOUS;
         }
 
-        if ($this->hasWarnings) {
+        if ($this->hasWarnings && $assetCount > 1) {
             $this->io->warning('Command finished with warnings.');
         }
 
