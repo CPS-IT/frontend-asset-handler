@@ -191,15 +191,18 @@ final class MapFactoryTest extends ContainerAwareTestCase
      */
     public function createDefaultReturnsDefaultMapDataProvider(): Generator
     {
+        $latestTransformer = new StaticTransformer(Environment::Latest->value);
+        $passthroughTransformer = new PassthroughTransformer();
         $defaultMap = fn (TransformerInterface $stableTransformer): Map => new Map([
             new Pair('main', $stableTransformer),
             new Pair('master', $stableTransformer),
-            new Pair('develop', new StaticTransformer(Environment::Latest->value)),
-            new Pair('release/*', new StaticTransformer(Environment::Latest->value)),
+            new Pair('develop', $latestTransformer),
+            new Pair('release/*', $latestTransformer),
             new Pair('feature/*', new SlugTransformer('fe-{slug}')),
-            new Pair('preview', new PassthroughTransformer()),
-            new Pair('integration', new PassthroughTransformer()),
-            new Pair('/^v?\\d+\\.\\d+\\.\\d+$/', new PassthroughTransformer()),
+            new Pair('preview', $passthroughTransformer),
+            new Pair('integration', $passthroughTransformer),
+            new Pair('renovate/*', $latestTransformer),
+            new Pair('/^v?\\d+\\.\\d+\\.\\d+$/', $passthroughTransformer),
         ]);
 
         yield 'no version' => [null, $defaultMap(new StaticTransformer(Environment::Stable->value))];
