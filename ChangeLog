@@ -1,3 +1,8 @@
+2022-10-14         [RELEASE] Release of frontend-asset-handler 1.2.1 (Elias Häußler)
+2022-10-14 226ef23 [BUGFIX] Add mapping for Renovate branches to default map (Elias Häußler)
+2022-10-14 1057d0c [TASK]: Bump paambaati/codeclimate-action from 3.0.0 to 3.1.0 (dependabot[bot])
+2022-10-14 82c5683 [TASK]: Bump phpstan/phpstan from 1.8.8 to 1.8.9 (dependabot[bot])
+
 2022-10-14         [RELEASE] Release of frontend-asset-handler 1.2.0 (Elias Häußler)
 2022-10-14 0f87a09 [BUGFIX] Print warning only for more than one asset definition (Elias Häußler)
 2022-10-10 cf1306b [FEATURE] print warning in command's summary for existing asset revisions (Martin Adler)
