@@ -1,3 +1,8 @@
+2022-10-14         [RELEASE] Release of frontend-asset-handler 1.2.0 (Elias Häußler)
+2022-10-14 0f87a09 [BUGFIX] Print warning only for more than one asset definition (Elias Häußler)
+2022-10-10 cf1306b [FEATURE] print warning in command's summary for existing asset revisions (Martin Adler)
+2022-10-07 4b2ac63 [FEATURE] lower error level to warning for already downloaded revisions (Martin Adler)
+
 2022-10-13         [RELEASE] Release of frontend-asset-handler 1.1.0 (Elias Häußler)
 2022-10-13 2d97290 [BUGFIX] fix redundant fetch assets test assertion (Martin Adler)
 2022-10-13 de61622 [BUGFIX] Harden branch pattern for versions (Elias Häußler)
