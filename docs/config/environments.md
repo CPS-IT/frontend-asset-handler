@@ -71,6 +71,7 @@ resolves to the following mapping table:
 | `feature/*`                        | `fe-{slug}`                      | –        |
 | `preview`                          | `preview`                        | –        |
 | `integration`                      | `integration`                    | –        |
+| `renovate/*`                       | `latest`                         | –        |
 | `/^v?\d+\.\d+\.\d+$/`<sup>1)</sup> | `{branch}`<sup>1)</sup>          | –        |
 
 _<sup>1)</sup> If a specific version number is given, then exactly this version number is
