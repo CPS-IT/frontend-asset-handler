@@ -27,6 +27,7 @@ use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Command;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Processor;
+use CPSIT\FrontendAssetHandler\Strategy;
 use CPSIT\FrontendAssetHandler\Tests;
 
 use function dirname;
@@ -133,6 +134,30 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         self::assertSame(0, $exitCode);
         self::assertStringContainsString('Error while fetching assets, falling back to latest assets.', $output);
         self::assertStringContainsString('Assets successfully downloaded to foo.', $output);
+    }
+
+    /**
+     * @test
+     */
+    public function executeFallsBackToLatestAssetsAndPassesOnSelectedStrategy(): void
+    {
+        $this->handler->returnQueue[] = $this->processedAsset;
+        $this->handler->returnQueue[] = Exception\DownloadFailedException::create('foo', 'baz');
+        $this->handler->returnQueue[] = $this->processedAsset;
+
+        $exitCode = $this->commandTester->execute(
+            [
+                'branch' => 'main',
+                '--failsafe' => true,
+                '--force' => true,
+            ],
+            [
+                'capture_stderr_separately' => true,
+            ],
+        );
+
+        self::assertSame(0, $exitCode);
+        self::assertSame(Strategy\Strategy::FetchExisting, $this->handler->lastStrategy);
     }
 
     /**

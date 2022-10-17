@@ -48,6 +48,7 @@ final class DummyHandler implements Handler\HandlerInterface, ChattyInterface
      * @var list<Throwable|Asset\Asset>
      */
     public array $returnQueue = [];
+    public ?Strategy\Strategy $lastStrategy = null;
 
     public static function getName(): string
     {
@@ -59,6 +60,8 @@ final class DummyHandler implements Handler\HandlerInterface, ChattyInterface
         Asset\Definition\Target $target,
         Strategy\Strategy $strategy = null,
     ): Asset\Asset {
+        $this->lastStrategy = $strategy;
+
         $nextReturn = array_shift($this->returnQueue);
 
         if ($nextReturn instanceof Throwable) {
