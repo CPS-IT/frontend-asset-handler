@@ -190,7 +190,7 @@ final class FetchAssetsCommand extends BaseAssetsCommand
 
             $source['environment'] = Asset\Environment\Environment::Latest->value;
 
-            return $this->performAssetHandling($handler, $source, $target);
+            return $this->performAssetHandling($handler, $source, $target, $strategy);
         }
 
         if ($asset instanceof Asset\ExistingAsset) {
