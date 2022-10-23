@@ -1,6 +1,7 @@
 *                       text=auto
 /.ddev                  export-ignore
 /.github                export-ignore
+/config/services_test.* export-ignore
 /tests                  export-ignore
 /.editorconfig          export-ignore
 /.gitattributes         export-ignore
