@@ -59,6 +59,9 @@ services:
     arguments:
       $vcsProviders: !tagged_locator { tag: 'asset_handling.vcs_provider', default_index_method: 'getName' }
 
+  CPSIT\FrontendAssetHandler\Config\Parser\Parser:
+    public: true
+
   CPSIT\FrontendAssetHandler\Command\InitConfigCommand:
     arguments:
       $initSteps:
