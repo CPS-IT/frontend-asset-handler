@@ -36,6 +36,8 @@ use function rawurlencode;
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
+ *
+ * @api
  */
 final class StringHelper
 {

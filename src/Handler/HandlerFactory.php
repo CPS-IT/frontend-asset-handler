@@ -34,6 +34,8 @@ use Symfony\Component\DependencyInjection;
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
+ *
+ * @api
  */
 final class HandlerFactory implements ChattyInterface
 {
