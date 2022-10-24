@@ -31,6 +31,8 @@ use CPSIT\FrontendAssetHandler\Provider;
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
+ *
+ * @api
  */
 class Source extends AssetDefinition
 {

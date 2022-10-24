@@ -30,6 +30,8 @@ use CPSIT\FrontendAssetHandler\Exception;
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
+ *
+ * @api
  */
 class Vcs extends AssetDefinition
 {
