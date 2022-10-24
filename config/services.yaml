@@ -29,9 +29,19 @@ services:
     CPSIT\FrontendAssetHandler\Asset\Environment\Transformer\TransformerInterface:
       autowire: false
 
+  CPSIT\FrontendAssetHandler\Asset\Definition\AssetDefinitionFactory:
+    public: true
+
   CPSIT\FrontendAssetHandler\Asset\Environment\Map\MapFactory:
+    public: true
     arguments:
       $transformers: '%asset_environment.transformers%'
+
+  CPSIT\FrontendAssetHandler\Config\ConfigFacade:
+    public: true
+    arguments:
+      $loaders: !tagged_iterator config.loader
+      $writers: !tagged_iterator config.writer
 
   CPSIT\FrontendAssetHandler\Config\Initialization\Step\HandlerConfigStep:
     arguments:
@@ -57,12 +67,6 @@ services:
         - '@CPSIT\FrontendAssetHandler\Config\Initialization\Step\TargetConfigStep'
         - '@CPSIT\FrontendAssetHandler\Config\Initialization\Step\HandlerConfigStep'
         - '@CPSIT\FrontendAssetHandler\Config\Initialization\Step\VcsConfigStep'
-
-  CPSIT\FrontendAssetHandler\Config\ConfigFacade:
-    public: true
-    arguments:
-      $loaders: !tagged_iterator config.loader
-      $writers: !tagged_iterator config.writer
 
   CPSIT\FrontendAssetHandler\Handler\HandlerFactory:
     public: true
