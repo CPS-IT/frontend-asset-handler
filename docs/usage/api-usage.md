@@ -62,6 +62,7 @@ and parse this file as follows:
 ```php
 use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Config;
+use CPSIT\FrontendAssetHandler\Handler;
 
 // Load config
 $configFacade = $container->get(Config\ConfigFacade::class);
@@ -72,8 +73,24 @@ $instructions = new Config\Parser\ParserInstructions($config);
 $parser = $container->get(Config\Parser\Parser::class);
 $parsedConfig = $parser->parse($instructions);
 
-// Build asset definitions
+// Instantiate components
 $assetDefinitionFactory = $container->get(Asset\Definition\AssetDefinitionFactory::class);
-$source = $assetDefinitionFactory->buildSource($parsedConfig->asArray(), 'main');
-$target = $assetDefinitionFactory->buildTarget($parsedConfig->asArray());
+$handlerFactory = $container->get(Handler\HandlerFactory::class)
+
+// Optional: Define download strategy
+// $strategy = Strategy\Strategy::FetchNew;
+
+// Run asset handler
+foreach ($parsedConfig['frontend-assets'] as $assetDefinition) {
+    $handler = $handlerFactory->get($assetDefinition['handler'] ?? 'default');
+
+    /** @var Asset\ProcessedAsset $asset */
+    $asset = $handler->handle(
+        $assetDefinitionFactory->buildSource($assetDefinition, 'main'),
+        $assetDefinitionFactory->buildTarget($assetDefinition),
+        /* $strategy */
+    );
+
+    echo 'Assets downloaded and extracted to ' . $asset->getProcessedTargetPath();
+}
 ```
