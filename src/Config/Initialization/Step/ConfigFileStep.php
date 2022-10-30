@@ -106,7 +106,7 @@ final class ConfigFileStep extends BaseStep implements InteractiveStepInterface
             $this->output,
             new Console\Question\Question('<info>Path to the new config file</info>: '),
         );
-        $request->setConfigFile(Helper\FilesystemHelper::resolveRelativePath($configFile, true));
+        $request->setConfigFile(Helper\FilesystemHelper::resolveRelativePath($configFile));
         $request->setConfig(new Config\Config([], $request->getConfigFile()));
         $request->setOption('definition-id', 0);
 

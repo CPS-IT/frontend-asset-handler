@@ -15,8 +15,9 @@ be a valid identifier that is specified in the map provided by
 
 ### `path`
 
-Path where to extract fetched assets. This can be an absolute path or a path relative
-to the current working directory.
+Path where to extract fetched assets. This can be either an absolute path or a path
+relative to the path of your project's `composer.json` or the current working
+directory (when executing the library as PHAR file).
 
 * Required: **yes**
 * Default: **–**
