@@ -46,6 +46,6 @@ trait TargetPathBuilderTrait
         }
 
         // Prefix target path with current working directory
-        return FilesystemHelper::resolveRelativePath($targetPath, true);
+        return FilesystemHelper::resolveRelativePath($targetPath);
     }
 }

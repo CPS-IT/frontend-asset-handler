@@ -27,6 +27,7 @@ use Composer\InstalledVersions;
 use CPSIT\FrontendAssetHandler\Exception;
 use Ergebnis\Json\Normalizer;
 use OutOfBoundsException;
+use Phar;
 use Symfony\Component\Filesystem;
 
 use function getcwd;
@@ -60,7 +61,7 @@ final class FilesystemHelper
         return Filesystem\Path::canonicalize($projectDirectory);
     }
 
-    public static function resolveRelativePath(string $relativePath, bool $relativeToWorkingDirectory = false): string
+    public static function resolveRelativePath(string $relativePath): string
     {
         $filesystem = new Filesystem\Filesystem();
 
@@ -68,7 +69,11 @@ final class FilesystemHelper
             return $relativePath;
         }
 
-        $basePath = $relativeToWorkingDirectory ? getcwd() : self::getProjectDirectory();
+        if (Phar::running()) {
+            $basePath = getcwd();
+        } else {
+            $basePath = InstalledVersions::getRootPackage()['install_path'];
+        }
 
         // @codeCoverageIgnoreStart
         if (false === $basePath) {

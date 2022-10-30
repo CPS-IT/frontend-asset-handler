@@ -51,7 +51,7 @@ final class ContainerFactory
         bool $debug = null,
         private readonly bool $includeTestSources = false,
     ) {
-        $this->configFile = $configFile ? Helper\FilesystemHelper::resolveRelativePath($configFile, true) : null;
+        $this->configFile = $configFile ? Helper\FilesystemHelper::resolveRelativePath($configFile) : null;
         $this->cache = new Cache\ContainerCache($this->configFile, $this->includeTestSources, $debug);
         $this->configLoader = new Config\Loader\ExternalJsonFileLoader();
         $this->servicesParser = new Config\Parser\ServicesParser();
