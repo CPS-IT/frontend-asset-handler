@@ -1,3 +1,12 @@
+2022-10-30         [RELEASE] Release of frontend-asset-handler 1.2.4 (Elias Häußler)
+2022-10-30 20a3fe5 [BUGFIX] Streamline base path handling for relative paths (Elias Häußler)
+2022-10-28 3aaa05e [TASK]: Bump phpunit/phpunit from 9.5.25 to 9.5.26 (dependabot[bot])
+2022-10-27 cfdf52e [TASK]: Bump guzzlehttp/psr7 from 2.4.2 to 2.4.3 (dependabot[bot])
+2022-10-27 fbc6c94 [TASK]: Bump phpstan/phpstan-phpunit from 1.1.3 to 1.2.1 (dependabot[bot])
+2022-10-26 b643802 [TASK]: Bump guzzlehttp/psr7 from 2.4.1 to 2.4.2 (dependabot[bot])
+2022-10-25 227f45c [TASK]: Bump phpstan/phpstan-phpunit from 1.1.1 to 1.1.3 (dependabot[bot])
+2022-10-25 7cac7ca [TASK]: Bump phpstan/phpstan from 1.8.10 to 1.8.11 (dependabot[bot])
+
 2022-10-24         [RELEASE] Release of frontend-asset-handler 1.2.3 (Elias Häußler)
 2022-10-24 53f0024 [DOCS] Fix and align code example of API usage (Elias Häußler)
 2022-10-24 074145e [BUGFIX] Make config parser a public service (Elias Häußler)
