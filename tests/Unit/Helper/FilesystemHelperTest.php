@@ -26,12 +26,10 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Helper;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Helper;
 use Ergebnis\Json\Normalizer;
-use Generator;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 use function dirname;
-use function getcwd;
 
 /**
  * FilesystemHelperTest.
@@ -53,15 +51,23 @@ final class FilesystemHelperTest extends TestCase
 
     /**
      * @test
-     *
-     * @dataProvider resolveRelativePathMakesRelativePathAbsoluteDataProvider
      */
-    public function resolveRelativePathMakesRelativePathAbsolute(
-        string $path,
-        bool $relativeToWorkingDirectory,
-        string $expected,
-    ): void {
-        self::assertSame($expected, Helper\FilesystemHelper::resolveRelativePath($path, $relativeToWorkingDirectory));
+    public function resolveRelativePathReturnsGivenPathIfItIsAnAbsolutePath(): void
+    {
+        $path = '/foo/baz';
+
+        self::assertSame($path, Helper\FilesystemHelper::resolveRelativePath($path));
+    }
+
+    /**
+     * @test
+     */
+    public function resolveRelativePathMakesRelativePathAbsolute(): void
+    {
+        $path = 'foo';
+        $expected = dirname(__DIR__, 3).'/foo';
+
+        self::assertSame($expected, Helper\FilesystemHelper::resolveRelativePath($path));
     }
 
     /**
@@ -102,15 +108,5 @@ final class FilesystemHelperTest extends TestCase
         self::assertInstanceOf(Normalizer\Json::class, $actual);
         self::assertEquals($expected, $actual->decoded());
         self::assertJsonStringEqualsJsonString('{"foo":"baz"}', $actual->encoded());
-    }
-
-    /**
-     * @return Generator<string, array{string, bool, string}>
-     */
-    public function resolveRelativePathMakesRelativePathAbsoluteDataProvider(): Generator
-    {
-        yield 'absolute path' => ['/foo/baz', false, '/foo/baz'];
-        yield 'relative path' => ['foo', false, dirname(__DIR__, 3).'/foo'];
-        yield 'relative path to working directory' => ['foo', true, getcwd().'/foo'];
     }
 }

@@ -48,7 +48,7 @@ final class ConfigFacade
 
     public function load(string $file): Config
     {
-        $filePath = Helper\FilesystemHelper::resolveRelativePath($file, true);
+        $filePath = Helper\FilesystemHelper::resolveRelativePath($file);
 
         foreach ($this->loaders as $loader) {
             if ($loader::canLoad($filePath)) {
