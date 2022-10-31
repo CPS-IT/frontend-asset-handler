@@ -1,3 +1,8 @@
+2022-10-31         [RELEASE] Release of frontend-asset-handler 1.2.5 (Elias Häußler)
+2022-10-31 21683bf [TASK] Switch to `ncipollo/release-action` for new releases (Elias Häußler)
+2022-10-31 b1d6d9b [TASK]: Bump phpstan/phpstan-phpunit from 1.2.1 to 1.2.2 (dependabot[bot])
+2022-10-31 64fa93d [TASK]: Bump symfony/console from 6.1.6 to 6.1.7 (dependabot[bot])
+
 2022-10-30         [RELEASE] Release of frontend-asset-handler 1.2.4 (Elias Häußler)
 2022-10-30 20a3fe5 [BUGFIX] Streamline base path handling for relative paths (Elias Häußler)
 2022-10-28 3aaa05e [TASK]: Bump phpunit/phpunit from 9.5.25 to 9.5.26 (dependabot[bot])
