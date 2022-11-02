@@ -1,3 +1,7 @@
+2022-11-02         [RELEASE] Release of frontend-asset-handler 1.2.6 (Elias Häußler)
+2022-11-02 b573e13 [DOCS] Use less badges in README.md (Elias Häußler)
+2022-11-01 2ed4e53 [TASK] Enable Dependabot auto-merge for minor and patch updates (Elias Häußler)
+
 2022-10-31         [RELEASE] Release of frontend-asset-handler 1.2.5 (Elias Häußler)
 2022-10-31 21683bf [TASK] Switch to `ncipollo/release-action` for new releases (Elias Häußler)
 2022-10-31 b1d6d9b [TASK]: Bump phpstan/phpstan-phpunit from 1.2.1 to 1.2.2 (dependabot[bot])
