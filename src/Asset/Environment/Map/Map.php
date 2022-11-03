@@ -26,6 +26,9 @@ namespace CPSIT\FrontendAssetHandler\Asset\Environment\Map;
 use IteratorAggregate;
 use Traversable;
 
+use function array_values;
+use function ksort;
+
 /**
  * Map.
  *
@@ -62,7 +65,9 @@ final class Map implements IteratorAggregate
 
         $mergedMap = array_replace($this->pairs, $otherPairs);
 
-        return new self($mergedMap);
+        ksort($mergedMap);
+
+        return new self(array_values($mergedMap));
     }
 
     /**
