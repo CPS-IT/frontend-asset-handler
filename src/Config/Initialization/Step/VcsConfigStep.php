@@ -93,32 +93,15 @@ final class VcsConfigStep extends BaseStep implements InteractiveStepInterface
         );
         $request->setOption('vcs-type', $vcsType);
 
-        // Additional variables for GitlabVcsProvider only
-        if (Vcs\GitlabVcsProvider::getName() === $vcsType) {
-            $this->askForAdditionalVariable(
-                $request,
-                'Base URL',
-                'base-url',
-                $additionalVariables,
-                'https://gitlab.com',
-                ['notEmpty', 'url'],
-            );
+        // Additional variables for specific providers
+        switch ($vcsType) {
+            case Vcs\GitlabVcsProvider::getName():
+                $this->requestAdditionalVariablesForGitlabVcsProvider($request, $additionalVariables);
+                break;
 
-            $this->askForAdditionalVariable(
-                $request,
-                'Access token',
-                'access-token',
-                $additionalVariables,
-                validator: 'notEmpty',
-            );
-
-            $this->askForAdditionalVariable(
-                $request,
-                'Project ID',
-                'project-id',
-                $additionalVariables,
-                validator: 'integer',
-            );
+            case Vcs\GithubVcsProvider::getName():
+                $this->requestAdditionalVariablesForGithubVcsProvider($request, $additionalVariables);
+                break;
         }
 
         // VCS config extra
@@ -145,6 +128,63 @@ final class VcsConfigStep extends BaseStep implements InteractiveStepInterface
         $this->buildVcs($request);
 
         return true;
+    }
+
+    /**
+     * @param array<string, mixed> $additionalVariables
+     */
+    private function requestAdditionalVariablesForGitlabVcsProvider(
+        Config\Initialization\InitializationRequest $request,
+        array &$additionalVariables,
+    ): void {
+        $this->askForAdditionalVariable(
+            $request,
+            'Base URL',
+            'base-url',
+            $additionalVariables,
+            'https://gitlab.com',
+            ['notEmpty', 'url'],
+        );
+
+        $this->askForAdditionalVariable(
+            $request,
+            'Access token',
+            'access-token',
+            $additionalVariables,
+            validator: 'notEmpty',
+        );
+
+        $this->askForAdditionalVariable(
+            $request,
+            'Project ID',
+            'project-id',
+            $additionalVariables,
+            validator: 'integer',
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $additionalVariables
+     */
+    private function requestAdditionalVariablesForGithubVcsProvider(
+        Config\Initialization\InitializationRequest $request,
+        array &$additionalVariables,
+    ): void {
+        $this->askForAdditionalVariable(
+            $request,
+            'Access token',
+            'access-token',
+            $additionalVariables,
+            validator: 'notEmpty',
+        );
+
+        $this->askForAdditionalVariable(
+            $request,
+            'Repository (<owner>/<name>)',
+            'repository',
+            $additionalVariables,
+            validator: 'notEmpty',
+        );
     }
 
     private function buildVcs(Config\Initialization\InitializationRequest $request): void
