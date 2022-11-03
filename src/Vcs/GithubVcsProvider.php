@@ -140,7 +140,9 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
 
         // Find latest successful deployment
         foreach ($nodes as $node) {
-            if (self::SUCCESSFUL_DEPLOYMENT_STATUS === $node['latestStatus']['state']) {
+            $state = $node['latestStatus']['state'] ?? null;
+
+            if (self::SUCCESSFUL_DEPLOYMENT_STATUS === $state) {
                 return new Asset\Revision\Revision($node['commitOid']);
             }
         }
@@ -196,7 +198,9 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
         );
 
         foreach ($nodes as $node) {
-            if (in_array($node['latestStatus']['state'], self::ACTIVE_DEPLOYMENT_STATUSES, true)) {
+            $state = $node['latestStatus']['state'] ?? null;
+
+            if (in_array($state, self::ACTIVE_DEPLOYMENT_STATUSES, true)) {
                 $deployments[] = new Dto\Deployment(
                     new Psr7\Uri($node['latestStatus']['logUrl']),
                     new Asset\Revision\Revision($node['commitOid']),
