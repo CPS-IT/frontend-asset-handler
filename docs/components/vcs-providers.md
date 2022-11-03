@@ -1,9 +1,12 @@
 # VCS Providers
 
+The Frontend Assets Handler is able to interact with the asset sources on VCS through
+specific providers. Each VCS provider requires configuration. Consult the appropriate
+provider classes to find out what configuration is expected.
+
 ## [`GithubVcsProvider`](../../src/Vcs/GithubVcsProvider.php)
 
-There exists a VCS provider to support Frontend assets hosted on github.com. For
-this, an access token with `repo` scope is required.
+Interacting with assets on GitHub requires an access token with `repo` scope.
 
 It supports the following additional configuration:
 
