@@ -59,14 +59,15 @@ final class GitlabVcsProvider implements DeployableVcsProviderInterface
     ];
 
     private Message\UriInterface $baseUrl;
-    private ?string $accessToken = null;
-    private ?int $projectId = null;
-    private ?string $environment = null;
 
     public function __construct(
         private readonly ClientInterface $client,
+        string $baseUrl = null,
+        private ?string $accessToken = null,
+        private ?int $projectId = null,
+        private ?string $environment = null,
     ) {
-        $this->createBaseUrl(self::DEFAULT_BASE_URL);
+        $this->baseUrl = $this->createBaseUrl($baseUrl ?? self::DEFAULT_BASE_URL);
     }
 
     /**

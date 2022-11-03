@@ -1,0 +1,24 @@
+<?php
+
+namespace GraphQL\QueryBuilder;
+
+class QueryBuilder
+{
+    /**
+     * @param string|self $selectedField
+     * @return self
+     */
+    public function selectField($selectedField): self { }
+
+    /**
+     * @param mixed $argumentValue
+     * @return self
+     */
+    public function setArgument(string $argumentName, $argumentValue): self { }
+
+    /**
+     * @param mixed $defaultValue
+     * @return self
+     */
+    public function setVariable(string $name, string $type, bool $isRequired = false, $defaultValue = null): self { }
+}

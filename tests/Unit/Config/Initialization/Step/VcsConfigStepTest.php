@@ -187,6 +187,50 @@ final class VcsConfigStepTest extends Tests\Unit\ContainerAwareTestCase
     /**
      * @test
      */
+    public function executeAsksForAccessTokenForVcsTypeGithub(): void
+    {
+        $input = $this->request->getInput();
+
+        self::assertInstanceOf(Console\Input\StreamableInputInterface::class, $input);
+
+        self::setInputs(['yes', Vcs\GithubVcsProvider::getName(), 'foo', 'foo/baz', ''], $input);
+
+        self::assertTrue($this->subject->execute($this->request));
+        self::assertSame(
+            'foo',
+            $this->request->getConfig()['frontend-assets'][0]['vcs']['access-token'],
+        );
+
+        $output = $this->output->fetch();
+
+        self::assertStringContainsString('Access token', $output);
+    }
+
+    /**
+     * @test
+     */
+    public function executeAsksForRepositoryForVcsTypeGithub(): void
+    {
+        $input = $this->request->getInput();
+
+        self::assertInstanceOf(Console\Input\StreamableInputInterface::class, $input);
+
+        self::setInputs(['yes', Vcs\GithubVcsProvider::getName(), 'foo', 'foo/baz', ''], $input);
+
+        self::assertTrue($this->subject->execute($this->request));
+        self::assertSame(
+            'foo/baz',
+            $this->request->getConfig()['frontend-assets'][0]['vcs']['repository'],
+        );
+
+        $output = $this->output->fetch();
+
+        self::assertStringContainsString('Repository (<owner>/<name>)', $output);
+    }
+
+    /**
+     * @test
+     */
     public function executeShowErrorIfGivenVcsConfigExtraIsNotValidJson(): void
     {
         $input = $this->request->getInput();

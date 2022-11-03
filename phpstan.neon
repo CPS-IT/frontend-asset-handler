@@ -12,5 +12,7 @@ parameters:
 	symfony:
 		consoleApplicationLoader: tests/Build/console-application.php
 		containerXmlPath: var/cache/container_test.xml
+	stubFiles:
+		- tests/Build/Stubs/GraphQL/QueryBuilder.stub
 	scanFiles:
 		- var/cache/container_test.php

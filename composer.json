@@ -20,6 +20,7 @@
 		"ergebnis/json-normalizer": ">= 1.0 < 3.0",
 		"ergebnis/json-printer": "^3.0",
 		"ergebnis/json-schema-validator": "^2.0",
+		"gmostafa/php-graphql-client": "^1.13",
 		"guzzlehttp/guzzle": "^7.0",
 		"guzzlehttp/psr7": ">= 1.8 < 3.0",
 		"justinrainbow/json-schema": "^5.2",
