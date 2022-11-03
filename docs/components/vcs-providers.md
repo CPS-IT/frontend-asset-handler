@@ -32,6 +32,9 @@ Using this VCS Provider, GitLab can be interacted with as the VCS for the reques
 Frontend assets. This is necessary, for example, to query an active deployment of the
 requested assets.
 
+Interacting with assets on GitLab requires either a [project access token][1] of the
+appropriate project or an access token with at least `read_api` scope.
+
 It supports the following additional configuration:
 
 ### `base-url`
@@ -57,3 +60,5 @@ current deployments.
 
 * Require: **yes**
 * Default: **–**
+
+[1]: https://docs.gitlab.com/ee/user/project/settings/project_access_tokens.html
