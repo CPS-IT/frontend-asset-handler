@@ -35,6 +35,7 @@ use JsonException;
 use Symfony\Component\Console;
 
 use function count;
+use function explode;
 
 /**
  * ConfigAssetsCommand.
@@ -302,7 +303,7 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
 
     private function decoratePath(string $path): string
     {
-        $pathSegments = array_map(fn (string $segment): string => sprintf('[%s]', $segment), str_getcsv($path, '/'));
+        $pathSegments = array_map(fn (string $segment): string => sprintf('[%s]', $segment), explode('/', $path));
 
         return implode('', $pathSegments);
     }

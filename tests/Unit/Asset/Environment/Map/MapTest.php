@@ -68,6 +68,7 @@ final class MapTest extends TestCase
             1 => $pairs[1],
         ];
 
+        /* @phpstan-ignore-next-line */
         $subject = new Map($pairs);
 
         self::assertSame($expected, $subject->getPairs());

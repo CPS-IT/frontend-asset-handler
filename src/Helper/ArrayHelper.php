@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Helper;
 use CPSIT\FrontendAssetHandler\Exception;
 
 use function array_key_exists;
+use function explode;
 use function is_array;
 
 /**
@@ -71,7 +72,7 @@ final class ArrayHelper
 
         // Assure required structure in array
         $currentPathSegment = [];
-        foreach (str_getcsv($path, '/') as $segment) {
+        foreach (explode('/', $path) as $segment) {
             $currentPathSegment[] = $segment;
             if (is_array($value) && array_key_exists($segment, $value)) {
                 $value = $value[$segment];
