@@ -15,11 +15,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ["8.1", "8.2"]
+        php-version: ["8.1", "8.2", "8.3"]
         dependencies: ["locked", "highest", "lowest"]
-        include:
-          - php-version: "8.2"
-            composer-options: "--ignore-platform-req=php+"
     steps:
       - uses: actions/checkout@v3
         with:
@@ -38,7 +35,6 @@ jobs:
         uses: ramsey/composer-install@v2
         with:
           dependency-versions: ${{ matrix.dependencies }}
-          composer-options: ${{ matrix.composer-options }}
 
       # Run tests
       - name: Run tests
@@ -85,6 +81,7 @@ jobs:
       - name: codecov report
         uses: codecov/codecov-action@v3
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           directory: .build/coverage
           fail_ci_if_error: true
           verbose: true
