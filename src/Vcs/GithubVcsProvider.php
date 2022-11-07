@@ -68,10 +68,7 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
     public function __construct(
         private readonly ClientInterface $client,
         private ?string $accessToken = null,
-        // @todo Remove annotations once https://github.com/rectorphp/rector/issues/7568 is resolved
-        /** @noRector \Rector\Php81\Rector\Property\ReadOnlyPropertyRector */
         private ?string $owner = null,
-        /** @noRector \Rector\Php81\Rector\Property\ReadOnlyPropertyRector */
         private ?string $name = null,
         private ?string $environment = null,
     ) {
