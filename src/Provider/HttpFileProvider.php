@@ -33,7 +33,6 @@ use GuzzleHttp\Exception as GuzzleException;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message;
 use Symfony\Component\Console;
-use Symfony\Component\Filesystem;
 
 /**
  * HttpFileProvider.
@@ -46,12 +45,10 @@ final class HttpFileProvider implements ProviderInterface, ChattyInterface
     use Traits\OutputAwareTrait;
 
     private ?Console\Helper\ProgressBar $progressBar = null;
-    private ?string $temporaryFile = null;
     private int $expectedBytes = -1;
 
     public function __construct(
         private readonly ClientInterface $client,
-        private readonly Filesystem\Filesystem $filesystem,
         private readonly Asset\Revision\RevisionProvider $revisionProvider,
     ) {
     }
@@ -73,7 +70,7 @@ final class HttpFileProvider implements ProviderInterface, ChattyInterface
 
         // Process download
         $url = $this->getAssetUrl($source);
-        $temporaryFile = $this->createTemporaryFile(pathinfo($url, PATHINFO_BASENAME));
+        $temporaryFile = Helper\FilesystemHelper::createTemporaryFile(pathinfo($url, PATHINFO_EXTENSION));
         $this->processDownload($url, $temporaryFile);
 
         // Verify downloaded file
@@ -146,15 +143,6 @@ final class HttpFileProvider implements ProviderInterface, ChattyInterface
         return file_exists($targetFile) && filesize($targetFile) === $this->expectedBytes;
     }
 
-    private function createTemporaryFile(string $basename): string
-    {
-        $file = $this->filesystem->tempnam(sys_get_temp_dir(), 'tmp_asset_');
-        $this->temporaryFile = $file.'_'.$basename;
-        $this->filesystem->rename($file, $this->temporaryFile);
-
-        return $this->temporaryFile;
-    }
-
     public function advanceProgress(int $total, int $downloaded): void
     {
         if (0 === $total) {
@@ -192,15 +180,5 @@ final class HttpFileProvider implements ProviderInterface, ChattyInterface
         Console\Helper\ProgressBar::setFormatDefinition('http_download', ' %percent:3s%% [%bar%] %current_bytes%/%max_bytes%');
         Console\Helper\ProgressBar::setPlaceholderFormatterDefinition('current_bytes', fn (Console\Helper\ProgressBar $bar) => Helper\StringHelper::formatBytes($bar->getProgress()));
         Console\Helper\ProgressBar::setPlaceholderFormatterDefinition('max_bytes', fn (Console\Helper\ProgressBar $bar) => Helper\StringHelper::formatBytes($bar->getMaxSteps()));
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function __destruct()
-    {
-        if (null !== $this->temporaryFile && $this->filesystem->exists($this->temporaryFile)) {
-            $this->filesystem->remove($this->temporaryFile);
-        }
     }
 }
