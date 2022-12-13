@@ -38,7 +38,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\RequestInterface;
-use ReflectionClass;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -70,11 +69,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
             'revision' => new Revision('1234567890'),
         ]);
         $this->output = new BufferedConsoleOutput();
-        $this->subject = new HttpFileProvider(
-            $client,
-            $filesystem,
-            new RevisionProvider($client, $filesystem)
-        );
+        $this->subject = new HttpFileProvider($client, new RevisionProvider($client, $filesystem));
         $this->subject->setOutput($this->output);
     }
 
@@ -222,16 +217,10 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
         $this->expectedBytes = filesize($targetFile) ?: 0;
         $filesystem->remove($targetFile);
 
-        /** @var TemporaryAsset $actual */
         $actual = $this->subject->fetchAsset($this->source);
 
-        // Get temporary file from subject
-        $reflection = new ReflectionClass($this->subject);
-        $reflectionProperty = $reflection->getProperty('temporaryFile');
-        $reflectionProperty->setAccessible(true);
-
         self::assertInstanceOf(TemporaryAsset::class, $actual);
-        self::assertSame($actual->getTempFile(), $reflectionProperty->getValue($this->subject));
+        self::assertFileExists($actual->getTempFile());
     }
 
     /**
