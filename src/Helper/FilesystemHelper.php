@@ -70,6 +70,23 @@ final class FilesystemHelper
         return Filesystem\Path::canonicalize($projectDirectory);
     }
 
+    public static function getWorkingDirectory(): string
+    {
+        if (Phar::running()) {
+            $cwd = getcwd();
+        } else {
+            $cwd = InstalledVersions::getRootPackage()['install_path'];
+        }
+
+        // @codeCoverageIgnoreStart
+        if (false === $cwd) {
+            throw Exception\FilesystemFailureException::forUnresolvableWorkingDirectory();
+        }
+        // @codeCoverageIgnoreEnd
+
+        return Filesystem\Path::canonicalize($cwd);
+    }
+
     public static function resolveRelativePath(string $relativePath): string
     {
         $filesystem = self::getFilesystem();
@@ -78,19 +95,7 @@ final class FilesystemHelper
             return $relativePath;
         }
 
-        if (Phar::running()) {
-            $basePath = getcwd();
-        } else {
-            $basePath = InstalledVersions::getRootPackage()['install_path'];
-        }
-
-        // @codeCoverageIgnoreStart
-        if (false === $basePath) {
-            throw Exception\FilesystemFailureException::forUnresolvableWorkingDirectory();
-        }
-        // @codeCoverageIgnoreEnd
-
-        return Filesystem\Path::join($basePath, $relativePath);
+        return Filesystem\Path::join(self::getWorkingDirectory(), $relativePath);
     }
 
     public static function parseJsonFileContents(string $filePath): Normalizer\Json

@@ -54,6 +54,16 @@ final class FilesystemHelperTest extends TestCase
     /**
      * @test
      */
+    public function getWorkingDirectoryReturnsCurrentWorkingDirectory(): void
+    {
+        $expected = dirname(__DIR__, 3);
+
+        self::assertSame($expected, Helper\FilesystemHelper::getWorkingDirectory());
+    }
+
+    /**
+     * @test
+     */
     public function resolveRelativePathReturnsGivenPathIfItIsAnAbsolutePath(): void
     {
         $path = '/foo/baz';
