@@ -21,10 +21,11 @@ It supports the following additional configuration:
 
 ### `command`
 
-Additional command that is locally executed prior to validating the source file.
-It can be used to prepare the source file for further processing with a supported
-[processor](processors.md). When omitted, the source file is expected to exist
-without further modification.
+A custom command that is locally executed prior to validating the source file.
+By default, the source path – as specified in the [url](#url) section – will
+be taken for further processing with a supported processor. However, if you
+first need to prepare such a file or directory, you may define an additional
+custom command here.
 
 * Required: **no**
 * Default: **–**
@@ -44,5 +45,24 @@ the following special placeholders:
 * `{cwd}` is replaced by the current working directory
 * `{temp}` is replaced by a temporary filename (must be at the beginning of the path,
   e.g. `{temp}.tar.gz`)
+
+**Example configuration:**
+
+```json
+{
+    "frontend-assets": [
+        {
+            "source": {
+                "type": "local",
+                "command": "tar -czvf '{url}' -C '{cwd}/frontend' 'dist'",
+                "url": "{temp}.tar.gz"
+            },
+            "target": {
+                // ...
+            }
+        }
+    ]
+}
+```
 
 > :warning: The resolved URL must be an existing path on the local filesystem.
