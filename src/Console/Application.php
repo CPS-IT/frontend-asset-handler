@@ -26,12 +26,11 @@ namespace CPSIT\FrontendAssetHandler\Console;
 use Composer\InstalledVersions;
 use CPSIT\FrontendAssetHandler\Command;
 use CPSIT\FrontendAssetHandler\DependencyInjection;
+use CPSIT\FrontendAssetHandler\Helper\FilesystemHelper;
 use OutOfBoundsException;
 use Symfony\Component\Console;
 use Symfony\Component\DependencyInjection as SymfonyDI;
-use Symfony\Component\Filesystem;
 
-use function getcwd;
 use function in_array;
 
 /**
@@ -71,7 +70,7 @@ final class Application extends Console\Application
                 'c',
                 Console\Input\InputOption::VALUE_REQUIRED,
                 'Path to the assets configuration file',
-                Filesystem\Path::join(getcwd() ?: '', 'assets.json'),
+                FilesystemHelper::resolveRelativePath('assets.json'),
             ),
         );
 

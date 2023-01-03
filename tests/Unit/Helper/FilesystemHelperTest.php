@@ -26,10 +26,12 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Helper;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Helper;
 use Ergebnis\Json\Normalizer;
+use Generator;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 use function dirname;
+use function pathinfo;
 
 /**
  * FilesystemHelperTest.
@@ -47,6 +49,16 @@ final class FilesystemHelperTest extends TestCase
         $expected = dirname(__DIR__, 3);
 
         self::assertSame($expected, Helper\FilesystemHelper::getProjectDirectory());
+    }
+
+    /**
+     * @test
+     */
+    public function getWorkingDirectoryReturnsCurrentWorkingDirectory(): void
+    {
+        $expected = dirname(__DIR__, 3);
+
+        self::assertSame($expected, Helper\FilesystemHelper::getWorkingDirectory());
     }
 
     /**
@@ -108,5 +120,38 @@ final class FilesystemHelperTest extends TestCase
         self::assertInstanceOf(Normalizer\Json::class, $actual);
         self::assertEquals($expected, $actual->decoded());
         self::assertJsonStringEqualsJsonString('{"foo":"baz"}', $actual->encoded());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider createTemporaryFileCreatesTemporaryFileDataProvider
+     */
+    public function createTemporaryFileCreatesTemporaryFile(string $extension, string $expected): void
+    {
+        $actual = Helper\FilesystemHelper::createTemporaryFile($extension);
+
+        self::assertFileExists($actual);
+        self::assertSame($expected, pathinfo($actual, PATHINFO_EXTENSION));
+    }
+
+    /**
+     * @test
+     */
+    public function createTemporaryFileReturnsOnlyFilename(): void
+    {
+        $actual = Helper\FilesystemHelper::createTemporaryFile(filenameOnly: true);
+
+        self::assertFileDoesNotExist($actual);
+    }
+
+    /**
+     * @return Generator<string, array{string, string}>
+     */
+    public function createTemporaryFileCreatesTemporaryFileDataProvider(): Generator
+    {
+        yield 'no extension' => ['', ''];
+        yield 'extension without dot' => ['foo', 'foo'];
+        yield 'extension with dot' => ['.foo', 'foo'];
     }
 }
