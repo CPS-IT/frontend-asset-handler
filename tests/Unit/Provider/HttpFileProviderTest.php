@@ -221,6 +221,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
 
         self::assertInstanceOf(TemporaryAsset::class, $actual);
         self::assertFileExists($actual->getTempFile());
+        self::assertStringEndsWith('.tar.gz', $actual->getTempFile());
     }
 
     /**
