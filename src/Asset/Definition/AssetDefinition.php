@@ -108,7 +108,7 @@ abstract class AssetDefinition implements ArrayAccess, IteratorAggregate, JsonSe
 
     public function __toString(): string
     {
-        return json_encode($this, JSON_THROW_ON_ERROR);
+        return json_encode($this, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
     }
 
     /**
