@@ -65,4 +65,9 @@ class Source extends AssetDefinition
     {
         return $this['revision'];
     }
+
+    public function getCommand(): ?string
+    {
+        return $this['command'];
+    }
 }

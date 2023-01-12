@@ -26,6 +26,8 @@ namespace CPSIT\FrontendAssetHandler\Exception;
 use RuntimeException;
 use Throwable;
 
+use function sprintf;
+
 /**
  * FilesystemFailureException.
  *
@@ -49,6 +51,11 @@ final class FilesystemFailureException extends RuntimeException
         return new self(sprintf('The path "%s" was expected to exist, but it does not.', $path), 1624633845);
     }
 
+    public static function forInvalidFile(string $path): self
+    {
+        return new self(sprintf('The file "%s" is invalid or not supported.', $path), 1670866771);
+    }
+
     public static function forInvalidFileContents(string $path): self
     {
         return new self(sprintf('The contents of file "%s" are invalid.', $path), 1627923069);
@@ -57,6 +64,11 @@ final class FilesystemFailureException extends RuntimeException
     public static function forFailedWriteOperation(string $path): self
     {
         return new self(sprintf('An error occurred when writing file contents to "%s".', $path), 1639415423);
+    }
+
+    public static function forFailedCommandExecution(string $command): self
+    {
+        return new self(sprintf('An error occurred while executing "%s".', $command), 1670866484);
     }
 
     public static function forUnresolvableProjectDirectory(): self

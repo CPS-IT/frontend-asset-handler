@@ -72,6 +72,11 @@
 					"type": "string",
 					"title": "Asset source revision URL",
 					"description": "An URL representing the revision of a remote asset source for a concrete Frontend asset."
+				},
+				"command": {
+					"type": "string",
+					"title": "Asset source generation command",
+					"description": "An optional command to generate a local asset source for a concrete Frontend asset (`{root}` will be replaced by the project root directory)."
 				}
 			},
 			"additionalProperties": true
