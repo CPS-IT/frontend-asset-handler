@@ -41,6 +41,8 @@ final class VcsProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->subject = new Vcs\VcsProviderFactory(
             new DependencyInjection\ServiceLocator([
                 // Default provider

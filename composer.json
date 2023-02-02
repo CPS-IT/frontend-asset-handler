@@ -40,6 +40,7 @@
 		"armin/editorconfig-cli": "^1.5",
 		"ergebnis/composer-normalize": "^2.18",
 		"friendsofphp/php-cs-fixer": "^3.0",
+		"phpstan/extension-installer": "^1.2",
 		"phpstan/phpstan": "^1.2",
 		"phpstan/phpstan-deprecation-rules": "^1.1",
 		"phpstan/phpstan-phpunit": "^1.0",
@@ -63,7 +64,8 @@
 	],
 	"config": {
 		"allow-plugins": {
-			"ergebnis/composer-normalize": true
+			"ergebnis/composer-normalize": true,
+			"phpstan/extension-installer": true
 		},
 		"sort-packages": true
 	},
