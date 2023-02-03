@@ -36,6 +36,7 @@ use CPSIT\FrontendAssetHandler\Exception\UnsupportedTypeException;
 use function call_user_func;
 use function in_array;
 use function is_string;
+use function trim;
 
 /**
  * MapFactory.
@@ -99,7 +100,7 @@ final class MapFactory
                 $options += $transformer['options'] ?? [];
             }
 
-            if (empty($type)) {
+            if (null === $type || '' === trim($type)) {
                 throw MissingConfigurationException::forKey($inputPattern.'/transformer');
             }
 
@@ -126,16 +127,16 @@ final class MapFactory
         if (!class_exists($className)) {
             throw UnsupportedClassException::create($className);
         }
-        if (!in_array(TransformerInterface::class, class_implements($className) ?: [], true)) {
+        if (!in_array(TransformerInterface::class, (array) class_implements($className), true)) {
             throw UnsupportedClassException::create($className);
         }
 
         return call_user_func([$className, 'fromArray'], $options);
     }
 
-    private static function createStableTransformer(string $version = null): TransformerInterface
+    private static function createStableTransformer(string $version = null): VersionTransformer|StaticTransformer
     {
-        if (!empty($version)) {
+        if (null !== $version && '' !== trim($version)) {
             return new VersionTransformer($version);
         }
 

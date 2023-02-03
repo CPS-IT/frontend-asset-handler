@@ -41,7 +41,7 @@ final class JsonValidator implements ValidatorInterface
     {
         if (null !== $value) {
             Assert\Assert::string($value);
-            Assert\Assert::notNull($json = json_decode((string) $value), 'JSON is invalid.');
+            Assert\Assert::notNull($json = json_decode($value), 'JSON is invalid.');
             Assert\Assert::object($json);
         }
 

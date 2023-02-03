@@ -83,7 +83,7 @@ class RevisionProvider
         $revisionFilePath = Filesystem\Path::join($targetPath, $revisionFile);
 
         if ($this->filesystem->exists($revisionFilePath)) {
-            $revision = trim(file_get_contents($revisionFilePath) ?: '');
+            $revision = trim((string) file_get_contents($revisionFilePath));
 
             return new Revision($revision);
         }

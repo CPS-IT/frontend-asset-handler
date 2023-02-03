@@ -30,4 +30,5 @@ return static function (
     DependencyInjection\ContainerBuilder $container,
 ): void {
     $container->addCompilerPass(new CompilerPass\PublicServicePass());
+    $container->addCompilerPass(new CompilerPass\NonSharedServicePass('console.command'));
 };

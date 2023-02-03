@@ -30,6 +30,7 @@ use CPSIT\FrontendAssetHandler\Processor;
 use CPSIT\FrontendAssetHandler\Strategy;
 use CPSIT\FrontendAssetHandler\Tests;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\Console;
 
 use function dirname;
 
@@ -41,6 +42,8 @@ use function dirname;
  */
 final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
 {
+    use Tests\Unit\FunctionExecutorTrait;
+
     private Tests\Unit\Fixtures\Classes\DummyHandler $handler;
     private Asset\ProcessedAsset $processedAsset;
 
@@ -65,13 +68,18 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
     }
 
     #[Test]
-    public function executeThrowsExceptionIfGivenBranchIsEmpty(): void
+    public function executeThrowsExceptionIfGivenBranchIsMissing(): void
     {
         $this->expectExceptionObject(Exception\UnsupportedEnvironmentException::forMissingVCS());
 
-        $this->commandTester->execute([
-            'branch' => '',
-        ]);
+        $this->executeInDirectory(
+            function () {
+                $command = $this->container->get(Command\FetchAssetsCommand::class);
+                $commandTester = new Console\Tester\CommandTester($command);
+
+                $commandTester->execute([]);
+            }
+        );
     }
 
     #[Test]

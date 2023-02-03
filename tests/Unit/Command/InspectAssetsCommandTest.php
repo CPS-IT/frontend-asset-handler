@@ -34,6 +34,7 @@ use Generator;
 use GuzzleHttp\Psr7;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\Console;
 use Symfony\Component\DependencyInjection;
 
 use function dirname;
@@ -48,6 +49,8 @@ use function sprintf;
  */
 final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
 {
+    use Tests\Unit\FunctionExecutorTrait;
+
     private Tests\Unit\Fixtures\Classes\DummyRevisionProvider $revisionProvider;
     private Tests\Unit\Fixtures\Classes\DummyVcsProvider $vcsProvider;
 
@@ -82,13 +85,18 @@ final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCa
     }
 
     #[Test]
-    public function executeThrowsExceptionIfGivenBranchIsEmpty(): void
+    public function executeThrowsExceptionIfGivenBranchIsMissing(): void
     {
         $this->expectExceptionObject(Exception\UnsupportedEnvironmentException::forMissingVCS());
 
-        $this->commandTester->execute([
-            'branch' => '',
-        ]);
+        $this->executeInDirectory(
+            function () {
+                $command = $this->container->get(Command\InspectAssetsCommand::class);
+                $commandTester = new Console\Tester\CommandTester($command);
+
+                $commandTester->execute([]);
+            }
+        );
     }
 
     #[Test]

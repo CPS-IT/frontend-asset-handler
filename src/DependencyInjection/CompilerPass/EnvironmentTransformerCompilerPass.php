@@ -55,7 +55,7 @@ final class EnvironmentTransformerCompilerPass implements DependencyInjection\Co
                 throw new RuntimeException(sprintf('Unable to determine class name for service "%s".', $serviceId), 1644422571);
             }
             /** @var class-string $className */
-            if (!in_array(Asset\Environment\Transformer\TransformerInterface::class, class_implements($className) ?: [], true)) {
+            if (!in_array(Asset\Environment\Transformer\TransformerInterface::class, (array) class_implements($className), true)) {
                 throw Exception\UnsupportedClassException::create($className);
             }
 

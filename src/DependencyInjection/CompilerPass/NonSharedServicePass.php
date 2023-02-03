@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Composer package "cpsit/frontend-asset-handler".
  *
- * Copyright (C) 2021 Elias Häußler <e.haeussler@familie-redlich.de>
+ * Copyright (C) 2023 Elias Häußler <e.haeussler@familie-redlich.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,33 +21,33 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace CPSIT\FrontendAssetHandler\Traits;
+namespace CPSIT\FrontendAssetHandler\DependencyInjection\CompilerPass;
 
-use CPSIT\FrontendAssetHandler\Asset;
-use CPSIT\FrontendAssetHandler\Exception;
-use CPSIT\FrontendAssetHandler\Helper\FilesystemHelper;
-
-use function trim;
+use Symfony\Component\DependencyInjection;
 
 /**
- * TargetPathBuilderTrait.
+ * NonSharedServicePass.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
+ *
+ * @internal Only to be used for testing purposes
+ *
+ * @codeCoverageIgnore
  */
-trait TargetPathBuilderTrait
+final class NonSharedServicePass implements DependencyInjection\Compiler\CompilerPassInterface
 {
-    protected function buildTargetPath(Asset\Definition\Target $target): string
+    public function __construct(
+        private readonly string $tagName,
+    ) {
+    }
+
+    public function process(DependencyInjection\ContainerBuilder $container): void
     {
-        $targetPath = $target->getPath();
-
-        // Target path must be configured, otherwise we fail early
-        // since this misconfiguration makes calling code unprocessable
-        if (null === $targetPath || '' === trim($targetPath)) {
-            throw Exception\MissingConfigurationException::forKey('path');
+        foreach ($container->findTaggedServiceIds($this->tagName) as $serviceId => $tags) {
+            if ($container->hasDefinition($serviceId)) {
+                $container->findDefinition($serviceId)->setShared(false);
+            }
         }
-
-        // Prefix target path with current working directory
-        return FilesystemHelper::resolveRelativePath($targetPath);
     }
 }

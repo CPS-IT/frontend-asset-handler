@@ -97,10 +97,11 @@ final class FetchAssetsCommand extends BaseAssetsCommand
         $branch = $input->getArgument('branch');
 
         // Handle missing or invalid environments
-        if (empty($branch)) {
+        /* @phpstan-ignore-next-line */
+        if (null === $branch) {
             throw Exception\UnsupportedEnvironmentException::forMissingVCS();
         }
-        if ('' === trim((string) $branch)) {
+        if ('' === trim($branch)) {
             throw Exception\UnsupportedEnvironmentException::forInvalidEnvironment($branch);
         }
 

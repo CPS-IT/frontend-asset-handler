@@ -135,7 +135,9 @@ final class ArrayHelper
         }
 
         // Apply value to array
-        unset($parentNode[$segment]);
+        if (isset($segment)) {
+            unset($parentNode[$segment]);
+        }
 
         return $array;
     }

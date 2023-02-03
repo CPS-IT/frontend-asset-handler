@@ -1,6 +1,26 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Parameter \\#1 \\$config \\(array\\{\\}\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\PassthroughTransformer\\:\\:fromArray\\(\\) should be contravariant with parameter \\$config \\(array\\<string, mixed\\>\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\TransformerInterface\\:\\:fromArray\\(\\)$#"
+			count: 1
+			path: src/Asset/Environment/Transformer/PassthroughTransformer.php
+
+		-
+			message: "#^Parameter \\#1 \\$config \\(array\\{pattern\\?\\: string\\}\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\SlugTransformer\\:\\:fromArray\\(\\) should be contravariant with parameter \\$config \\(array\\<string, mixed\\>\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\TransformerInterface\\:\\:fromArray\\(\\)$#"
+			count: 1
+			path: src/Asset/Environment/Transformer/SlugTransformer.php
+
+		-
+			message: "#^Parameter \\#1 \\$config \\(array\\{value\\?\\: string\\}\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\StaticTransformer\\:\\:fromArray\\(\\) should be contravariant with parameter \\$config \\(array\\<string, mixed\\>\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\TransformerInterface\\:\\:fromArray\\(\\)$#"
+			count: 1
+			path: src/Asset/Environment/Transformer/StaticTransformer.php
+
+		-
+			message: "#^Parameter \\#1 \\$config \\(array\\{version\\?\\: string\\}\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\VersionTransformer\\:\\:fromArray\\(\\) should be contravariant with parameter \\$config \\(array\\<string, mixed\\>\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\TransformerInterface\\:\\:fromArray\\(\\)$#"
+			count: 1
+			path: src/Asset/Environment/Transformer/VersionTransformer.php
+
+		-
 			message: "#^Parameter \\#1 \\$files \\(iterable\\<string\\>\\|string\\) of method CPSIT\\\\FrontendAssetHandler\\\\Tests\\\\Unit\\\\Fixtures\\\\Classes\\\\DummyFilesystem\\:\\:remove\\(\\) should be contravariant with parameter \\$files \\(iterable\\|string\\) of method Symfony\\\\Component\\\\Filesystem\\\\Filesystem\\:\\:remove\\(\\)$#"
 			count: 1
 			path: tests/Unit/Fixtures/Classes/DummyFilesystem.php

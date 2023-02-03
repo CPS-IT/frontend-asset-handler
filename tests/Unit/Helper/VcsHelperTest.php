@@ -24,11 +24,11 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Helper;
 
 use CPSIT\FrontendAssetHandler\Helper;
+use CPSIT\FrontendAssetHandler\Tests;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Filesystem;
 use Symfony\Component\Process;
 
 /**
@@ -39,7 +39,7 @@ use Symfony\Component\Process;
  */
 final class VcsHelperTest extends TestCase
 {
-    private ?string $temporaryDirectory = null;
+    use Tests\Unit\FunctionExecutorTrait;
 
     /**
      * @var array<string, string>
@@ -62,9 +62,7 @@ final class VcsHelperTest extends TestCase
     public function getCurrentBranchReturnsNullIfBranchCannotBeDetermined(): void
     {
         $this->executeInDirectory(
-            static function () {
-                self::assertNull(Helper\VcsHelper::getCurrentBranch());
-            }
+            static fn () => self::assertNull(Helper\VcsHelper::getCurrentBranch())
         );
     }
 
@@ -159,46 +157,6 @@ final class VcsHelperTest extends TestCase
     {
         foreach ($this->backedUpEnvironmentVariables as $key => $value) {
             $this->setEnvironmentVariable($key, $value);
-        }
-
-        $this->removeTemporaryDirectory();
-    }
-
-    private function executeInDirectory(callable $function, string $directory = null): void
-    {
-        $cwd = getcwd();
-
-        if (false === $cwd) {
-            self::fail('Unable to determine current working directory.');
-        }
-
-        // Go to temporary directory
-        $directory ??= $this->createTemporaryDirectory();
-        chdir($directory);
-
-        // Execute function
-        $function();
-
-        // Go back to original location
-        chdir($cwd);
-    }
-
-    private function createTemporaryDirectory(): string
-    {
-        $filesystem = new Filesystem\Filesystem();
-        $this->temporaryDirectory = $filesystem->tempnam(sys_get_temp_dir(), 'asset_handler_test_');
-        $filesystem->remove($this->temporaryDirectory);
-        $filesystem->mkdir($this->temporaryDirectory);
-
-        return $this->temporaryDirectory;
-    }
-
-    private function removeTemporaryDirectory(): void
-    {
-        $filesystem = new Filesystem\Filesystem();
-
-        if (null !== $this->temporaryDirectory && $filesystem->exists($this->temporaryDirectory)) {
-            $filesystem->remove($this->temporaryDirectory);
         }
     }
 
