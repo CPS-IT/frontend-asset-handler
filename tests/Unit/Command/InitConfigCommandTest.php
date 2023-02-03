@@ -128,7 +128,7 @@ final class InitConfigCommandTest extends Tests\Unit\CommandTesterAwareTestCase
 
         self::assertSame(0, $exitCode);
         self::assertStringContainsString('Asset configuration was successfully written', $output);
-        self::assertJsonStringEqualsJsonFile($this->config->getFilePath(), json_encode($this->config) ?: '');
+        self::assertJsonStringEqualsJsonFile($this->config->getFilePath(), (string) json_encode($this->config));
     }
 
     protected static function getCoveredCommand(): string

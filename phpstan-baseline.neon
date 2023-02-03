@@ -1,0 +1,16 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$files \\(iterable\\<string\\>\\|string\\) of method CPSIT\\\\FrontendAssetHandler\\\\Tests\\\\Unit\\\\Fixtures\\\\Classes\\\\DummyFilesystem\\:\\:remove\\(\\) should be contravariant with parameter \\$files \\(iterable\\|string\\) of method Symfony\\\\Component\\\\Filesystem\\\\Filesystem\\:\\:remove\\(\\)$#"
+			count: 1
+			path: tests/Unit/Fixtures/Classes/DummyFilesystem.php
+
+		-
+			message: "#^Parameter \\#3 \\$iterator \\(Traversable\\<mixed, SplFileInfo\\>\\|null\\) of method CPSIT\\\\FrontendAssetHandler\\\\Tests\\\\Unit\\\\Fixtures\\\\Classes\\\\DummyFilesystem\\:\\:mirror\\(\\) should be contravariant with parameter \\$iterator \\(Traversable\\|null\\) of method Symfony\\\\Component\\\\Filesystem\\\\Filesystem\\:\\:mirror\\(\\)$#"
+			count: 1
+			path: tests/Unit/Fixtures/Classes/DummyFilesystem.php
+
+		-
+			message: "#^Parameter \\#4 \\$options \\(array\\<string, bool\\>\\) of method CPSIT\\\\FrontendAssetHandler\\\\Tests\\\\Unit\\\\Fixtures\\\\Classes\\\\DummyFilesystem\\:\\:mirror\\(\\) should be contravariant with parameter \\$options \\(array\\) of method Symfony\\\\Component\\\\Filesystem\\\\Filesystem\\:\\:mirror\\(\\)$#"
+			count: 1
+			path: tests/Unit/Fixtures/Classes/DummyFilesystem.php

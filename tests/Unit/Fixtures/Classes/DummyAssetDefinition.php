@@ -37,6 +37,6 @@ final class DummyAssetDefinition extends Asset\Definition\AssetDefinition
 {
     public function getType(): string
     {
-        return $this['type'] ?: 'dummy';
+        return $this['type'] ?? 'dummy';
     }
 }

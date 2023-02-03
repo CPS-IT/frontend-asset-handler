@@ -197,7 +197,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
         $targetFile = $filesystem->tempnam(sys_get_temp_dir(), 'asset_handler_test_');
         /* @phpstan-ignore-next-line */
         $filesystem->dumpFile($targetFile, $body);
-        $this->expectedBytes = filesize($targetFile) ?: 0;
+        $this->expectedBytes = (int) filesize($targetFile);
         $filesystem->remove($targetFile);
 
         $actual = $this->subject->fetchAsset($this->source);
