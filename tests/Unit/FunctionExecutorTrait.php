@@ -48,14 +48,16 @@ trait FunctionExecutorTrait
         chdir($directory);
 
         // Execute function
-        $function();
+        try {
+            $function();
+        } finally {
+            // Go back to original location
+            chdir($cwd);
 
-        // Go back to original location
-        chdir($cwd);
-
-        // Remove temporary directory
-        if ($cleanUp && $filesystem->exists($directory)) {
-            $filesystem->remove($directory);
+            // Remove temporary directory
+            if ($cleanUp && $filesystem->exists($directory)) {
+                $filesystem->remove($directory);
+            }
         }
     }
 
