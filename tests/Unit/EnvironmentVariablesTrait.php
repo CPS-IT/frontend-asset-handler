@@ -38,6 +38,11 @@ trait EnvironmentVariablesTrait
      */
     private array $backedUpEnvironmentVariables = [];
 
+    /**
+     * @var array<string, string>
+     */
+    private array $additionalEnvironmentVariables = [];
+
     private function backUpEnvironmentVariables(): void
     {
         $this->backedUpEnvironmentVariables = getenv();
@@ -45,6 +50,10 @@ trait EnvironmentVariablesTrait
 
     private function restoreEnvironmentVariables(): void
     {
+        foreach ($this->additionalEnvironmentVariables as $key => $value) {
+            $this->unsetEnvironmentVariable($key);
+        }
+
         foreach ($this->backedUpEnvironmentVariables as $key => $value) {
             $this->setEnvironmentVariable($key, $value);
         }
@@ -52,12 +61,16 @@ trait EnvironmentVariablesTrait
 
     private function setEnvironmentVariable(string $name, mixed $value): void
     {
+        $this->additionalEnvironmentVariables[$name] = $value;
+
         putenv(sprintf('%s=%s', $name, $value));
         $_ENV[$name] = $value;
     }
 
     private function unsetEnvironmentVariable(string $name): void
     {
+        unset($this->additionalEnvironmentVariables[$name]);
+
         putenv($name);
         unset($_ENV[$name]);
     }
