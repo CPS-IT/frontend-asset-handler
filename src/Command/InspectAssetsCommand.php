@@ -35,6 +35,7 @@ use Symfony\Component\Console;
 
 use function array_pop;
 use function count;
+use function is_string;
 use function sprintf;
 
 /**
@@ -103,7 +104,7 @@ final class InspectAssetsCommand extends BaseAssetsCommand
 
         // Handle missing or invalid environments
         /* @phpstan-ignore-next-line */
-        if (null === $branch) {
+        if (!is_string($branch)) {
             throw Exception\UnsupportedEnvironmentException::forMissingVCS();
         }
         if ('' === trim($branch)) {
