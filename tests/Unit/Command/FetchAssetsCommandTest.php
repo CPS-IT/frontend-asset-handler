@@ -42,6 +42,7 @@ use function dirname;
  */
 final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
 {
+    use Tests\Unit\EnvironmentVariablesTrait;
     use Tests\Unit\FunctionExecutorTrait;
 
     private Tests\Unit\Fixtures\Classes\DummyHandler $handler;
@@ -50,6 +51,15 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->backUpEnvironmentVariables();
+
+        // Unset environment variables used in CI context to simulate
+        // clean state for Git-related test scenarios
+        $this->unsetEnvironmentVariable('GITHUB_ACTIONS');
+        $this->unsetEnvironmentVariable('GITLAB_CI');
+        $this->unsetEnvironmentVariable('CI_COMMIT_REF_NAME');
+        $this->unsetEnvironmentVariable('FRONTEND_ASSETS_BRANCH');
 
         $this->initializeCommandTester(
             dirname(__DIR__).'/Fixtures/JsonFiles/assets.json',
@@ -289,6 +299,13 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         self::assertStringContainsString('Processing of asset definition #1', $output);
         self::assertStringContainsString('Processing of asset definition #2', $output);
         self::assertStringContainsString('Assets successfully downloaded to foo.', $output);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->restoreEnvironmentVariables();
     }
 
     protected static function getCoveredCommand(): string

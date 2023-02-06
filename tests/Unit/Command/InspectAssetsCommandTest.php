@@ -49,6 +49,7 @@ use function sprintf;
  */
 final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
 {
+    use Tests\Unit\EnvironmentVariablesTrait;
     use Tests\Unit\FunctionExecutorTrait;
 
     private Tests\Unit\Fixtures\Classes\DummyRevisionProvider $revisionProvider;
@@ -57,6 +58,15 @@ final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCa
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->backUpEnvironmentVariables();
+
+        // Unset environment variables used in CI context to simulate
+        // clean state for Git-related test scenarios
+        $this->unsetEnvironmentVariable('GITHUB_ACTIONS');
+        $this->unsetEnvironmentVariable('GITLAB_CI');
+        $this->unsetEnvironmentVariable('CI_COMMIT_REF_NAME');
+        $this->unsetEnvironmentVariable('FRONTEND_ASSETS_BRANCH');
 
         $this->revisionProvider = $this->container->get(Tests\Unit\Fixtures\Classes\DummyRevisionProvider::class);
         $this->vcsProvider = new Tests\Unit\Fixtures\Classes\DummyVcsProvider();
@@ -204,5 +214,12 @@ final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCa
     protected static function getCoveredCommand(): string
     {
         return Command\InspectAssetsCommand::class;
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->restoreEnvironmentVariables();
     }
 }

@@ -39,16 +39,12 @@ use Symfony\Component\Process;
  */
 final class VcsHelperTest extends TestCase
 {
+    use Tests\Unit\EnvironmentVariablesTrait;
     use Tests\Unit\FunctionExecutorTrait;
-
-    /**
-     * @var array<string, string>
-     */
-    private array $backedUpEnvironmentVariables = [];
 
     protected function setUp(): void
     {
-        $this->backedUpEnvironmentVariables = getenv();
+        $this->backUpEnvironmentVariables();
 
         // Unset environment variables used in CI context to simulate
         // clean state for Git-related test scenarios
@@ -155,20 +151,6 @@ final class VcsHelperTest extends TestCase
 
     protected function tearDown(): void
     {
-        foreach ($this->backedUpEnvironmentVariables as $key => $value) {
-            $this->setEnvironmentVariable($key, $value);
-        }
-    }
-
-    private function setEnvironmentVariable(string $name, mixed $value): void
-    {
-        putenv(sprintf('%s=%s', $name, $value));
-        $_ENV[$name] = $value;
-    }
-
-    private function unsetEnvironmentVariable(string $name): void
-    {
-        putenv($name);
-        unset($_ENV[$name]);
+        $this->restoreEnvironmentVariables();
     }
 }
