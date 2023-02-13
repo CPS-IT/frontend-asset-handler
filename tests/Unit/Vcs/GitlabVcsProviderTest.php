@@ -30,6 +30,8 @@ use CPSIT\FrontendAssetHandler\Vcs;
 use Generator;
 use GuzzleHttp\Exception as GuzzleException;
 use GuzzleHttp\Psr7;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message;
 use Throwable;
@@ -59,9 +61,7 @@ final class GitlabVcsProviderTest extends TestCase
         $this->subject = new Vcs\GitlabVcsProvider($this->getPreparedClient());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withVcsThrowsExceptionIfAccessTokenIsMissing(): void
     {
         unset($this->vcs['access-token']);
@@ -73,9 +73,7 @@ final class GitlabVcsProviderTest extends TestCase
         $this->subject->withVcs($this->vcs);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withVcsThrowsExceptionIfProjectIdIsMissing(): void
     {
         unset($this->vcs['project-id']);
@@ -87,9 +85,7 @@ final class GitlabVcsProviderTest extends TestCase
         $this->subject->withVcs($this->vcs);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withVcsReturnsClonedInstance(): void
     {
         $actual = $this->subject->withVcs($this->vcs);
@@ -97,9 +93,7 @@ final class GitlabVcsProviderTest extends TestCase
         self::assertInstanceOf(Vcs\GitlabVcsProvider::class, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSourceUrlThrowsExceptionIfResponseIsUnexpected(): void
     {
         $this->mockHandler->append($response = new Psr7\Response());
@@ -112,9 +106,7 @@ final class GitlabVcsProviderTest extends TestCase
         $this->subject->withVcs($this->vcs)->getSourceUrl();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSourceUrlReturnsSourceUrl(): void
     {
         $this->mockHandler->append($response = new Psr7\Response());
@@ -125,9 +117,7 @@ final class GitlabVcsProviderTest extends TestCase
         self::assertSame('foo', $this->subject->withVcs($this->vcs)->getSourceUrl());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLatestRevisionReturnsNullIfApiResponseIsUnexpected(): void
     {
         $this->mockHandler->append(new GuzzleException\TransferException());
@@ -135,9 +125,7 @@ final class GitlabVcsProviderTest extends TestCase
         self::assertNull($this->subject->withVcs($this->vcs)->getLatestRevision());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLatestRevisionReturnsRevisionForEnvironmentDerivedFromVcsObject(): void
     {
         $this->mockHandler->append($response = new Psr7\Response());
@@ -151,9 +139,7 @@ final class GitlabVcsProviderTest extends TestCase
         self::assertStringContainsString('environment=baz', (string) $this->getLastRequest()->getUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLatestRevisionReturnsRevisionForGivenEnvironment(): void
     {
         $this->mockHandler->append($response = new Psr7\Response());
@@ -167,11 +153,8 @@ final class GitlabVcsProviderTest extends TestCase
         self::assertStringContainsString('environment=foo', (string) $this->getLastRequest()->getUri());
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider hasRevisionReturnsTrueIfRevisionExistsInVcsDataProvider
-     */
+    #[Test]
+    #[DataProvider('hasRevisionReturnsTrueIfRevisionExistsInVcsDataProvider')]
     public function hasRevisionReturnsTrueIfRevisionExistsInVcs(
         Message\ResponseInterface|Throwable $response,
         bool $expected,
@@ -188,12 +171,10 @@ final class GitlabVcsProviderTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider getActiveDeploymentsReturnsActiveDeploymentsIfPipelinesAreEitherCreatedOrRunningDataProvider
-     *
      * @param list<Vcs\Dto\Deployment> $expected
      */
+    #[Test]
+    #[DataProvider('getActiveDeploymentsReturnsActiveDeploymentsIfPipelinesAreEitherCreatedOrRunningDataProvider')]
     public function getActiveDeploymentsReturnsActiveDeploymentsIfPipelinesAreEitherCreatedOrRunning(
         string $createdResponseJson,
         string $runningResponseJson,
@@ -210,7 +191,7 @@ final class GitlabVcsProviderTest extends TestCase
     /**
      * @return Generator<string, array{Message\ResponseInterface|Throwable, bool}>
      */
-    public function hasRevisionReturnsTrueIfRevisionExistsInVcsDataProvider(): Generator
+    public static function hasRevisionReturnsTrueIfRevisionExistsInVcsDataProvider(): Generator
     {
         yield 'exception' => [new GuzzleException\TransferException(), false];
         yield 'unexpected response' => [new Psr7\Response(404), false];
@@ -220,7 +201,7 @@ final class GitlabVcsProviderTest extends TestCase
     /**
      * @return \Generator<string, array{string, string, list<Vcs\Dto\Deployment>}>
      */
-    public function getActiveDeploymentsReturnsActiveDeploymentsIfPipelinesAreEitherCreatedOrRunningDataProvider(): Generator
+    public static function getActiveDeploymentsReturnsActiveDeploymentsIfPipelinesAreEitherCreatedOrRunningDataProvider(): Generator
     {
         $uri = new Psr7\Uri('https://www.example.com');
         $revision = new Asset\Revision\Revision('1234567890');

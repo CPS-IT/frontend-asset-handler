@@ -27,6 +27,8 @@ use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Tests;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console;
 
 use function dirname;
@@ -57,9 +59,7 @@ final class ConfigFileStepTest extends Tests\Unit\ContainerAwareTestCase
         $this->request = $this->createRequest($this->subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeThrowsExceptionIfGivenConfigFileIsInvalid(): void
     {
         $this->request->setConfigFile(dirname(__DIR__, 3).'/Fixtures/JsonFiles/invalid-assets.json');
@@ -70,9 +70,7 @@ final class ConfigFileStepTest extends Tests\Unit\ContainerAwareTestCase
         $this->subject->execute($this->request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeCreatesNewConfigIfGivenConfigFileDoesNotExist(): void
     {
         $configFile = dirname(__DIR__, 3).'/Fixtures/JsonFiles/foo.json';
@@ -84,11 +82,8 @@ final class ConfigFileStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertSame(0, $this->request->getOption('definition-id'));
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider executeUsesTheExistingConfigFileWithANewDefinitionIdDataProvider
-     */
+    #[Test]
+    #[DataProvider('executeUsesTheExistingConfigFileWithANewDefinitionIdDataProvider')]
     public function executeUsesTheExistingConfigFileWithANewDefinitionId(int $definitionId, int $expected): void
     {
         $this->request->setOption('definition-id', $definitionId);
@@ -97,9 +92,7 @@ final class ConfigFileStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertSame($expected, $this->request->getOption('definition-id'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeAsksAndExtendsGivenConfigFile(): void
     {
         $configFile = $this->request->getConfigFile();
@@ -137,9 +130,7 @@ final class ConfigFileStepTest extends Tests\Unit\ContainerAwareTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeAsksAndUsesAnotherConfigFileIfExistingConfigFileShouldNotBeExtended(): void
     {
         $configFile = '/tmp/foo.json';
@@ -164,7 +155,7 @@ final class ConfigFileStepTest extends Tests\Unit\ContainerAwareTestCase
     /**
      * @return Generator<string, array{int, int}>
      */
-    public function executeUsesTheExistingConfigFileWithANewDefinitionIdDataProvider(): Generator
+    public static function executeUsesTheExistingConfigFileWithANewDefinitionIdDataProvider(): Generator
     {
         yield 'lowest possible new definition ID' => [2, 2];
         yield 'any higher new definition ID' => [42, 2];

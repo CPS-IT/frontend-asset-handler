@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Console\Input\Validator;
 
 use CPSIT\FrontendAssetHandler\Console;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -47,9 +48,7 @@ final class ChainedValidatorTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateIteratesThroughAllChainedValidators(): void
     {
         self::assertFalse($this->firstValidator->hasBeenCalled);

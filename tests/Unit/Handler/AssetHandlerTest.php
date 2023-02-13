@@ -35,6 +35,7 @@ use CPSIT\FrontendAssetHandler\Strategy\Strategy;
 use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
 use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyDecisionMaker;
 use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyProcessor;
+use PHPUnit\Framework\Attributes\Test;
 
 use function sprintf;
 
@@ -63,9 +64,7 @@ final class AssetHandlerTest extends ContainerAwareTestCase
         $this->subject = $this->container->get(AssetHandler::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleReturnsAssetForSelfDecidedStrategy(): void
     {
         $this->decisionMaker->expectedStrategy = Strategy::UseExisting;
@@ -82,9 +81,7 @@ final class AssetHandlerTest extends ContainerAwareTestCase
         self::assertSame('foo', $actual->getTargetPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleThrowsExceptionIfProcessedTargetPathIsInvalid(): void
     {
         $source = new Source(['type' => 'dummy', 'foo' => 'baz']);
@@ -98,9 +95,7 @@ final class AssetHandlerTest extends ContainerAwareTestCase
         $this->subject->handle($source, $target, Strategy::FetchNew);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleReturnsProcessedAsset(): void
     {
         $source = new Source(['type' => 'dummy', 'foo' => 'baz']);

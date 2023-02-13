@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Config\Parser;
 
 use CPSIT\FrontendAssetHandler\Config\Config;
 use CPSIT\FrontendAssetHandler\Config\Parser\ParserInstructions;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -44,42 +45,32 @@ final class ParserInstructionsTest extends TestCase
         $this->subject = new ParserInstructions($this->config);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigReturnsConfig(): void
     {
         self::assertSame($this->config, $this->subject->getConfig());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldProcessValuesReturnsTrueOnInitialState(): void
     {
         self::assertTrue($this->subject->shouldProcessValues());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processValuesEnablesOrDisablesValueProcessing(): void
     {
         self::assertFalse($this->subject->processValues(false)->shouldProcessValues());
         self::assertTrue($this->subject->processValues(true)->shouldProcessValues());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRequiredKeysReturnsRequiredKeys(): void
     {
         self::assertSame([], $this->subject->getRequiredKeys());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requireKeyAddsGivenKeyToListOfRequiredKeys(): void
     {
         $this->subject->requireKey('foo');
@@ -87,9 +78,7 @@ final class ParserInstructionsTest extends TestCase
         self::assertSame(['foo'], $this->subject->getRequiredKeys());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requireKeysDoesNotAddAKeyTwice(): void
     {
         $this->subject->requireKey('foo');

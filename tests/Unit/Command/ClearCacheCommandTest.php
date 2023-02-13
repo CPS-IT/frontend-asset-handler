@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Command;
 
 use CPSIT\FrontendAssetHandler\Command;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console;
 
 /**
@@ -35,9 +36,7 @@ use Symfony\Component\Console;
  */
 final class ClearCacheCommandTest extends Tests\Unit\CommandTesterAwareTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function executeFlushesAllContainerCaches(): void
     {
         $cache = $this->container->get('app.cache');

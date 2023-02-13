@@ -29,6 +29,7 @@ use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Processor;
 use CPSIT\FrontendAssetHandler\Strategy;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 
 use function dirname;
 
@@ -63,9 +64,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeThrowsExceptionIfGivenBranchIsEmpty(): void
     {
         $this->expectExceptionObject(Exception\UnsupportedEnvironmentException::forMissingVCS());
@@ -75,9 +74,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeThrowsExceptionIfGivenBranchIsInvalid(): void
     {
         $this->expectExceptionObject(Exception\UnsupportedEnvironmentException::forInvalidEnvironment('   '));
@@ -87,9 +84,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeFailsIfAssetsCannotBeDownloaded(): void
     {
         $this->handler->returnQueue[] = $this->processedAsset;
@@ -111,9 +106,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         self::assertStringContainsString('Command finished with errors.', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeFallsBackToLatestAssetsIfAssetsCannotBeDownloadedAndFailsafeOptionIsGiven(): void
     {
         $this->handler->returnQueue[] = $this->processedAsset;
@@ -136,9 +129,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         self::assertStringContainsString('Assets successfully downloaded to foo.', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeFallsBackToLatestAssetsAndPassesOnSelectedStrategy(): void
     {
         $this->handler->returnQueue[] = $this->processedAsset;
@@ -160,9 +151,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         self::assertSame(Strategy\Strategy::FetchExisting, $this->handler->lastStrategy);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeSucceedsWithWarningsIfAssetsAreAlreadyDownloaded(): void
     {
         $this->handler->returnQueue[] = $this->processedAsset;
@@ -191,9 +180,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         self::assertStringContainsString('Command finished with warnings.', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeFailsWithAdditionalWarningIfAssetsAreAlreadyDownloaded(): void
     {
         $this->handler->returnQueue[] = Exception\DownloadFailedException::create('foo', 'baz');
@@ -225,9 +212,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         self::assertStringContainsString('Command finished with errors and warnings.', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeFailsIfAssetsCannotBeProcessed(): void
     {
         $this->handler->returnQueue[] = $this->processedAsset;
@@ -249,9 +234,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeFetchesAndProcessesExistingAssets(): void
     {
         $this->handler->returnQueue[] = $this->processedAsset;
@@ -276,9 +259,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         self::assertStringContainsString('Assets successfully downloaded to foo.', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeSuccessfullyFetchesAndProcessesAllAssets(): void
     {
         $this->handler->returnQueue[] = $this->processedAsset;

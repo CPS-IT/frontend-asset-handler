@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Traits;
 
 use CPSIT\FrontendAssetHandler\Console\Output\TrackableOutput;
 use CPSIT\FrontendAssetHandler\Traits\OutputAwareTrait;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -37,9 +38,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class OutputAwareTraitTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function setOutputSetsOutputCorrectly(): void
     {
         $output = new NullOutput();

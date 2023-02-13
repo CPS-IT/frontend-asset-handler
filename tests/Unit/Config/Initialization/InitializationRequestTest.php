@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Config\Initialization;
 use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Exception;
 use OutOfBoundsException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console;
 
@@ -49,9 +50,7 @@ final class InitializationRequestTest extends TestCase
         $this->subject = new Config\Initialization\InitializationRequest('foo', ['foo' => 'baz'], $this->input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromCommandInputThrowsExceptionIfConfigFileIsMissing(): void
     {
         $this->expectExceptionObject(Exception\MissingConfigurationException::create());
@@ -59,9 +58,7 @@ final class InitializationRequestTest extends TestCase
         Config\Initialization\InitializationRequest::fromCommandInput($this->input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromCommandInputReturnsInitializationRequestBuiltFromGivenInput(): void
     {
         $this->input->setOption('config', 'foo');
@@ -81,9 +78,7 @@ final class InitializationRequestTest extends TestCase
         self::assertSame($this->input, $actual->getInput());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigCreatesNewConfigIfItDoesNotExistYet(): void
     {
         $config = $this->subject->getConfig();
@@ -93,9 +88,7 @@ final class InitializationRequestTest extends TestCase
         self::assertSame($config, $this->subject->getConfig());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setConfigAppliesConfig(): void
     {
         $config = new Config\Config(['foo' => 'baz'], 'foo');
@@ -105,9 +98,7 @@ final class InitializationRequestTest extends TestCase
         self::assertSame($config, $this->subject->getConfig());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setConfigFileAppliesConfigFile(): void
     {
         self::assertSame('foo', $this->subject->getConfigFile());
@@ -117,9 +108,7 @@ final class InitializationRequestTest extends TestCase
         self::assertSame('baz', $this->subject->getConfigFile());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOptionThrowsExceptionIfOptionDoesNotExist(): void
     {
         $this->expectException(OutOfBoundsException::class);
@@ -129,9 +118,7 @@ final class InitializationRequestTest extends TestCase
         $this->subject->getOption('baz');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOptionAppliesOption(): void
     {
         $this->subject->setOption('baz', 'foo');

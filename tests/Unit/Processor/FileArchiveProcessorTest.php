@@ -35,6 +35,8 @@ use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyFileArchiveProce
 use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyFilesystem;
 use Exception;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function dirname;
@@ -63,9 +65,7 @@ final class FileArchiveProcessorTest extends TestCase
         $this->subject = new DummyFileArchiveProcessor($childProcessor);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAssetThrowsExceptionIfAssetIsNotTemporary(): void
     {
         $asset = new Asset(new Source([]));
@@ -76,9 +76,7 @@ final class FileArchiveProcessorTest extends TestCase
         $this->subject->processAsset($asset);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAssetThrowsExceptionIfTemporaryFileIsUnsupported(): void
     {
         $asset = new TemporaryAsset(new Source([]), 'foo.baz');
@@ -89,9 +87,7 @@ final class FileArchiveProcessorTest extends TestCase
         $this->subject->processAsset($asset);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAssetThrowsExceptionIfExtractionPreparationFails(): void
     {
         $this->filesystem->expectedExceptionStack = ['remove'];
@@ -100,7 +96,7 @@ final class FileArchiveProcessorTest extends TestCase
         $this->expectExceptionCode(1628093163);
 
         try {
-            $this->subject->processAsset($this->getTemporaryAsset());
+            $this->subject->processAsset(self::getTemporaryAsset());
         } catch (Exception $exception) {
             $output = $this->output->fetch();
             self::assertStringContainsString('Truncating target directory... Failed', $output);
@@ -109,9 +105,7 @@ final class FileArchiveProcessorTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAssetThrowsExceptionIfArchiveExtractionFails(): void
     {
         $this->subject->shouldOpenInvalidArchive = true;
@@ -120,7 +114,7 @@ final class FileArchiveProcessorTest extends TestCase
         $this->expectExceptionCode(1624040854);
 
         try {
-            $this->subject->processAsset($this->getTemporaryAsset());
+            $this->subject->processAsset(self::getTemporaryAsset());
         } catch (Exception $exception) {
             $output = $this->output->fetch();
             self::assertStringContainsString('Truncating target directory... Done', $output);
@@ -130,9 +124,7 @@ final class FileArchiveProcessorTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAssetThrowsExceptionIfFileMirroringFails(): void
     {
         $this->filesystem->expectedExceptionStack = ['mirror'];
@@ -141,7 +133,7 @@ final class FileArchiveProcessorTest extends TestCase
         $this->expectExceptionCode(1628093996);
 
         try {
-            $this->subject->processAsset($this->getTemporaryAsset());
+            $this->subject->processAsset(self::getTemporaryAsset());
         } catch (Exception $exception) {
             $output = $this->output->fetch();
             self::assertStringContainsString('Truncating target directory... Done', $output);
@@ -152,11 +144,8 @@ final class FileArchiveProcessorTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider processAssetExtractsArchiveDataProvider
-     */
+    #[Test]
+    #[DataProvider('processAssetExtractsArchiveDataProvider')]
     public function processAssetExtractsArchive(TemporaryAsset $asset): void
     {
         $targetPath = $asset->getTarget()?->getPath();
@@ -186,9 +175,7 @@ final class FileArchiveProcessorTest extends TestCase
         self::assertStringContainsString('Removing temporary files... Done', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAssetPathThrowsExceptionIfAssetTargetIsNotDefined(): void
     {
         $asset = new Asset(new Source([]));
@@ -202,9 +189,7 @@ final class FileArchiveProcessorTest extends TestCase
         $this->subject->getAssetPath($asset);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAssetPathReturnsAssetsTargetPath(): void
     {
         $asset = new Asset(new Source([]), new Target(['path' => '/foo/baz']));
@@ -215,14 +200,14 @@ final class FileArchiveProcessorTest extends TestCase
     /**
      * @return \Generator<string, array{TemporaryAsset}>
      */
-    public function processAssetExtractsArchiveDataProvider(): Generator
+    public static function processAssetExtractsArchiveDataProvider(): Generator
     {
         foreach (['zip', 'tar', 'tar.gz'] as $key => $type) {
-            yield $type => [$this->getTemporaryAsset($key, $type)];
+            yield $type => [self::getTemporaryAsset($key, $type)];
         }
     }
 
-    private function getTemporaryAsset(int $index = 0, string $type = 'zip'): TemporaryAsset
+    private static function getTemporaryAsset(int $index = 0, string $type = 'zip'): TemporaryAsset
     {
         $temporaryFile = sprintf(dirname(__DIR__).'/Fixtures/AssetFiles/assets_%d.%s', $index, $type);
         $source = new Source([]);

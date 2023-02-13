@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Config;
 use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Filesystem;
 
 use function dirname;
@@ -50,9 +51,7 @@ final class ConfigFacadeTest extends Tests\Unit\ContainerAwareTestCase
         $this->filesystem = new Filesystem\Filesystem();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadLoadsConfigWithSupportedLoader(): void
     {
         $filePath = dirname(__DIR__).'/Fixtures/JsonFiles/assets.json';
@@ -109,9 +108,7 @@ final class ConfigFacadeTest extends Tests\Unit\ContainerAwareTestCase
         self::assertEquals($expected, $this->subject->load($filePath));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadThrowsExceptionIfNoSupportedConfigLoaderIsAvailable(): void
     {
         $this->expectExceptionObject(Exception\UnprocessableConfigFileException::create(__FILE__));
@@ -119,9 +116,7 @@ final class ConfigFacadeTest extends Tests\Unit\ContainerAwareTestCase
         $this->subject->load(__FILE__);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeWritesConfigWithSupportedLoader(): void
     {
         $filePath = $this->filesystem->tempnam(sys_get_temp_dir(), 'asset_handler_test_');
@@ -136,9 +131,7 @@ final class ConfigFacadeTest extends Tests\Unit\ContainerAwareTestCase
         $this->filesystem->remove($filePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeThrowsExceptionIfNoSupportedConfigWriterIsAvailable(): void
     {
         $config = new Config\Config([], __FILE__);

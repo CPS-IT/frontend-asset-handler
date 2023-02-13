@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Exception;
 
 use CPSIT\FrontendAssetHandler\Exception\FilesystemFailureException;
 use Exception;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -35,9 +36,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class FilesystemFailureExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function forFileCreationReturnsExceptionForGivenFile(): void
     {
         $previous = new Exception('dummy');
@@ -49,9 +48,7 @@ final class FilesystemFailureExceptionTest extends TestCase
         self::assertSame($previous, $subject->getPrevious());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forArchiveExtractionReturnsExceptionForGivenFile(): void
     {
         $previous = new Exception('dummy');
@@ -63,9 +60,7 @@ final class FilesystemFailureExceptionTest extends TestCase
         self::assertSame($previous, $subject->getPrevious());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forMissingPathReturnsExceptionForGivenPath(): void
     {
         $subject = FilesystemFailureException::forMissingPath('foo');
@@ -75,9 +70,7 @@ final class FilesystemFailureExceptionTest extends TestCase
         self::assertSame(1624633845, $subject->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forInvalidFileContentsReturnsExceptionForGivenPath(): void
     {
         $subject = FilesystemFailureException::forInvalidFileContents('foo');
@@ -87,9 +80,7 @@ final class FilesystemFailureExceptionTest extends TestCase
         self::assertSame(1627923069, $subject->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forFailedWriteOperationReturnsExceptionForFailedWriteOperation(): void
     {
         $subject = FilesystemFailureException::forFailedWriteOperation('foo');
@@ -99,9 +90,7 @@ final class FilesystemFailureExceptionTest extends TestCase
         self::assertSame(1639415423, $subject->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forUnresolvableProjectDirectoryReturnsExceptionForUnresolvableProjectDirectory(): void
     {
         $subject = FilesystemFailureException::forUnresolvableProjectDirectory();
@@ -111,9 +100,7 @@ final class FilesystemFailureExceptionTest extends TestCase
         self::assertSame(1662449245, $subject->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forUnresolvableWorkingDirectoryReturnsExceptionForUnresolvableWorkingDirectory(): void
     {
         $subject = FilesystemFailureException::forUnresolvableWorkingDirectory();

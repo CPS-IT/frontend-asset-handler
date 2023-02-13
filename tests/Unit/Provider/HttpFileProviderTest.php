@@ -37,6 +37,7 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -73,9 +74,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
         $this->subject->setOutput($this->output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchAssetPrintsRevisionFromSource(): void
     {
         $this->mockHandler->append(new Response());
@@ -89,9 +88,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
         self::assertStringContainsString('Frontend revision: 1234567890', $this->output->fetch());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchAssetPrintsRevisionFromRevisionProvider(): void
     {
         unset($this->source['revision']);
@@ -112,9 +109,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
         self::assertStringContainsString('Frontend revision: 0987654321', $this->output->fetch());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchAssetThrowsExceptionIfRequestIsUnauthorized(): void
     {
         $this->mockHandler->append(new Response(401));
@@ -126,9 +121,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
         $this->subject->fetchAsset($this->source);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchAssetThrowsExceptionIfRequestTargetIsUnavailable(): void
     {
         $this->mockHandler->append(new Response(404));
@@ -140,9 +133,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
         $this->subject->fetchAsset($this->source);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchAssetThrowsExceptionIfRequestFails(): void
     {
         $this->mockHandler->append(new Response(500));
@@ -154,9 +145,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
         $this->subject->fetchAsset($this->source);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchAssetThrowsExceptionIfGuzzleExceptionOccurs(): void
     {
         $exception = new class() extends Exception implements GuzzleException {
@@ -170,9 +159,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
         $this->subject->fetchAsset($this->source);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchAssetThrowsExceptionIfResponseCodeInUnexpected(): void
     {
         $this->mockHandler->append(new Response(204));
@@ -184,9 +171,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
         $this->subject->fetchAsset($this->source);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchAssetThrowsExceptionIfDownloadCannotBeVerified(): void
     {
         $this->mockHandler->append(new Response(200));
@@ -198,9 +183,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
         $this->subject->fetchAsset($this->source);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchAssetReturnsTemporaryAsset(): void
     {
         $response = new Response();
@@ -224,9 +207,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
         self::assertStringEndsWith('.tar.gz', $actual->getTempFile());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAssetUrlThrowsExceptionIfSourceUrlIsNotConfigured(): void
     {
         unset($this->source['url']);

@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Console\Input;
 
 use CPSIT\FrontendAssetHandler\Console;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console as SymfonyConsole;
 
@@ -42,9 +43,7 @@ final class DynamicArgvInputTest extends TestCase
         $this->subject = new Console\Input\DynamicArgvInput(['command', 'foo', '--bar']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseTokenIgnoresUnsupportedInputTokens(): void
     {
         $definition = new SymfonyConsole\Input\InputDefinition();

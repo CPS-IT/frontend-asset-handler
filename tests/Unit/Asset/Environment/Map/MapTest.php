@@ -28,6 +28,7 @@ use CPSIT\FrontendAssetHandler\Asset\Environment\Map\Pair;
 use CPSIT\FrontendAssetHandler\Asset\Environment\Transformer\PassthroughTransformer;
 use CPSIT\FrontendAssetHandler\Asset\Environment\Transformer\SlugTransformer;
 use CPSIT\FrontendAssetHandler\Asset\Environment\Transformer\VersionTransformer;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -54,9 +55,7 @@ final class MapTest extends TestCase
         $this->subject = new Map($this->pairs);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSortsPairsByIndex(): void
     {
         $pairs = [
@@ -74,9 +73,7 @@ final class MapTest extends TestCase
         self::assertSame($expected, $subject->getPairs());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mergeMergesMapsAndReturnsNewObject(): void
     {
         $other = new Map([
@@ -96,9 +93,7 @@ final class MapTest extends TestCase
         self::assertNotSame($this->subject, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayReturnsMapAsArray(): void
     {
         $expected = [
@@ -121,17 +116,13 @@ final class MapTest extends TestCase
         self::assertSame($expected, $this->subject->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPairsReturnsMapPairs(): void
     {
         self::assertEquals($this->pairs, $this->subject->getPairs());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIteratorReturnsIteratorForMapPairs(): void
     {
         self::assertSame($this->pairs, iterator_to_array($this->subject->getIterator()));

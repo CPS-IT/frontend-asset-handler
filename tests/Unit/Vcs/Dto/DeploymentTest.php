@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Vcs\Dto;
 use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Vcs;
 use GuzzleHttp\Psr7;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -46,17 +47,13 @@ final class DeploymentTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getUriReturnsUri(): void
     {
         self::assertEquals(new Psr7\Uri('https://www.example.com'), $this->subject->getUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRevisionReturnsRevision(): void
     {
         self::assertEquals(new Asset\Revision\Revision('1234567890'), $this->subject->getRevision());

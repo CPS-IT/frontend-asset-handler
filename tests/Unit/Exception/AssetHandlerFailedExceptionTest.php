@@ -27,6 +27,7 @@ use CPSIT\FrontendAssetHandler\Asset\Asset;
 use CPSIT\FrontendAssetHandler\Asset\Definition\Source;
 use CPSIT\FrontendAssetHandler\Asset\Definition\Target;
 use CPSIT\FrontendAssetHandler\Exception\AssetHandlerFailedException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function sprintf;
@@ -39,9 +40,7 @@ use function sprintf;
  */
 final class AssetHandlerFailedExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsExceptionForGivenAsset(): void
     {
         $source = new Source(['foo' => 'baz']);

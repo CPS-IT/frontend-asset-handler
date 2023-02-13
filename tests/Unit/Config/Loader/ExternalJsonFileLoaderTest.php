@@ -28,6 +28,8 @@ use CPSIT\FrontendAssetHandler\Config\Loader\ExternalJsonFileLoader;
 use CPSIT\FrontendAssetHandler\Exception\MissingConfigurationException;
 use CPSIT\FrontendAssetHandler\Exception\UnprocessableConfigFileException;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function dirname;
@@ -47,9 +49,7 @@ final class ExternalJsonFileLoaderTest extends TestCase
         $this->subject = new ExternalJsonFileLoader();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadThrowsExceptionIfJsonIsUnsupported(): void
     {
         $filePath = dirname(__DIR__, 2).'/Fixtures/JsonFiles/unsupported-json.json';
@@ -63,9 +63,7 @@ final class ExternalJsonFileLoaderTest extends TestCase
         $this->subject->load($filePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadThrowsExceptionIfJsonStructureIsInvalid(): void
     {
         $filePath = dirname(__DIR__, 2).'/Fixtures/JsonFiles/valid-json.json';
@@ -77,9 +75,7 @@ final class ExternalJsonFileLoaderTest extends TestCase
         $this->subject->load($filePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadReturnsResolvedConfigObject(): void
     {
         $filePath = dirname(__DIR__, 2).'/Fixtures/JsonFiles/assets.json';
@@ -133,27 +129,20 @@ final class ExternalJsonFileLoaderTest extends TestCase
         self::assertEquals($expected, $this->subject->load($filePath));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canLoadReturnsTrueIfGivenFileIsNoComposerJsonFile(): void
     {
         self::assertTrue(ExternalJsonFileLoader::canLoad('/foo/baz/assets.json'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canLoadReturnsFalseIfGivenFileIsNoJsonFile(): void
     {
         self::assertFalse(ExternalJsonFileLoader::canLoad('/foo/baz/image.png'));
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider canLoadReturnsFalseIfGivenFileIsComposerJsonFileDataProvider
-     */
+    #[Test]
+    #[DataProvider('canLoadReturnsFalseIfGivenFileIsComposerJsonFileDataProvider')]
     public function canLoadReturnsFalseIfGivenFileIsComposerJsonFile(string $filePath): void
     {
         self::assertFalse(ExternalJsonFileLoader::canLoad($filePath));
@@ -162,7 +151,7 @@ final class ExternalJsonFileLoaderTest extends TestCase
     /**
      * @return \Generator<string, array{string}>
      */
-    public function canLoadReturnsFalseIfGivenFileIsComposerJsonFileDataProvider(): Generator
+    public static function canLoadReturnsFalseIfGivenFileIsComposerJsonFileDataProvider(): Generator
     {
         yield 'absolute path' => ['/foo/baz/composer.json'];
         yield 'relative path' => ['../baz/composer.json'];

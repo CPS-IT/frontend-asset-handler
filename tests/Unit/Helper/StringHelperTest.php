@@ -27,6 +27,8 @@ use CPSIT\FrontendAssetHandler\Exception\MissingConfigurationException;
 use CPSIT\FrontendAssetHandler\Helper;
 use Generator;
 use OutOfBoundsException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Stringable;
 
@@ -38,9 +40,7 @@ use Stringable;
  */
 final class StringHelperTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function formatBytesThrowsExceptionIfGivenBytesAreNegative(): void
     {
         $this->expectException(OutOfBoundsException::class);
@@ -50,19 +50,14 @@ final class StringHelperTest extends TestCase
         Helper\StringHelper::formatBytes(-1);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider formatBytesReturnsHumanReadableBytesDataProvider
-     */
+    #[Test]
+    #[DataProvider('formatBytesReturnsHumanReadableBytesDataProvider')]
     public function formatBytesReturnsHumanReadableBytes(int $bytes, string $expected): void
     {
         self::assertSame($expected, Helper\StringHelper::formatBytes($bytes));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function interpolateThrowsExceptionIfReplacementIsMissing(): void
     {
         $this->expectException(MissingConfigurationException::class);
@@ -72,9 +67,7 @@ final class StringHelperTest extends TestCase
         Helper\StringHelper::interpolate('{foo}', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function interpolateReplacesPlaceholderValuesByGivenReplacements(): void
     {
         $replacePairs = [
@@ -86,9 +79,7 @@ final class StringHelperTest extends TestCase
         self::assertSame('Hello, Bob! Welcome to Berlin :)', $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extractPlaceholdersReturnsExtractedAndResolvedPlaceholdersFromGivenString(): void
     {
         $string = 'Hello, my name is {name}! I\'m living in {city}.';
@@ -96,11 +87,8 @@ final class StringHelperTest extends TestCase
         self::assertSame(['name', 'city'], Helper\StringHelper::extractPlaceholders($string));
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider urlEncodeReturnsUrlEncodedValueDataProvider
-     */
+    #[Test]
+    #[DataProvider('urlEncodeReturnsUrlEncodedValueDataProvider')]
     public function urlEncodeReturnsUrlEncodedValue(mixed $value, mixed $expected): void
     {
         self::assertSame($expected, Helper\StringHelper::urlEncode($value));
@@ -109,7 +97,7 @@ final class StringHelperTest extends TestCase
     /**
      * @return \Generator<string, array{int, string}>
      */
-    public function formatBytesReturnsHumanReadableBytesDataProvider(): Generator
+    public static function formatBytesReturnsHumanReadableBytesDataProvider(): Generator
     {
         yield 'zero bytes' => [0, '0 B'];
         yield 'bytes' => [100, '100 B'];
@@ -123,7 +111,7 @@ final class StringHelperTest extends TestCase
     /**
      * @return Generator<string, array{mixed, mixed}>
      */
-    public function urlEncodeReturnsUrlEncodedValueDataProvider(): Generator
+    public static function urlEncodeReturnsUrlEncodedValueDataProvider(): Generator
     {
         $value = 'äöüß';
         $expected = '%C3%A4%C3%B6%C3%BC%C3%9F';

@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset\Revision;
 
 use CPSIT\FrontendAssetHandler\Asset\Revision\Revision;
 use CPSIT\FrontendAssetHandler\Exception\InvalidRevisionException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,9 +43,7 @@ final class RevisionTest extends TestCase
         $this->subject = new Revision('1234567890');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfRevisionIsTooShort(): void
     {
         $this->expectException(InvalidRevisionException::class);
@@ -54,34 +53,26 @@ final class RevisionTest extends TestCase
         new Revision('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsFullRevision(): void
     {
         self::assertSame('1234567890', $this->subject->get());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShortReturnsShortRevision(): void
     {
         self::assertSame('1234567', $this->subject->getShort());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function equalComparesRevisionsCorrectly(): void
     {
         self::assertFalse($this->subject->equals(new Revision('1234567')));
         self::assertTrue($this->subject->equals(new Revision('1234567890')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toStringReturnsFullRevision(): void
     {
         self::assertSame('1234567890', (string) $this->subject);

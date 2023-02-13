@@ -27,6 +27,7 @@ use CPSIT\FrontendAssetHandler\Asset\Definition\Source;
 use CPSIT\FrontendAssetHandler\Asset\Definition\Target;
 use CPSIT\FrontendAssetHandler\Asset\ExistingAsset;
 use CPSIT\FrontendAssetHandler\Asset\Revision\Revision;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,9 +38,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class ExistingAssetTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsTargetPath(): void
     {
         $targetPath = 'foo';
@@ -48,9 +47,7 @@ final class ExistingAssetTest extends TestCase
         self::assertSame('foo', $subject->getTargetPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsRevision(): void
     {
         $revision = new Revision('1234567');
@@ -59,9 +56,7 @@ final class ExistingAssetTest extends TestCase
         self::assertSame($revision, $subject->getRevision());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRevisionFallsBackToSourceAndTargetIfAssetHasNoAssociatedRevision(): void
     {
         $source = new Source([]);

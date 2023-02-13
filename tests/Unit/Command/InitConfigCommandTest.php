@@ -27,6 +27,7 @@ use CPSIT\FrontendAssetHandler\Command;
 use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console;
 
 use function json_encode;
@@ -56,9 +57,7 @@ final class InitConfigCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         $this->config = $this->container->get(Config\ConfigFacade::class)->load($this->configFile);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeAddsOptionsFromInteractiveStepsToInputDefinition(): void
     {
         $this->secondStep->expectedConfig = $this->config;
@@ -80,9 +79,7 @@ final class InitConfigCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeThrowsExceptionIfStepFails(): void
     {
         $this->firstStep->expectedReturn = false;
@@ -97,9 +94,7 @@ final class InitConfigCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeAppliesOutputToInteractiveSteps(): void
     {
         self::assertInstanceOf(Console\Output\NullOutput::class, $this->secondStep->getOutput()->getOutput());
@@ -112,9 +107,7 @@ final class InitConfigCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         self::assertNotInstanceOf(Console\Output\NullOutput::class, $this->secondStep->getOutput()->getOutput());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeThrowsExceptionIfInitializedConfigIsInvalid(): void
     {
         $this->expectException(Exception\InvalidConfigurationException::class);
@@ -123,9 +116,7 @@ final class InitConfigCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         $this->commandTester->execute(['--config' => 'foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeWritesInitializedConfig(): void
     {
         unset($this->config['frontend-assets'][1]);

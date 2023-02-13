@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Console\Input\Validator;
 
 use CPSIT\FrontendAssetHandler\Console;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Webmozart\Assert;
 
@@ -42,17 +43,13 @@ final class UrlValidatorTest extends TestCase
         $this->subject = new Console\Input\Validator\UrlValidator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateDoesNothingIfValueIsNull(): void
     {
         self::assertNull($this->subject->validate(null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateThrowsExceptionIfValueIsNotAString(): void
     {
         $this->expectExceptionObject(new Assert\InvalidArgumentException('Expected a string. Got: bool'));
@@ -60,9 +57,7 @@ final class UrlValidatorTest extends TestCase
         $this->subject->validate(false);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateThrowsExceptionIfFilteredValueIsNotAValidUrl(): void
     {
         $this->expectExceptionObject(new Assert\InvalidArgumentException('The given URL is invalid.'));
@@ -70,9 +65,7 @@ final class UrlValidatorTest extends TestCase
         $this->subject->validate('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsValueOnValidUrl(): void
     {
         $url = 'https://www.example.com';

@@ -26,6 +26,8 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset\Environment\Transformer;
 use CPSIT\FrontendAssetHandler\Asset\Environment\Transformer\VersionTransformer;
 use CPSIT\FrontendAssetHandler\Exception\MissingConfigurationException;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -44,12 +46,10 @@ final class VersionTransformerTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider fromArrayThrowsExceptionIfVersionIsMissingOrInvalidDataProvider
-     *
      * @param array{version?: false} $config
      */
+    #[Test]
+    #[DataProvider('fromArrayThrowsExceptionIfVersionIsMissingOrInvalidDataProvider')]
     public function fromArrayThrowsExceptionIfVersionIsMissingOrInvalid(array $config): void
     {
         $this->expectException(MissingConfigurationException::class);
@@ -60,25 +60,19 @@ final class VersionTransformerTest extends TestCase
         VersionTransformer::fromArray($config);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromArrayReturnsTransformerInstance(): void
     {
         self::assertEquals($this->subject, VersionTransformer::fromArray(['version' => '1.0.0']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayReturnsArrayWithValue(): void
     {
         self::assertSame(['version' => '1.0.0'], $this->subject->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transformReturnsStaticValue(): void
     {
         self::assertSame('1.0.0', $this->subject->transform('baz'));
@@ -87,7 +81,7 @@ final class VersionTransformerTest extends TestCase
     /**
      * @return \Generator<string, array{array{version?: false}}>
      */
-    public function fromArrayThrowsExceptionIfVersionIsMissingOrInvalidDataProvider(): Generator
+    public static function fromArrayThrowsExceptionIfVersionIsMissingOrInvalidDataProvider(): Generator
     {
         yield 'no version' => [[]];
         yield 'invalid version' => [['value' => false]];

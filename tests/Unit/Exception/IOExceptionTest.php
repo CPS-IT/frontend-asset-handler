@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Exception;
 
 use CPSIT\FrontendAssetHandler\Exception;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console;
 
@@ -37,9 +38,7 @@ use function sprintf;
  */
 final class IOExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function forUnsupportedOutputReturnsExceptionForGivenOutput(): void
     {
         $actual = Exception\IOException::forUnsupportedOutput(new Console\Output\NullOutput());
@@ -49,9 +48,7 @@ final class IOExceptionTest extends TestCase
         self::assertSame(1661872012, $actual->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forMissingOutputStreamReturnsExceptionForMissingOutputStream(): void
     {
         $actual = Exception\IOException::forMissingOutputStream();
@@ -61,9 +58,7 @@ final class IOExceptionTest extends TestCase
         self::assertSame(1661873512, $actual->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forUnprocessableOutputStreamReturnsExceptionForUnprocessableOutputStream(): void
     {
         $actual = Exception\IOException::forUnprocessableOutputStream();

@@ -27,6 +27,7 @@ use CPSIT\FrontendAssetHandler\Exception\UnsupportedClassException;
 use CPSIT\FrontendAssetHandler\Exception\UnsupportedTypeException;
 use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
 use CPSIT\FrontendAssetHandler\Value\ValueProcessor;
+use PHPUnit\Framework\Attributes\Test;
 use stdClass;
 
 /**
@@ -46,9 +47,7 @@ final class ValueProcessorTest extends ContainerAwareTestCase
         $this->subject = $this->container->get(ValueProcessor::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfGivenPlaceholderProcessorIsNotAnObject(): void
     {
         $this->expectException(UnsupportedTypeException::class);
@@ -59,9 +58,7 @@ final class ValueProcessorTest extends ContainerAwareTestCase
         new ValueProcessor(['foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfGivenPlaceholderProcessorIsInvalid(): void
     {
         $this->expectException(UnsupportedClassException::class);
@@ -72,9 +69,7 @@ final class ValueProcessorTest extends ContainerAwareTestCase
         new ValueProcessor([new stdClass()]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processProcessesGivenArrayRecursively(): void
     {
         $array = [
@@ -106,9 +101,7 @@ final class ValueProcessorTest extends ContainerAwareTestCase
         putenv('hello');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processSingleValueProcessesGivenValue(): void
     {
         putenv('foo=baz');

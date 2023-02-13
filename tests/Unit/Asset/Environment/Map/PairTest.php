@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset\Environment\Map;
 use CPSIT\FrontendAssetHandler\Asset\Environment\Map\Pair;
 use CPSIT\FrontendAssetHandler\Asset\Environment\Transformer\PassthroughTransformer;
 use CPSIT\FrontendAssetHandler\Asset\Environment\Transformer\SlugTransformer;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -43,25 +44,19 @@ final class PairTest extends TestCase
         $this->subject = new Pair('feature/*', new SlugTransformer('fe-{slug}'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transformReturnsNullIfTransformerCannotTransformBranch(): void
     {
         self::assertNull($this->subject->transform('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transformReturnsTransformedEnvironment(): void
     {
         self::assertSame('fe-feature-foo', $this->subject->transform('feature/foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canTransformReturnsTrueForExactlyMatchingBranch(): void
     {
         $subject = new Pair('main', new PassthroughTransformer());
@@ -69,25 +64,19 @@ final class PairTest extends TestCase
         self::assertTrue($subject->canTransform('main'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canTransformReturnsTrueForBranchMatchingWithWildcard(): void
     {
         self::assertTrue($this->subject->canTransform('feature/foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canTransformReturnsFalseForNonMatchingBranch(): void
     {
         self::assertFalse($this->subject->canTransform('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayReturnsArrayRepresentation(): void
     {
         $expected = [
@@ -102,9 +91,7 @@ final class PairTest extends TestCase
         self::assertSame($expected, $this->subject->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getInputPatternReturnsInputPattern(): void
     {
         self::assertSame('feature/*', $this->subject->getInputPattern());

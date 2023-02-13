@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit;
 
+use const PHP_EOL;
+
 use Symfony\Component\Console;
 
 /**
@@ -60,7 +62,7 @@ trait InteractiveConsoleInputTrait
         self::assertIsResource($stream);
 
         foreach ($inputs as $input) {
-            fwrite($stream, $input.\PHP_EOL);
+            fwrite($stream, $input.PHP_EOL);
         }
 
         rewind($stream);
