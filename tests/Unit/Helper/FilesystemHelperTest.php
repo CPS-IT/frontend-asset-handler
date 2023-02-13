@@ -27,6 +27,8 @@ use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Helper;
 use Ergebnis\Json\Normalizer;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -41,9 +43,7 @@ use function pathinfo;
  */
 final class FilesystemHelperTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getProjectDirectoryReturnsProjectDirectory(): void
     {
         $expected = dirname(__DIR__, 3);
@@ -51,9 +51,7 @@ final class FilesystemHelperTest extends TestCase
         self::assertSame($expected, Helper\FilesystemHelper::getProjectDirectory());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getWorkingDirectoryReturnsCurrentWorkingDirectory(): void
     {
         $expected = dirname(__DIR__, 3);
@@ -61,9 +59,7 @@ final class FilesystemHelperTest extends TestCase
         self::assertSame($expected, Helper\FilesystemHelper::getWorkingDirectory());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveRelativePathReturnsGivenPathIfItIsAnAbsolutePath(): void
     {
         $path = '/foo/baz';
@@ -71,9 +67,7 @@ final class FilesystemHelperTest extends TestCase
         self::assertSame($path, Helper\FilesystemHelper::resolveRelativePath($path));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveRelativePathMakesRelativePathAbsolute(): void
     {
         $path = 'foo';
@@ -82,9 +76,7 @@ final class FilesystemHelperTest extends TestCase
         self::assertSame($expected, Helper\FilesystemHelper::resolveRelativePath($path));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseJsonFileContentsThrowsExceptionIfGivenFileDoesNotExist(): void
     {
         $this->expectException(Exception\FilesystemFailureException::class);
@@ -94,9 +86,7 @@ final class FilesystemHelperTest extends TestCase
         Helper\FilesystemHelper::parseJsonFileContents('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseJsonFileContentsThrowsExceptionIfGivenFileDoesNotContainJson(): void
     {
         $filePath = dirname(__DIR__).'/Fixtures/JsonFiles/invalid-json.json';
@@ -106,9 +96,7 @@ final class FilesystemHelperTest extends TestCase
         Helper\FilesystemHelper::parseJsonFileContents($filePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseJsonFileContentsReturnsParsedJsonFileContents(): void
     {
         $filePath = dirname(__DIR__).'/Fixtures/JsonFiles/valid-json.json';
@@ -122,11 +110,8 @@ final class FilesystemHelperTest extends TestCase
         self::assertJsonStringEqualsJsonString('{"foo":"baz"}', $actual->encoded());
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider createTemporaryFileCreatesTemporaryFileDataProvider
-     */
+    #[Test]
+    #[DataProvider('createTemporaryFileCreatesTemporaryFileDataProvider')]
     public function createTemporaryFileCreatesTemporaryFile(string $extension, string $expected): void
     {
         $actual = Helper\FilesystemHelper::createTemporaryFile($extension);
@@ -135,9 +120,7 @@ final class FilesystemHelperTest extends TestCase
         self::assertSame($expected, pathinfo($actual, PATHINFO_EXTENSION));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createTemporaryFileReturnsOnlyFilename(): void
     {
         $actual = Helper\FilesystemHelper::createTemporaryFile(filenameOnly: true);
@@ -148,7 +131,7 @@ final class FilesystemHelperTest extends TestCase
     /**
      * @return Generator<string, array{string, string}>
      */
-    public function createTemporaryFileCreatesTemporaryFileDataProvider(): Generator
+    public static function createTemporaryFileCreatesTemporaryFileDataProvider(): Generator
     {
         yield 'no extension' => ['', ''];
         yield 'extension without dot' => ['foo', 'foo'];

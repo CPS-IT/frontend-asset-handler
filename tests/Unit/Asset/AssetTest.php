@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset;
 use CPSIT\FrontendAssetHandler\Asset\Asset;
 use CPSIT\FrontendAssetHandler\Asset\Definition\Source;
 use CPSIT\FrontendAssetHandler\Asset\Definition\Target;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -36,9 +37,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class AssetTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsSource(): void
     {
         $source = new Source(['foo' => 'baz']);
@@ -48,9 +47,7 @@ final class AssetTest extends TestCase
         self::assertSame('baz', $subject->getSource()['foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setTargetSetsTarget(): void
     {
         $target = new Target(['foo' => 'baz']);

@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Console\Input\Validator;
 
 use CPSIT\FrontendAssetHandler\Console;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Webmozart\Assert;
 
@@ -42,9 +43,7 @@ final class NotEmptyValidatorTest extends TestCase
         $this->subject = new Console\Input\Validator\NotEmptyValidator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateThrowsExceptionIfValueIsEmpty(): void
     {
         $this->expectExceptionObject(new Assert\InvalidArgumentException('Expected a non-empty value. Got: null'));
@@ -52,9 +51,7 @@ final class NotEmptyValidatorTest extends TestCase
         $this->subject->validate(null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsValueOnNonEmptyValue(): void
     {
         self::assertSame('foo', $this->subject->validate('foo'));

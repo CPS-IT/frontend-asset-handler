@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset;
 use CPSIT\FrontendAssetHandler\Asset\Definition\Source;
 use CPSIT\FrontendAssetHandler\Asset\Definition\Target;
 use CPSIT\FrontendAssetHandler\Asset\ProcessedAsset;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -36,9 +37,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class ProcessedAssetTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsProcessedTargetPath(): void
     {
         $processedTargetPath = 'foo';

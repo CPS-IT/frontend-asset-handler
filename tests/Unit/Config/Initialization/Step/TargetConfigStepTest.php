@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Config\Initialization\Step;
 use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Processor;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console;
 
 /**
@@ -53,9 +54,7 @@ final class TargetConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         $this->request = $this->createRequest($this->subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeUsesDefaultTargetTypeIfUserEntersNothing(): void
     {
         $input = $this->request->getInput();
@@ -71,9 +70,7 @@ final class TargetConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeShowsErrorIfGivenTargetTypeIsNotSupported(): void
     {
         $input = $this->request->getInput();
@@ -93,9 +90,7 @@ final class TargetConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('Value "foo" is invalid', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeAsksForBaseArchivePathForTargetTypeArchive(): void
     {
         $input = $this->request->getInput();
@@ -115,9 +110,7 @@ final class TargetConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('Base archive path', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeDoesNotAskForBaseArchivePathIfTargetTypeIsNotArchive(): void
     {
         $input = $this->request->getInput();
@@ -134,9 +127,7 @@ final class TargetConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringNotContainsString('Base archive path', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeShowErrorIfGivenTargetConfigExtraIsNotValidJson(): void
     {
         $input = $this->request->getInput();
@@ -152,9 +143,7 @@ final class TargetConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('JSON is invalid.', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeMergesTargetConfigExtraWithAdditionalVariables(): void
     {
         $input = $this->request->getInput();

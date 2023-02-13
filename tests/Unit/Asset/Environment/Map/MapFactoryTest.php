@@ -38,6 +38,8 @@ use CPSIT\FrontendAssetHandler\Exception\UnsupportedTypeException;
 use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
 use Exception;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * MapFactoryTest.
@@ -56,27 +58,20 @@ final class MapFactoryTest extends ContainerAwareTestCase
         $this->subject = $this->container->get(MapFactory::class);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider createDefaultReturnsDefaultMapDataProvider
-     */
+    #[Test]
+    #[DataProvider('createDefaultReturnsDefaultMapDataProvider')]
     public function createDefaultReturnsDefaultMap(?string $version, Map $expected): void
     {
         self::assertEquals($expected, MapFactory::createDefault($version));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createEmptyReturnsEmptyMap(): void
     {
         self::assertEquals(new Map([]), MapFactory::createEmpty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromArrayThrowsExceptionOnInvalidTransformerConfiguration(): void
     {
         $this->expectException(MissingConfigurationException::class);
@@ -87,9 +82,7 @@ final class MapFactoryTest extends ContainerAwareTestCase
         $this->subject->createFromArray(['foo' => null]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromArrayThrowsExceptionOnInvalidTransformerType(): void
     {
         $this->expectException(MissingConfigurationException::class);
@@ -103,9 +96,7 @@ final class MapFactoryTest extends ContainerAwareTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromArrayThrowsExceptionOnMissingTransformerClass(): void
     {
         $this->expectException(UnsupportedClassException::class);
@@ -123,9 +114,7 @@ final class MapFactoryTest extends ContainerAwareTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromArrayThrowsExceptionOnInvalidTransformerClass(): void
     {
         $this->expectException(UnsupportedClassException::class);
@@ -143,9 +132,7 @@ final class MapFactoryTest extends ContainerAwareTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromArrayThrowsExceptionOnUnsupportedTransformerType(): void
     {
         $this->expectException(UnsupportedTypeException::class);
@@ -159,9 +146,7 @@ final class MapFactoryTest extends ContainerAwareTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromArrayReturnsMapFromGivenConfigArray(): void
     {
         $config = [
@@ -189,7 +174,7 @@ final class MapFactoryTest extends ContainerAwareTestCase
     /**
      * @return Generator<string, array{string|null, Map}>
      */
-    public function createDefaultReturnsDefaultMapDataProvider(): Generator
+    public static function createDefaultReturnsDefaultMapDataProvider(): Generator
     {
         $latestTransformer = new StaticTransformer(Environment::Latest->value);
         $passthroughTransformer = new PassthroughTransformer();

@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Console\Output;
 use CPSIT\FrontendAssetHandler\Console;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console as SymfonyConsole;
 
@@ -46,9 +47,7 @@ final class TrackableOutputTest extends TestCase
         $this->subject = new Console\Output\TrackableOutput($this->output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function startProgressThrowsExceptionIfParentOutputIsNotSupported(): void
     {
         $output = new SymfonyConsole\Output\NullOutput();
@@ -59,9 +58,7 @@ final class TrackableOutputTest extends TestCase
         $subject->startProgress('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function startProgressStartsProgressAndReturnsTrackableProgress(): void
     {
         $actual = $this->subject->startProgress('Do something...');

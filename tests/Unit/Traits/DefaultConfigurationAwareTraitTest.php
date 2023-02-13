@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Traits;
 use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -46,9 +47,7 @@ final class DefaultConfigurationAwareTraitTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function applyDefaultConfigurationMergesDefaultConfigurationWithAssetDefinition(): void
     {
         $assetDefinition = new Asset\Definition\Source([
@@ -66,9 +65,7 @@ final class DefaultConfigurationAwareTraitTest extends TestCase
         self::assertSame($expected, $assetDefinition->getConfig());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAssetDefinitionDoesNothingIfAssetDefinitionIsValid(): void
     {
         $assetDefinition = new Asset\Definition\Source([
@@ -80,9 +77,7 @@ final class DefaultConfigurationAwareTraitTest extends TestCase
         $this->subject->runValidateAssetDefinition($assetDefinition);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAssetDefinitionThrowsExceptionIfAssetDefinitionIsInvalid(): void
     {
         $assetDefinition = new Asset\Definition\Source([]);

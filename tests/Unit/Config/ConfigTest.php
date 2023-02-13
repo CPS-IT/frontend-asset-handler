@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Config;
 
 use ArrayObject;
 use CPSIT\FrontendAssetHandler\Config\Config;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -53,34 +54,26 @@ final class ConfigTest extends TestCase
         $this->subject = new Config($this->config, 'foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorBuildsIterableArrayObject(): void
     {
         self::assertInstanceOf(ArrayObject::class, $this->subject);
         self::assertIsIterable($this->subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilePathReturnsFilePath(): void
     {
         self::assertSame('foo', $this->subject->getFilePath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function asArrayReturnsConfigArray(): void
     {
         self::assertSame($this->config, $this->subject->asArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeAccessedAsArray(): void
     {
         self::assertSame($this->config['frontend-assets'], $this->subject['frontend-assets']);

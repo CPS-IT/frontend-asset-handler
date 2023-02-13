@@ -28,6 +28,8 @@ use CPSIT\FrontendAssetHandler\Config\Writer\ExternalJsonFileWriter;
 use CPSIT\FrontendAssetHandler\Exception\UnprocessableConfigFileException;
 use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Filesystem\Filesystem;
 
 use function dirname;
@@ -51,9 +53,7 @@ final class ExternalJsonFileWriterTest extends ContainerAwareTestCase
         $this->filesystem = $this->container->get(Filesystem::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeCreatesANewConfigFileIfItDoesNotExistYet(): void
     {
         $targetFile = $this->filesystem->tempnam(sys_get_temp_dir(), 'fah_assets.json_');
@@ -91,9 +91,7 @@ final class ExternalJsonFileWriterTest extends ContainerAwareTestCase
         self::assertJsonStringEqualsJsonFile($targetFile, $expected);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeThrowsExceptionIfOriginalFileIsNotSupported(): void
     {
         $originalFile = dirname(__DIR__, 2).'/Fixtures/JsonFiles/unsupported-json.json';
@@ -108,9 +106,7 @@ final class ExternalJsonFileWriterTest extends ContainerAwareTestCase
         $this->subject->write($config);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeMergesOriginalFileWithGivenConfig(): void
     {
         $originalFile = dirname(__DIR__, 2).'/Fixtures/JsonFiles/assets.json';
@@ -151,9 +147,7 @@ final class ExternalJsonFileWriterTest extends ContainerAwareTestCase
         $this->filesystem->remove($targetFile);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canWriteReturnsTrueIfGivenFileIsNoComposerJsonFile(): void
     {
         $config = new Config([], '/foo/baz/assets.json');
@@ -161,9 +155,7 @@ final class ExternalJsonFileWriterTest extends ContainerAwareTestCase
         self::assertTrue(ExternalJsonFileWriter::canWrite($config));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canWriteReturnsFalseIfGivenFileIsNoJsonFile(): void
     {
         $config = new Config([], '/foo/baz/image.png');
@@ -171,11 +163,8 @@ final class ExternalJsonFileWriterTest extends ContainerAwareTestCase
         self::assertFalse(ExternalJsonFileWriter::canWrite($config));
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider canWriteReturnsFalseIfGivenFileIsComposerJsonFileDataProvider
-     */
+    #[Test]
+    #[DataProvider('canWriteReturnsFalseIfGivenFileIsComposerJsonFileDataProvider')]
     public function canWriteReturnsFalseIfGivenFileIsComposerJsonFile(string $filePath): void
     {
         $config = new Config([], $filePath);
@@ -186,7 +175,7 @@ final class ExternalJsonFileWriterTest extends ContainerAwareTestCase
     /**
      * @return \Generator<string, array{string}>
      */
-    public function canWriteReturnsFalseIfGivenFileIsComposerJsonFileDataProvider(): Generator
+    public static function canWriteReturnsFalseIfGivenFileIsComposerJsonFileDataProvider(): Generator
     {
         yield 'absolute path' => ['/foo/baz/composer.json'];
         yield 'relative path' => ['../baz/composer.json'];

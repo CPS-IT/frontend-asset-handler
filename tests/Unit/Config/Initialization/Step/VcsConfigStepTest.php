@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Config\Initialization\Step;
 use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Tests;
 use CPSIT\FrontendAssetHandler\Vcs;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console;
 
 /**
@@ -53,9 +54,7 @@ final class VcsConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         $this->request = $this->createRequest($this->subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeDoesNothingIfUserSkipsConfiguration(): void
     {
         $input = $this->request->getInput();
@@ -72,9 +71,7 @@ final class VcsConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('Add VCS configuration?', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeSkipsUserConfirmationIfVcsTypeRequestOptionIsGiven(): void
     {
         $input = $this->request->getInput();
@@ -96,9 +93,7 @@ final class VcsConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringNotContainsString('Add VCS configuration?', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeShowsErrorIfGivenTargetTypeIsNotSupported(): void
     {
         $input = $this->request->getInput();
@@ -118,9 +113,7 @@ final class VcsConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('Value "foo" is invalid', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeAsksForBaseUrlForVcsTypeGitlab(): void
     {
         $input = $this->request->getInput();
@@ -140,9 +133,7 @@ final class VcsConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('Base URL', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeAsksForAccessTokenForVcsTypeGitlab(): void
     {
         $input = $this->request->getInput();
@@ -162,9 +153,7 @@ final class VcsConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('Access token', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeAsksForProjectIdForVcsTypeGitlab(): void
     {
         $input = $this->request->getInput();
@@ -184,9 +173,7 @@ final class VcsConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('Project ID', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeAsksForAccessTokenForVcsTypeGithub(): void
     {
         $input = $this->request->getInput();
@@ -206,9 +193,7 @@ final class VcsConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('Access token', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeAsksForRepositoryForVcsTypeGithub(): void
     {
         $input = $this->request->getInput();
@@ -228,9 +213,7 @@ final class VcsConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('Repository (<owner>/<name>)', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeShowErrorIfGivenVcsConfigExtraIsNotValidJson(): void
     {
         $input = $this->request->getInput();
@@ -246,9 +229,7 @@ final class VcsConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('JSON is invalid.', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeMergesVcsConfigExtraWithAdditionalVariables(): void
     {
         $input = $this->request->getInput();

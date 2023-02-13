@@ -27,6 +27,8 @@ use CPSIT\FrontendAssetHandler\Command;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Tests;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Filesystem;
 use UnexpectedValueException;
 
@@ -50,9 +52,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         $this->filesystem = $this->container->get(Filesystem\Filesystem::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeFailsAndWritesErrorIfPathIsEmpty(): void
     {
         $exitCode = $this->commandTester->execute([]);
@@ -62,12 +62,10 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
     }
 
     /**
-     * @test
-     *
-     * @dataProvider executeFailsAndWritesErrorIfConflictingParametersAreGivenDataProvider
-     *
      * @param array<string, bool|string> $input
      */
+    #[Test]
+    #[DataProvider('executeFailsAndWritesErrorIfConflictingParametersAreGivenDataProvider')]
     public function executeFailsAndWritesErrorIfConflictingParametersAreGiven(array $input, string $expected): void
     {
         $exitCode = $this->commandTester->execute($input);
@@ -76,9 +74,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         self::assertStringContainsString($expected, $this->commandTester->getDisplay());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeThrowsExceptionIfNoConfigFileIsConfigured(): void
     {
         $this->initializeCommandTester();
@@ -91,9 +87,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeThrowsExceptionIfPlaceholderProcessorsAreFailing(): void
     {
         $this->initializeCommandTester(dirname(__DIR__).'/Fixtures/JsonFiles/placeholder-assets.json');
@@ -109,12 +103,10 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
     }
 
     /**
-     * @test
-     *
-     * @dataProvider executeUnsetsConfigurationAtGivenPathDataProvider
-     *
      * @param array{frontend-assets: list<array<string, array<string, mixed>>>} $expected
      */
+    #[Test]
+    #[DataProvider('executeUnsetsConfigurationAtGivenPathDataProvider')]
     public function executeUnsetsConfigurationAtGivenPath(string $path, array $expected): void
     {
         $exitCode = $this->commandTester->execute([
@@ -131,9 +123,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         self::assertJsonStringEqualsJsonFile($this->configFile, json_encode($expected, JSON_THROW_ON_ERROR));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeThrowsExceptionIfConfigurationIsInvalidAfterUnset(): void
     {
         $this->expectException(Exception\InvalidConfigurationException::class);
@@ -148,9 +138,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeFailsAndPrintsErrorIfEssentialConfigIsMissing(): void
     {
         $this->initializeCommandTester(dirname(__DIR__).'/Fixtures/JsonFiles/invalid-assets.json');
@@ -166,9 +154,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         self::assertMatchesRegularExpression('/\[0]\[source]\[url]\s+The property url is required/', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executePrintsSuccessMessageIfConfigIsValid(): void
     {
         $exitCode = $this->commandTester->execute([
@@ -179,9 +165,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         self::assertStringContainsString('Your asset configuration is valid.', $this->commandTester->getDisplay());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeThrowsExceptionIfGivenPathIsAmbiguous(): void
     {
         $this->expectExceptionObject(Exception\InvalidConfigurationException::forAmbiguousKey('source'));
@@ -191,9 +175,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeThrowsExceptionIfGivenPathDoesNotExist(): void
     {
         $this->expectExceptionObject(Exception\MissingConfigurationException::forKey('0/foo'));
@@ -203,9 +185,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeFallsBackToFirstAssetDefinitionIfOnlyASingleAssetDefinitionIsConfigured(): void
     {
         $this->initializeCommandTester(dirname(__DIR__).'/Fixtures/JsonFiles/single-assets.json');
@@ -222,9 +202,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeReturnsConfigurationForGivenPath(): void
     {
         $exitCode = $this->commandTester->execute([
@@ -239,9 +217,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeThrowsExceptionIfNewConfigIsInvalid(): void
     {
         $this->expectException(Exception\InvalidConfigurationException::class);
@@ -253,9 +229,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeWritesNewValueToGivenPath(): void
     {
         $originalFile = $this->container->get('app.cache')->getConfigFile()
@@ -278,9 +252,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         $this->filesystem->remove($targetFile);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeWritesJsonEncodedNewValueToGivenPath(): void
     {
         $originalFile = $this->container->get('app.cache')->getConfigFile()
@@ -310,7 +282,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
     /**
      * @return \Generator<string, array{array<string, bool|string>, string}>
      */
-    public function executeFailsAndWritesErrorIfConflictingParametersAreGivenDataProvider(): Generator
+    public static function executeFailsAndWritesErrorIfConflictingParametersAreGivenDataProvider(): Generator
     {
         yield 'unset and new value' => [
             [
@@ -350,7 +322,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
     /**
      * @return \Generator<string, array{string, array{frontend-assets: list<array<string, string|array<string, mixed>>>}}>
      */
-    public function executeUnsetsConfigurationAtGivenPathDataProvider(): Generator
+    public static function executeUnsetsConfigurationAtGivenPathDataProvider(): Generator
     {
         $firstAssetDefinition = [
             'handler' => 'dummy',

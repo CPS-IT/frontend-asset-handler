@@ -27,6 +27,7 @@ use CPSIT\FrontendAssetHandler\Console;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Handler;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console as SymfonyConsole;
 use Symfony\Component\DependencyInjection;
 
@@ -58,9 +59,7 @@ final class HandlerFactoryTest extends Tests\Unit\ContainerAwareTestCase
         $this->subject->setOutput($this->output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfGivenTypeIsNotSupported(): void
     {
         $this->expectExceptionObject(Exception\UnsupportedTypeException::create('foo'));
@@ -68,9 +67,7 @@ final class HandlerFactoryTest extends Tests\Unit\ContainerAwareTestCase
         $this->subject->get('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfResolvedProviderClassIsInvalid(): void
     {
         $this->expectExceptionObject(Exception\UnsupportedClassException::create(\Exception::class));
@@ -78,9 +75,7 @@ final class HandlerFactoryTest extends Tests\Unit\ContainerAwareTestCase
         $this->subject->get('invalid');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsInstantiatedProviderOfGivenType(): void
     {
         $actual = $this->subject->get('dummy');
@@ -88,9 +83,7 @@ final class HandlerFactoryTest extends Tests\Unit\ContainerAwareTestCase
         self::assertInstanceOf(Tests\Unit\Fixtures\Classes\DummyHandler::class, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAppliesOutputToChattyHandlers(): void
     {
         $actual = $this->subject->get('dummy');
@@ -100,9 +93,7 @@ final class HandlerFactoryTest extends Tests\Unit\ContainerAwareTestCase
         self::assertSame($this->output, $actual->output->getOutput());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReturnsTrueIfGivenTypeIsAvailable(): void
     {
         self::assertTrue($this->subject->has('dummy'));

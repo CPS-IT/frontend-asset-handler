@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset\Environment;
 use CPSIT\FrontendAssetHandler\Asset\Environment\Environment;
 use CPSIT\FrontendAssetHandler\Asset\Environment\EnvironmentResolver;
 use CPSIT\FrontendAssetHandler\Asset\Environment\Map\MapFactory;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -43,17 +44,13 @@ final class EnvironmentResolverTest extends TestCase
         $this->subject = new EnvironmentResolver(MapFactory::createDefault());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveReturnsDefaultEnvironmentIfGivenBranchDoesNotMatch(): void
     {
         self::assertSame(Environment::Stable->value, $this->subject->resolve('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveReturnsTransformedEnvironment(): void
     {
         self::assertSame(Environment::Stable->value, $this->subject->resolve('main'));
@@ -67,9 +64,7 @@ final class EnvironmentResolverTest extends TestCase
         self::assertSame(Environment::Stable->value, $this->subject->resolve('test/foo.foo.foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMapReturnsMap(): void
     {
         self::assertEquals(MapFactory::createDefault(), $this->subject->getMap());

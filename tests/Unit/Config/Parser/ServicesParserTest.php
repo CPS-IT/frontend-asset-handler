@@ -26,6 +26,8 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Config\Parser;
 use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Exception;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function dirname;
@@ -45,9 +47,7 @@ final class ServicesParserTest extends TestCase
         $this->subject = new Config\Parser\ServicesParser();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDoesNothingIfNoServicesAreConfiguredInGivenConfig(): void
     {
         $config = new Config\Config([], 'foo');
@@ -56,9 +56,7 @@ final class ServicesParserTest extends TestCase
         self::assertEquals($expected, $this->subject->parse($config));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseThrowsExceptionIfServiceConfigurationIsMissing(): void
     {
         $config = new Config\Config(['services' => ['/foo']], 'foo');
@@ -68,9 +66,7 @@ final class ServicesParserTest extends TestCase
         $this->subject->parse($config);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseThrowsExceptionIfServiceConfigurationIsNotSupported(): void
     {
         $filePath = dirname(__DIR__, 2).'/Fixtures/JsonFiles/assets.json';
@@ -81,9 +77,7 @@ final class ServicesParserTest extends TestCase
         $this->subject->parse($config);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseThrowsExceptionIfServiceConfigurationIsInvalid(): void
     {
         $filePath = dirname(__DIR__, 2).'/Fixtures/PhpFiles/invalid-service.php';
@@ -94,9 +88,7 @@ final class ServicesParserTest extends TestCase
         $this->subject->parse($config);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseThrowsExceptionIfServiceConfigurationIsIncomplete(): void
     {
         $filePath = dirname(__DIR__, 2).'/Fixtures/PhpFiles/incomplete-service.php';
@@ -107,11 +99,8 @@ final class ServicesParserTest extends TestCase
         $this->subject->parse($config);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider parseParsesSupportedFilesDataProvider
-     */
+    #[Test]
+    #[DataProvider('parseParsesSupportedFilesDataProvider')]
     public function parseParsesSupportedFiles(string $filePath): void
     {
         $config = new Config\Config(['services' => [$filePath]], 'foo');
@@ -122,7 +111,7 @@ final class ServicesParserTest extends TestCase
     /**
      * @return Generator<string, array{string}>
      */
-    public function parseParsesSupportedFilesDataProvider(): Generator
+    public static function parseParsesSupportedFilesDataProvider(): Generator
     {
         $basePath = dirname(__DIR__, 2).'/Fixtures';
 

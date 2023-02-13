@@ -32,6 +32,8 @@ use CPSIT\FrontendAssetHandler\Asset\Environment\Map\MapFactory;
 use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
 use CPSIT\FrontendAssetHandler\Vcs\GitlabVcsProvider;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * AssetDefinitionFactoryTest.
@@ -51,20 +53,16 @@ final class AssetDefinitionFactoryTest extends ContainerAwareTestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider buildSourceReturnsGeneratedSourceDataProvider
-     *
      * @param array{environments?: array<string, mixed>, source?: array<string, mixed>} $config
      */
+    #[Test]
+    #[DataProvider('buildSourceReturnsGeneratedSourceDataProvider')]
     public function buildSourceReturnsGeneratedSource(array $config, Source $expected): void
     {
         self::assertEquals($expected, $this->subject->buildSource($config, 'main'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildTargetReturnsGeneratedTarget(): void
     {
         $target = new Target(['foo' => 'baz']);
@@ -72,21 +70,17 @@ final class AssetDefinitionFactoryTest extends ContainerAwareTestCase
         self::assertEquals($target, $this->subject->buildTarget(['target' => ['foo' => 'baz']]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildVcsReturnsNullIfVcsConfigIsMissingOrInvalid(): void
     {
         self::assertNull($this->subject->buildVcs([], 'main'));
     }
 
     /**
-     * @test
-     *
-     * @dataProvider buildVcsReturnsGeneratedVcsDataProvider
-     *
      * @param array{environments?: array<string, mixed>, source?: array<string, mixed>, vcs?: array<string, mixed>} $config
      */
+    #[Test]
+    #[DataProvider('buildVcsReturnsGeneratedVcsDataProvider')]
     public function buildVcsReturnsGeneratedVcs(array $config, Vcs $expected): void
     {
         self::assertEquals($expected, $this->subject->buildVcs($config, 'main'));
@@ -95,7 +89,7 @@ final class AssetDefinitionFactoryTest extends ContainerAwareTestCase
     /**
      * @return Generator<string, array{array{environments?: array<string, mixed>, source?: array<string, mixed>}, Source}>
      */
-    public function buildSourceReturnsGeneratedSourceDataProvider(): Generator
+    public static function buildSourceReturnsGeneratedSourceDataProvider(): Generator
     {
         $buildSource = function (string $environment, bool $isVersion = false): Source {
             $source = new Source(['environment' => $environment]);
@@ -142,7 +136,7 @@ final class AssetDefinitionFactoryTest extends ContainerAwareTestCase
     /**
      * @return Generator<string, array{array{environments?: array<string, mixed>, source?: array<string, mixed>, vcs?: array<string, mixed>}, Vcs}>
      */
-    public function buildVcsReturnsGeneratedVcsDataProvider(): Generator
+    public static function buildVcsReturnsGeneratedVcsDataProvider(): Generator
     {
         $buildVcs = fn (string $environment): Vcs => new Vcs([
             'type' => GitlabVcsProvider::getName(),

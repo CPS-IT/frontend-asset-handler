@@ -32,6 +32,7 @@ use CPSIT\FrontendAssetHandler\Exception\UnsupportedAssetException;
 use CPSIT\FrontendAssetHandler\Processor\ExistingAssetProcessor;
 use CPSIT\FrontendAssetHandler\Tests\Unit\BufferedConsoleOutput;
 use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 use function dirname;
 
@@ -55,9 +56,7 @@ final class ExistingAssetProcessorTest extends ContainerAwareTestCase
         $this->subject->setOutput($this->output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAssetThrowsExceptionIfTargetPathDoesNotExist(): void
     {
         $asset = new Asset(new Source([]), new Target(['path' => 'foo']));
@@ -69,9 +68,7 @@ final class ExistingAssetProcessorTest extends ContainerAwareTestCase
         $this->subject->processAsset($asset);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAssetPrintsRevisionProvidedByAssetTarget(): void
     {
         $target = new Target([
@@ -84,9 +81,7 @@ final class ExistingAssetProcessorTest extends ContainerAwareTestCase
         self::assertSame('Frontend revision: 0987654321', trim($this->output->fetch()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAssetPrintsRevisionProvidedByRevisionFile(): void
     {
         $target = new Target([
@@ -99,9 +94,7 @@ final class ExistingAssetProcessorTest extends ContainerAwareTestCase
         self::assertSame('Frontend revision: 1234567890', trim($this->output->fetch()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAssetDoesNotPrintRevisionIfNoRevisionIsAvailable(): void
     {
         $target = new Target([
@@ -113,9 +106,7 @@ final class ExistingAssetProcessorTest extends ContainerAwareTestCase
         self::assertSame('', trim($this->output->fetch()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAssetPathThrowsExceptionIfAssetTargetIsNotDefined(): void
     {
         $asset = new Asset(new Source([]));
@@ -129,9 +120,7 @@ final class ExistingAssetProcessorTest extends ContainerAwareTestCase
         $this->subject->getAssetPath($asset);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAssetPathReturnsAssetsTargetPath(): void
     {
         $asset = new Asset(new Source([]), new Target(['path' => '/foo/baz']));

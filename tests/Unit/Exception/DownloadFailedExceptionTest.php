@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Exception;
 
 use CPSIT\FrontendAssetHandler\Exception\DownloadFailedException;
 use Exception;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -35,9 +36,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class DownloadFailedExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsException(): void
     {
         $previous = new Exception('dummy');
@@ -49,9 +48,7 @@ final class DownloadFailedExceptionTest extends TestCase
         self::assertSame($previous, $subject->getPrevious());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forUnauthorizedRequestReturnsException(): void
     {
         $previous = new Exception('dummy');
@@ -63,9 +60,7 @@ final class DownloadFailedExceptionTest extends TestCase
         self::assertSame($previous, $subject->getPrevious());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forUnavailableRequestReturnsException(): void
     {
         $previous = new Exception('dummy');
@@ -77,9 +72,7 @@ final class DownloadFailedExceptionTest extends TestCase
         self::assertSame($previous, $subject->getPrevious());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forFailedVerificationReturnsException(): void
     {
         $previous = new Exception('dummy');

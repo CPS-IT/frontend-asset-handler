@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Exception;
 
 use CPSIT\FrontendAssetHandler\Exception\MissingConfigurationException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,9 +35,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class MissingConfigurationExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsExceptionForMissingConfiguration(): void
     {
         $subject = MissingConfigurationException::create();
@@ -46,9 +45,7 @@ final class MissingConfigurationExceptionTest extends TestCase
         self::assertSame(1661844293, $subject->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forKeyReturnsExceptionForGivenKey(): void
     {
         $subject = MissingConfigurationException::forKey('foo');

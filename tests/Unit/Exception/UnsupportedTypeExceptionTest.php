@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Exception;
 
 use CPSIT\FrontendAssetHandler\Exception\UnsupportedTypeException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,9 +35,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class UnsupportedTypeExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsExceptionForGivenType(): void
     {
         $subject = UnsupportedTypeException::create('foo');
@@ -46,9 +45,7 @@ final class UnsupportedTypeExceptionTest extends TestCase
         self::assertSame(1624618683, $subject->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forTypeMismatchReturnsExceptionForGivenTypes(): void
     {
         $subject = UnsupportedTypeException::forTypeMismatch('foo', 'baz');

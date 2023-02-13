@@ -33,6 +33,7 @@ use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
 use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyAssetDefinition;
 use Exception;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -54,9 +55,7 @@ final class RevisionProviderTest extends ContainerAwareTestCase
         $this->subject = new RevisionProvider($this->getPreparedClient(), $this->container->get(Filesystem::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRevisionThrowsExceptionForUnsupportedAssetDefinition(): void
     {
         $definition = new DummyAssetDefinition([]);
@@ -68,9 +67,7 @@ final class RevisionProviderTest extends ContainerAwareTestCase
         $this->subject->getRevision($definition);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRevisionReturnsSourceRevisionOfCustomRevisionUrl(): void
     {
         $definition = new Source(['revision-url' => 'https://www.example.com']);
@@ -89,9 +86,7 @@ final class RevisionProviderTest extends ContainerAwareTestCase
         $this->assertLastRequestMatchesUrl('https://www.example.com');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRevisionReturnsSourceRevisionFromRevisionUrl(): void
     {
         $definition = new Source([
@@ -114,9 +109,7 @@ final class RevisionProviderTest extends ContainerAwareTestCase
         $this->assertLastRequestMatchesUrl('https://www.example.com/assets/latest/revision.txt');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRevisionReturnsNullIfAllRevisionUrlsAreErroneous(): void
     {
         $definition = new Source([
@@ -131,9 +124,7 @@ final class RevisionProviderTest extends ContainerAwareTestCase
         self::assertNull($this->subject->getRevision($definition));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRevisionReturnsNullIfNoRevisionUrlIsGiven(): void
     {
         $definition = new Source([
@@ -144,9 +135,7 @@ final class RevisionProviderTest extends ContainerAwareTestCase
         self::assertNull($this->subject->getRevision($definition));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRevisionReturnsTargetRevisionDerivedFromLocalRevisionFile(): void
     {
         $definition = new Target([
@@ -162,9 +151,7 @@ final class RevisionProviderTest extends ContainerAwareTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRevisionReturnsNullIfLocalRevisionFileDoesNotExist(): void
     {
         $definition = new Target([

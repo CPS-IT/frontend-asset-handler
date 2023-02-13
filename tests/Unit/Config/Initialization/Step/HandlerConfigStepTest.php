@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Config\Initialization\Step;
 use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Handler\AssetHandler;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console;
 
 /**
@@ -53,9 +54,7 @@ final class HandlerConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         $this->request = $this->createRequest($this->subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeUsesDefaultHandlerTypeIfUserEntersNothing(): void
     {
         $input = $this->request->getInput();
@@ -71,9 +70,7 @@ final class HandlerConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeShowsErrorIfGivenHandlerTypeIsNotSupported(): void
     {
         $input = $this->request->getInput();

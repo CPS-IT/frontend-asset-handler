@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Exception;
 
 use CPSIT\FrontendAssetHandler\Exception\UnsupportedDefinitionException;
 use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyAssetDefinition;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -35,9 +36,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class UnsupportedDefinitionExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsExceptionForGivenType(): void
     {
         $definition = new DummyAssetDefinition([]);

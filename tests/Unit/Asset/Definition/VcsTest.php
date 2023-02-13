@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset\Definition;
 
 use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Exception;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,9 +43,7 @@ final class VcsTest extends TestCase
         $this->subject = new Asset\Definition\Vcs(['type' => 'foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfTypeIsMissing(): void
     {
         $this->expectExceptionObject(Exception\MissingConfigurationException::forKey('vcs/type'));
@@ -52,9 +51,7 @@ final class VcsTest extends TestCase
         new Asset\Definition\Vcs([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeReturnsType(): void
     {
         self::assertSame('foo', $this->subject->getType());
@@ -63,9 +60,7 @@ final class VcsTest extends TestCase
         self::assertSame('baz', $this->subject->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getEnvironmentReturnsEnvironmentOrNull(): void
     {
         self::assertNull($this->subject->getEnvironment());

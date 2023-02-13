@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset\Definition;
 
 use CPSIT\FrontendAssetHandler\Asset\Definition\Target;
 use CPSIT\FrontendAssetHandler\Asset\Revision\Revision;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,9 +43,7 @@ final class TargetTest extends TestCase
         $this->subject = new Target([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeReturnsType(): void
     {
         self::assertSame('archive', $this->subject->getType());
@@ -53,9 +52,7 @@ final class TargetTest extends TestCase
         self::assertSame('foo', $this->subject->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathReturnsPathOrNull(): void
     {
         self::assertNull($this->subject->getPath());
@@ -64,9 +61,7 @@ final class TargetTest extends TestCase
         self::assertSame('foo', $this->subject->getPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRevisionFileReturnsCustomRevisionFileOrDefaultRevisionFile(): void
     {
         self::assertSame(Target::DEFAULT_REVISION_FILE, $this->subject->getRevisionFile());
@@ -75,9 +70,7 @@ final class TargetTest extends TestCase
         self::assertSame('foo', $this->subject->getRevisionFile());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRevisionReturnsRevisionOrNull(): void
     {
         self::assertNull($this->subject->getRevision());

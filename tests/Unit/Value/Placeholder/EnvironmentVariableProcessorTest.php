@@ -26,6 +26,8 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Value\Placeholder;
 use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
 use CPSIT\FrontendAssetHandler\Value\Placeholder\EnvironmentVariableProcessor;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use UnexpectedValueException;
 
 use function putenv;
@@ -47,19 +49,14 @@ final class EnvironmentVariableProcessorTest extends ContainerAwareTestCase
         $this->subject = $this->container->get(EnvironmentVariableProcessor::class);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider canProcessTestsWhetherGivenPlaceholderContainsEnvironmentVariablePlaceholderDataProvider
-     */
+    #[Test]
+    #[DataProvider('canProcessTestsWhetherGivenPlaceholderContainsEnvironmentVariablePlaceholderDataProvider')]
     public function canProcessTestsWhetherGivenPlaceholderContainsEnvironmentVariablePlaceholder(string $placeholder, bool $expected): void
     {
         self::assertSame($expected, $this->subject->canProcess($placeholder));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processThrowsExceptionIfGivenPlaceholderCannotBeProcessed(): void
     {
         $this->expectException(UnexpectedValueException::class);
@@ -68,9 +65,7 @@ final class EnvironmentVariableProcessorTest extends ContainerAwareTestCase
         $this->subject->process('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processThrowsExceptionIfRequiredEnvironmentVariableIsNotSet(): void
     {
         // Ensure environment variable is not set
@@ -82,11 +77,8 @@ final class EnvironmentVariableProcessorTest extends ContainerAwareTestCase
         $this->subject->process('%env(foo)%');
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider processReplacesEnvironmentPlaceholderWithEnvironmentVariableDataProvider
-     */
+    #[Test]
+    #[DataProvider('processReplacesEnvironmentPlaceholderWithEnvironmentVariableDataProvider')]
     public function processReplacesEnvironmentPlaceholderWithEnvironmentVariable(string $placeholder, string $expected): void
     {
         putenv('foo=baz');
@@ -104,7 +96,7 @@ final class EnvironmentVariableProcessorTest extends ContainerAwareTestCase
     /**
      * @return \Generator<string, array{string, bool}>
      */
-    public function canProcessTestsWhetherGivenPlaceholderContainsEnvironmentVariablePlaceholderDataProvider(): Generator
+    public static function canProcessTestsWhetherGivenPlaceholderContainsEnvironmentVariablePlaceholderDataProvider(): Generator
     {
         yield 'empty string' => ['', false];
         yield 'static value' => ['foo', false];
@@ -116,7 +108,7 @@ final class EnvironmentVariableProcessorTest extends ContainerAwareTestCase
     /**
      * @return \Generator<string, array{string, string}>
      */
-    public function processReplacesEnvironmentPlaceholderWithEnvironmentVariableDataProvider(): Generator
+    public static function processReplacesEnvironmentPlaceholderWithEnvironmentVariableDataProvider(): Generator
     {
         yield 'placeholder only' => ['%env(foo)%', 'baz'];
         yield 'one placeholder with surrounding text' => ['Hello, %env(foo)%!', 'Hello, baz!'];
