@@ -32,6 +32,8 @@ use CPSIT\FrontendAssetHandler\Tests;
 use CPSIT\FrontendAssetHandler\Vcs;
 use Generator;
 use GuzzleHttp\Psr7;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection;
 
 use function dirname;
@@ -79,9 +81,7 @@ final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCa
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeThrowsExceptionIfGivenBranchIsEmpty(): void
     {
         $this->expectExceptionObject(Exception\UnsupportedEnvironmentException::forMissingVCS());
@@ -91,9 +91,7 @@ final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCa
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeThrowsExceptionIfGivenBranchIsInvalid(): void
     {
         $this->expectExceptionObject(Exception\UnsupportedEnvironmentException::forInvalidEnvironment('   '));
@@ -103,9 +101,7 @@ final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCa
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeDescribesAllAssets(): void
     {
         $exitCode = $this->commandTester->execute(
@@ -132,12 +128,10 @@ final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCa
     }
 
     /**
-     * @test
-     *
-     * @dataProvider executeUsesDifferentRevisionDiffSymbolsDataProvider
-     *
      * @param list<string|null> $revisions
      */
+    #[Test]
+    #[DataProvider('executeUsesDifferentRevisionDiffSymbolsDataProvider')]
     public function executeUsesDifferentRevisionDiffSymbols(array $revisions, string $expected): void
     {
         $this->revisionProvider->expectedRevisions = $revisions;
@@ -156,9 +150,7 @@ final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCa
         self::assertMatchesRegularExpression(sprintf('/Target revision\s+%s/', preg_quote($expected)), $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeWaitsForActiveDeploymentsToFinish(): void
     {
         $this->vcsProvider->expectedDeployments = [
@@ -189,7 +181,7 @@ final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCa
     /**
      * @return Generator<string, array{list<string|null>, string}>
      */
-    public function executeUsesDifferentRevisionDiffSymbolsDataProvider(): Generator
+    public static function executeUsesDifferentRevisionDiffSymbolsDataProvider(): Generator
     {
         $revision = '1234567890';
         $outdatedRevision = '0987654321';

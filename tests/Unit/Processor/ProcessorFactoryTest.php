@@ -27,6 +27,7 @@ use CPSIT\FrontendAssetHandler\Console;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Processor;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console as SymfonyConsole;
 use Symfony\Component\DependencyInjection;
 
@@ -59,9 +60,7 @@ final class ProcessorFactoryTest extends Tests\Unit\ContainerAwareTestCase
         $this->subject->setOutput($this->output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfGivenTypeIsNotSupported(): void
     {
         $this->expectExceptionObject(Exception\UnsupportedTypeException::create('foo'));
@@ -69,9 +68,7 @@ final class ProcessorFactoryTest extends Tests\Unit\ContainerAwareTestCase
         $this->subject->get('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfResolvedProcessorClassIsInvalid(): void
     {
         $this->expectExceptionObject(Exception\UnsupportedClassException::create(\Exception::class));
@@ -79,9 +76,7 @@ final class ProcessorFactoryTest extends Tests\Unit\ContainerAwareTestCase
         $this->subject->get('invalid');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsInstantiatedProcessorOfGivenType(): void
     {
         $actual = $this->subject->get('dummy');
@@ -89,9 +84,7 @@ final class ProcessorFactoryTest extends Tests\Unit\ContainerAwareTestCase
         self::assertInstanceOf(Tests\Unit\Fixtures\Classes\DummyProcessor::class, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAppliesOutputToChattyProcessors(): void
     {
         $actual = $this->subject->get('dummy');
@@ -101,9 +94,7 @@ final class ProcessorFactoryTest extends Tests\Unit\ContainerAwareTestCase
         self::assertSame($this->output, $actual->output->getOutput());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReturnsTrueIfGivenTypeIsAvailable(): void
     {
         self::assertTrue($this->subject->has('dummy'));

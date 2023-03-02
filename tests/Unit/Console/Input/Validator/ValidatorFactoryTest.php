@@ -26,6 +26,8 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Console\Input\Validator;
 use CPSIT\FrontendAssetHandler\Console;
 use CPSIT\FrontendAssetHandler\Exception;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -43,9 +45,7 @@ final class ValidatorFactoryTest extends TestCase
         $this->subject = new Console\Input\Validator\ValidatorFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfGivenTypeIsNotSupported(): void
     {
         $this->expectExceptionObject(Exception\UnsupportedTypeException::create('foo'));
@@ -53,11 +53,8 @@ final class ValidatorFactoryTest extends TestCase
         $this->subject->get('foo');
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider getReturnsValidatorOfGivenTypeDataProvider
-     */
+    #[Test]
+    #[DataProvider('getReturnsValidatorOfGivenTypeDataProvider')]
     public function getReturnsValidatorOfGivenType(
         string $type,
         Console\Input\Validator\ValidatorInterface $expected,
@@ -65,9 +62,7 @@ final class ValidatorFactoryTest extends TestCase
         self::assertEquals($expected, $this->subject->get($type));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getForAllReturnsChainedValidator(): void
     {
         $expected = new Console\Input\Validator\ChainedValidator([
@@ -81,7 +76,7 @@ final class ValidatorFactoryTest extends TestCase
     /**
      * @return Generator<string, array{string, Console\Input\Validator\ValidatorInterface}>
      */
-    public function getReturnsValidatorOfGivenTypeDataProvider(): Generator
+    public static function getReturnsValidatorOfGivenTypeDataProvider(): Generator
     {
         yield 'integer validator' => ['integer', new Console\Input\Validator\IntegerValidator()];
         yield 'json validator' => ['json', new Console\Input\Validator\JsonValidator()];

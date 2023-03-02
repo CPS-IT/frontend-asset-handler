@@ -157,8 +157,10 @@ final class FetchAssetsCommand extends BaseAssetsCommand
             }
         }
 
-        if (!$successful && $assetCount > 1) {
-            $this->io->warning(sprintf('Command finished with errors%s.', $this->hasWarnings ? ' and warnings' : ''));
+        if (!$successful) {
+            if ($assetCount > 1) {
+                $this->io->warning(sprintf('Command finished with errors%s.', $this->hasWarnings ? ' and warnings' : ''));
+            }
 
             return self::ERRONEOUS;
         }

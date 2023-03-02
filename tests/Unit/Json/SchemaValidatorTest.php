@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Json;
 use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Json;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * SchemaValidatorTest.
@@ -44,9 +45,7 @@ class SchemaValidatorTest extends Tests\Unit\ContainerAwareTestCase
         $this->subject = $this->container->get(Json\SchemaValidator::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsFalseOnInvalidConfig(): void
     {
         $config = new Config\Config(['foo' => 'baz'], 'foo');
@@ -54,9 +53,7 @@ class SchemaValidatorTest extends Tests\Unit\ContainerAwareTestCase
         self::assertFalse($this->subject->validate($config));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsTrueOnValidConfig(): void
     {
         $config = new Config\Config([

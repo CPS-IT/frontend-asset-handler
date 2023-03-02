@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset\Definition;
 
 use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyAssetDefinition;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -52,17 +53,13 @@ final class AssetDefinitionTest extends TestCase
         $this->subject = new DummyAssetDefinition($this->config);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigReturnsConfig(): void
     {
         self::assertSame($this->config, $this->subject->getConfig());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subjectAllowsArrayAccess(): void
     {
         // offsetExists
@@ -82,9 +79,7 @@ final class AssetDefinitionTest extends TestCase
         self::assertFalse(isset($this->subject['hello']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subjectIsIterable(): void
     {
         self::assertSame([
@@ -96,9 +91,7 @@ final class AssetDefinitionTest extends TestCase
         ], iterator_to_array($this->subject->getIterator()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toStringReturnsJsonRepresentationOfConfig(): void
     {
         $json = $this->subject->__toString();

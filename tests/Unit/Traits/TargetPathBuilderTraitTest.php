@@ -27,6 +27,8 @@ use CPSIT\FrontendAssetHandler\Asset\Definition\Target;
 use CPSIT\FrontendAssetHandler\Exception\MissingConfigurationException;
 use CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\TargetPathBuilderTraitTestClass;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Path;
 
@@ -47,9 +49,7 @@ final class TargetPathBuilderTraitTest extends TestCase
         $this->subject = new TargetPathBuilderTraitTestClass();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildTargetPathThrowsExceptionIfPathIsNotDefined(): void
     {
         $this->expectException(MissingConfigurationException::class);
@@ -59,11 +59,8 @@ final class TargetPathBuilderTraitTest extends TestCase
         $this->subject->runBuildTargetPath(new Target([]));
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider buildTargetPathThrowsExceptionIfPathIsNotDefinedDataProvider
-     */
+    #[Test]
+    #[DataProvider('buildTargetPathThrowsExceptionIfPathIsNotDefinedDataProvider')]
     public function buildTargetPathReturnsTargetPath(string $path, string $expected): void
     {
         self::assertSame($expected, $this->subject->runBuildTargetPath(new Target(['path' => $path])));
@@ -72,7 +69,7 @@ final class TargetPathBuilderTraitTest extends TestCase
     /**
      * @return \Generator<string, array{string, string}>
      */
-    public function buildTargetPathThrowsExceptionIfPathIsNotDefinedDataProvider(): Generator
+    public static function buildTargetPathThrowsExceptionIfPathIsNotDefinedDataProvider(): Generator
     {
         yield 'absolute path' => ['/foo/baz', '/foo/baz'];
         yield 'relative path' => ['foo/baz', Path::join(getcwd() ?: dirname(__DIR__, 3), 'foo/baz')];

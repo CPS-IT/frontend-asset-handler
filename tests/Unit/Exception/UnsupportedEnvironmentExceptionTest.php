@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Exception;
 
 use CPSIT\FrontendAssetHandler\Exception\UnsupportedEnvironmentException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,9 +35,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class UnsupportedEnvironmentExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function forMissingVCSReturnsExceptionForMissingVCS(): void
     {
         $subject = UnsupportedEnvironmentException::forMissingVCS();
@@ -46,9 +45,7 @@ final class UnsupportedEnvironmentExceptionTest extends TestCase
         self::assertSame(1623916365, $subject->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forInvalidEnvironmentReturnsExceptionForGivenEnvironment(): void
     {
         $subject = UnsupportedEnvironmentException::forInvalidEnvironment('foo');
@@ -58,9 +55,7 @@ final class UnsupportedEnvironmentExceptionTest extends TestCase
         self::assertSame(1623916415, $subject->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forMisconfiguredEnvironmentsReturnsExceptionForGivenEnvironments(): void
     {
         $subject = UnsupportedEnvironmentException::forMisconfiguredEnvironments(['foo', 'baz']);

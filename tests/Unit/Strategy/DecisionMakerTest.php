@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Strategy;
 use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Strategy;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * DecisionMakerTest.
@@ -46,9 +47,7 @@ final class DecisionMakerTest extends Tests\Unit\ContainerAwareTestCase
         $this->subject = new Strategy\DecisionMaker($this->revisionProvider);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function decideReturnsFetchNewStrategyIfSourceRevisionCannotBeDetermined(): void
     {
         $source = new Asset\Definition\Source([]);
@@ -59,9 +58,7 @@ final class DecisionMakerTest extends Tests\Unit\ContainerAwareTestCase
         self::assertNull($target->getRevision());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function decideReturnsFetchNewStrategyIfTargetRevisionCannotBeDetermined(): void
     {
         $this->revisionProvider->expectedRevisions = ['1234567890', null];
@@ -74,9 +71,7 @@ final class DecisionMakerTest extends Tests\Unit\ContainerAwareTestCase
         self::assertNull($target->getRevision());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function decideReturnsUseExistingStrategyIfSourceAndTargetRevisionsAreEqual(): void
     {
         $this->revisionProvider->expectedRevisions = ['1234567890', '1234567890'];
@@ -89,9 +84,7 @@ final class DecisionMakerTest extends Tests\Unit\ContainerAwareTestCase
         self::assertSame('1234567890', $target->getRevision()?->get());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function decideReturnsFetchNewStrategyIfSourceAndTargetRevisionsAreNotEqual(): void
     {
         $this->revisionProvider->expectedRevisions = ['1234567890', '0987654321'];

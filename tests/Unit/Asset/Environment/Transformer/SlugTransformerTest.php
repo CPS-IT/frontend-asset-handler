@@ -26,6 +26,8 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset\Environment\Transformer;
 use CPSIT\FrontendAssetHandler\Asset\Environment\Transformer\SlugTransformer;
 use CPSIT\FrontendAssetHandler\Exception\MissingConfigurationException;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -43,9 +45,7 @@ final class SlugTransformerTest extends TestCase
         $this->subject = new SlugTransformer('fe-{slug}');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfPatternIsNotValid(): void
     {
         $this->expectException(MissingConfigurationException::class);
@@ -56,12 +56,10 @@ final class SlugTransformerTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider fromArrayThrowsExceptionIfPatternIsNotValidDataProvider
-     *
      * @param array{pattern?: string|false} $config
      */
+    #[Test]
+    #[DataProvider('fromArrayThrowsExceptionIfPatternIsNotValidDataProvider')]
     public function fromArrayThrowsExceptionIfPatternIsNotValid(array $config): void
     {
         $this->expectException(MissingConfigurationException::class);
@@ -73,29 +71,23 @@ final class SlugTransformerTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider fromArrayReturnsTransformerInstanceDataProvider
-     *
      * @param array{pattern?: string|null} $config
      */
+    #[Test]
+    #[DataProvider('fromArrayReturnsTransformerInstanceDataProvider')]
     public function fromArrayReturnsTransformerInstance(array $config, SlugTransformer $expected): void
     {
         /* @phpstan-ignore-next-line */
         self::assertEquals($expected, SlugTransformer::fromArray($config));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayReturnsArrayWithPattern(): void
     {
         self::assertSame(['pattern' => 'fe-{slug}'], $this->subject->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transformReturnsInputValueAsSlug(): void
     {
         self::assertSame('fe-feature-foo-baz', $this->subject->transform('feature/foo-baz'));
@@ -104,7 +96,7 @@ final class SlugTransformerTest extends TestCase
     /**
      * @return \Generator<string, array{array{pattern?: string|false}}>
      */
-    public function fromArrayThrowsExceptionIfPatternIsNotValidDataProvider(): Generator
+    public static function fromArrayThrowsExceptionIfPatternIsNotValidDataProvider(): Generator
     {
         yield 'empty pattern' => [['pattern' => '']];
         yield 'invalid pattern' => [['pattern' => 'foo']];
@@ -114,7 +106,7 @@ final class SlugTransformerTest extends TestCase
     /**
      * @return \Generator<string, array{array{pattern?: string|null}, SlugTransformer}>
      */
-    public function fromArrayReturnsTransformerInstanceDataProvider(): Generator
+    public static function fromArrayReturnsTransformerInstanceDataProvider(): Generator
     {
         $defaultTransformer = new SlugTransformer();
 

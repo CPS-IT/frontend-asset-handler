@@ -1,8 +1,5 @@
 includes:
 	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
-	- vendor/phpstan/phpstan-phpunit/extension.neon
-	- vendor/phpstan/phpstan-symfony/extension.neon
-	- vendor/phpstan/phpstan-webmozart-assert/extension.neon
 parameters:
 	level: 8
 	paths:

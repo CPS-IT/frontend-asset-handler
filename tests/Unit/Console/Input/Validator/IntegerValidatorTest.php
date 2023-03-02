@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Console\Input\Validator;
 
 use CPSIT\FrontendAssetHandler\Console;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Webmozart\Assert;
 
@@ -42,25 +43,19 @@ final class IntegerValidatorTest extends TestCase
         $this->subject = new Console\Input\Validator\IntegerValidator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateDoesNothingIfValueIsNull(): void
     {
         self::assertNull($this->subject->validate(null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsValueIfItIsAnInteger(): void
     {
         self::assertSame(123, $this->subject->validate(123));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateThrowsExceptionIfValueIsNotNumeric(): void
     {
         $this->expectExceptionObject(new Assert\InvalidArgumentException('Expected a numeric. Got: bool'));
@@ -68,9 +63,7 @@ final class IntegerValidatorTest extends TestCase
         $this->subject->validate(false);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsConvertedIntegerValueIfItIsANumericString(): void
     {
         self::assertSame(123, $this->subject->validate('123'));

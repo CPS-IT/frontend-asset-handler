@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Console\Input\Validator;
 
 use CPSIT\FrontendAssetHandler\Console;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Webmozart\Assert;
 
@@ -42,9 +43,7 @@ final class JsonValidatorTest extends TestCase
         $this->subject = new Console\Input\Validator\JsonValidator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateThrowsExceptionIfValueIsNotAString(): void
     {
         $this->expectExceptionObject(new Assert\InvalidArgumentException('Expected a string. Got: bool'));
@@ -52,9 +51,7 @@ final class JsonValidatorTest extends TestCase
         $this->subject->validate(false);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateThrowsExceptionIfValueIsValidJson(): void
     {
         $this->expectExceptionObject(new Assert\InvalidArgumentException('JSON is invalid.'));
@@ -62,9 +59,7 @@ final class JsonValidatorTest extends TestCase
         $this->subject->validate('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateThrowsExceptionIfJsonDecodedValueIsNotAnObject(): void
     {
         $this->expectExceptionObject(new Assert\InvalidArgumentException('Expected an object. Got: integer'));
@@ -72,17 +67,13 @@ final class JsonValidatorTest extends TestCase
         $this->subject->validate('1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsValueOnNull(): void
     {
         self::assertNull($this->subject->validate(null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsValueOnValidJson(): void
     {
         $json = '{"foo":"baz"}';

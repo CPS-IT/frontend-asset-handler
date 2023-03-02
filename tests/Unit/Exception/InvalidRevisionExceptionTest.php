@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Exception;
 
 use CPSIT\FrontendAssetHandler\Exception\InvalidRevisionException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,9 +35,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class InvalidRevisionExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsExceptionForGivenRevision(): void
     {
         $subject = InvalidRevisionException::create('foo');

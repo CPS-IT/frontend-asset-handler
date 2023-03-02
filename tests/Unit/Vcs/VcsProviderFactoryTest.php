@@ -27,6 +27,7 @@ use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Tests;
 use CPSIT\FrontendAssetHandler\Vcs;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection;
 
 /**
@@ -41,6 +42,8 @@ final class VcsProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->subject = new Vcs\VcsProviderFactory(
             new DependencyInjection\ServiceLocator([
                 // Default provider
@@ -52,9 +55,7 @@ final class VcsProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfGivenTypeIsNotSupported(): void
     {
         $this->expectException(Exception\UnsupportedTypeException::class);
@@ -64,9 +65,7 @@ final class VcsProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
         $this->subject->get('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfResolvedProviderClassIsInvalid(): void
     {
         $this->expectException(Exception\UnsupportedClassException::class);
@@ -76,9 +75,7 @@ final class VcsProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
         $this->subject->get('invalid');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsInstantiatedProviderOfGivenType(): void
     {
         self::assertInstanceOf(
@@ -87,9 +84,7 @@ final class VcsProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReturnsTrueIfGivenTypeIsAvailable(): void
     {
         self::assertTrue($this->subject->has('dummy'));

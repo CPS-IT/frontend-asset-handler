@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset\Definition;
 
 use CPSIT\FrontendAssetHandler\Asset\Definition\Source;
 use CPSIT\FrontendAssetHandler\Asset\Revision\Revision;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,9 +43,7 @@ final class SourceTest extends TestCase
         $this->subject = new Source([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeReturnsType(): void
     {
         self::assertSame('http', $this->subject->getType());
@@ -53,9 +52,7 @@ final class SourceTest extends TestCase
         self::assertSame('foo', $this->subject->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getEnvironmentReturnsEnvironmentOrNull(): void
     {
         self::assertNull($this->subject->getEnvironment());
@@ -64,9 +61,7 @@ final class SourceTest extends TestCase
         self::assertSame('foo', $this->subject->getEnvironment());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getUrlReturnsCustomUrlOrNull(): void
     {
         self::assertNull($this->subject->getUrl());
@@ -75,9 +70,7 @@ final class SourceTest extends TestCase
         self::assertSame('foo', $this->subject->getUrl());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRevisionUrlReturnsCustomRevisionUrlOrNull(): void
     {
         self::assertNull($this->subject->getRevisionUrl());
@@ -86,9 +79,7 @@ final class SourceTest extends TestCase
         self::assertSame('foo', $this->subject->getRevisionUrl());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRevisionReturnsRevisionOrNull(): void
     {
         self::assertNull($this->subject->getRevision());

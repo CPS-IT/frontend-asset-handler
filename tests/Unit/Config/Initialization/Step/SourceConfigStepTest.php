@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Config\Initialization\Step;
 use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Provider;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console;
 
 /**
@@ -53,9 +54,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         $this->request = $this->createRequest($this->subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeUsesDefaultSourceTypeIfUserEntersNothing(): void
     {
         $input = $this->request->getInput();
@@ -71,9 +70,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeShowsErrorIfGivenSourceTypeIsNotSupported(): void
     {
         $input = $this->request->getInput();
@@ -93,9 +90,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('Value "foo" is invalid', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeAsksForPlaceholdersInGivenSourceUrl(): void
     {
         $input = $this->request->getInput();
@@ -119,9 +114,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('URL placeholder "foo" (optional)', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeAsksForPlaceholdersInGivenSourceRevisionUrl(): void
     {
         $input = $this->request->getInput();
@@ -148,9 +141,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('Revision URL placeholder "revision-file" (optional)', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeAsksForSourceVersion(): void
     {
         $input = $this->request->getInput();
@@ -173,9 +164,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('Locked version', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeShowErrorIfGivenSourceConfigExtraIsNotValidJson(): void
     {
         $input = $this->request->getInput();
@@ -194,9 +183,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
         self::assertStringContainsString('JSON is invalid.', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeMergesSourceConfigExtraWithAdditionalVariables(): void
     {
         $input = $this->request->getInput();

@@ -25,6 +25,8 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Helper;
 
 use CPSIT\FrontendAssetHandler\Helper;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem;
 use Symfony\Component\Process;
@@ -56,9 +58,7 @@ final class VcsHelperTest extends TestCase
         $this->unsetEnvironmentVariable('FRONTEND_ASSETS_BRANCH');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCurrentBranchReturnsNullIfBranchCannotBeDetermined(): void
     {
         // Create temporary directory
@@ -75,12 +75,10 @@ final class VcsHelperTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider getCurrentBranchReturnsBranchNameFromEnvironmentVariablesDataProvider
-     *
      * @param array<string, string> $variables
      */
+    #[Test]
+    #[DataProvider('getCurrentBranchReturnsBranchNameFromEnvironmentVariablesDataProvider')]
     public function getCurrentBranchReturnsBranchNameFromEnvironmentVariables(array $variables, ?string $expected): void
     {
         // Create temporary directory
@@ -107,12 +105,10 @@ final class VcsHelperTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider getCurrentBranchReturnsBranchNameFromCiVariablesDataProvider
-     *
      * @param array<string, string> $variables
      */
+    #[Test]
+    #[DataProvider('getCurrentBranchReturnsBranchNameFromCiVariablesDataProvider')]
     public function getCurrentBranchReturnsBranchNameFromCiVariables(array $variables, ?string $expected): void
     {
         if (false !== getenv('CI')) {
@@ -142,9 +138,7 @@ final class VcsHelperTest extends TestCase
         chdir($previousLocation);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCurrentBranchReturnsCurrentlyCheckedOutGitBranch(): void
     {
         // Create temporary directory
@@ -169,7 +163,7 @@ final class VcsHelperTest extends TestCase
     /**
      * @return \Generator<string, array{array<string, string>, string|null}>
      */
-    public function getCurrentBranchReturnsBranchNameFromEnvironmentVariablesDataProvider(): Generator
+    public static function getCurrentBranchReturnsBranchNameFromEnvironmentVariablesDataProvider(): Generator
     {
         yield 'no relevant environment variables' => [[], null];
         yield 'relevant environment variables' => [['FRONTEND_ASSETS_BRANCH' => 'foo'], 'foo'];
@@ -178,7 +172,7 @@ final class VcsHelperTest extends TestCase
     /**
      * @return \Generator<string, array{array<string, string>, string|null}>
      */
-    public function getCurrentBranchReturnsBranchNameFromCiVariablesDataProvider(): Generator
+    public static function getCurrentBranchReturnsBranchNameFromCiVariablesDataProvider(): Generator
     {
         yield 'no CI context' => [[], null];
         yield 'faulty CI context' => [['GITLAB_CI' => 'true'], null];

@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset\Environment\Transformer;
 
 use CPSIT\FrontendAssetHandler\Asset\Environment\Transformer\PassthroughTransformer;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -41,25 +42,19 @@ final class PassthroughTransformerTest extends TestCase
         $this->subject = new PassthroughTransformer();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromArrayReturnsTransformer(): void
     {
         self::assertEquals(new PassthroughTransformer(), PassthroughTransformer::fromArray([]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayReturnsEmptyArray(): void
     {
         self::assertSame([], $this->subject->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transformReturnsInputValue(): void
     {
         self::assertSame('foo', $this->subject->transform('foo'));

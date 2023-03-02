@@ -26,6 +26,8 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Helper;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Helper;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,22 +39,18 @@ use PHPUnit\Framework\TestCase;
 final class ArrayHelperTest extends TestCase
 {
     /**
-     * @test
-     *
-     * @dataProvider filterSubArraysByKeysFiltersEachSubArrayByGivenKeysDataProvider
-     *
      * @param array<int, array<string, string>> $array
      * @param string[]                          $keys
      * @param array<int, array<string, string>> $expected
      */
+    #[Test]
+    #[DataProvider('filterSubArraysByKeysFiltersEachSubArrayByGivenKeysDataProvider')]
     public function filterSubArraysByKeysFiltersEachSubArrayByGivenKeys(array $array, array $keys, array $expected): void
     {
         self::assertSame($expected, Helper\ArrayHelper::filterSubArraysByKeys($array, $keys));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getArrayValueByPathThrowsExceptionIfGivenPathDoesNotExist(): void
     {
         $this->expectException(Exception\MissingConfigurationException::class);
@@ -62,9 +60,7 @@ final class ArrayHelperTest extends TestCase
         Helper\ArrayHelper::getArrayValueByPath(['foo' => 'baz'], 'foo/baz');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getArrayValueByPathReturnsArrayValueAtGivenPath(): void
     {
         $array = [
@@ -79,12 +75,10 @@ final class ArrayHelperTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider setArrayValueByPathAppliesGivenValueToArrayAtGivenPathDataProvider
-     *
      * @param array<string, array<mixed>> $expected
      */
+    #[Test]
+    #[DataProvider('setArrayValueByPathAppliesGivenValueToArrayAtGivenPathDataProvider')]
     public function setArrayValueByPathAppliesGivenValueToArrayAtGivenPath(string $path, mixed $value, array $expected): void
     {
         $array = [
@@ -97,13 +91,11 @@ final class ArrayHelperTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider unsetArrayValueByPathUnsetsGivenValueAtGivenPathInArrayDataProvider
-     *
      * @param array<mixed> $array
      * @param array<mixed> $expected
      */
+    #[Test]
+    #[DataProvider('unsetArrayValueByPathUnsetsGivenValueAtGivenPathInArrayDataProvider')]
     public function unsetArrayValueByPathUnsetsGivenValueAtGivenPathInArray(array $array, string $path, array $expected): void
     {
         self::assertSame($expected, Helper\ArrayHelper::unsetArrayValueByPath($array, $path));
@@ -112,7 +104,7 @@ final class ArrayHelperTest extends TestCase
     /**
      * @return Generator<string, array<int, array<int, array<string, string>|string>>>
      */
-    public function filterSubArraysByKeysFiltersEachSubArrayByGivenKeysDataProvider(): Generator
+    public static function filterSubArraysByKeysFiltersEachSubArrayByGivenKeysDataProvider(): Generator
     {
         $array = [
             0 => [
@@ -137,7 +129,7 @@ final class ArrayHelperTest extends TestCase
     /**
      * @return \Generator<string, array{string, string|array<string, string>, array<string, array<mixed>>}>
      */
-    public function setArrayValueByPathAppliesGivenValueToArrayAtGivenPathDataProvider(): Generator
+    public static function setArrayValueByPathAppliesGivenValueToArrayAtGivenPathDataProvider(): Generator
     {
         $default = [
             'foo' => [
@@ -163,7 +155,7 @@ final class ArrayHelperTest extends TestCase
     /**
      * @return Generator<string, array<int, string|array<mixed>>>
      */
-    public function unsetArrayValueByPathUnsetsGivenValueAtGivenPathInArrayDataProvider(): Generator
+    public static function unsetArrayValueByPathUnsetsGivenValueAtGivenPathInArrayDataProvider(): Generator
     {
         $array = [
             'foo' => [

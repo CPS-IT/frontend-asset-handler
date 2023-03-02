@@ -29,6 +29,8 @@ use CPSIT\FrontendAssetHandler\Config\Parser\ParserInstructions;
 use CPSIT\FrontendAssetHandler\Exception\InvalidConfigurationException;
 use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * ParserTest.
@@ -81,9 +83,7 @@ final class ParserTest extends ContainerAwareTestCase
         ], 'foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseThrowsExceptionIfConfigIsInvalid(): void
     {
         $config = new Config([], 'foo');
@@ -96,13 +96,11 @@ final class ParserTest extends ContainerAwareTestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider parseReturnsUnprocessedConfigDataProvider
-     *
      * @param list<string>                                                   $requiredKeys
      * @param array<string, array<int, array<string, array<string, mixed>>>> $expected
      */
+    #[Test]
+    #[DataProvider('parseReturnsUnprocessedConfigDataProvider')]
     public function parseReturnsUnprocessedConfig(array $requiredKeys, array $expected): void
     {
         $instructions = new ParserInstructions($this->config);
@@ -115,9 +113,7 @@ final class ParserTest extends ContainerAwareTestCase
         self::assertSame($expected, $this->subject->parse($instructions)->asArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseReturnsProcessedConfig(): void
     {
         $instructions = new ParserInstructions($this->config);
@@ -168,7 +164,7 @@ final class ParserTest extends ContainerAwareTestCase
     /**
      * @return \Generator<string, array{list<string>, array<string, array<int, array<string, array<string, mixed>>>>}>
      */
-    public function parseReturnsUnprocessedConfigDataProvider(): Generator
+    public static function parseReturnsUnprocessedConfigDataProvider(): Generator
     {
         yield 'no required keys' => [
             [],

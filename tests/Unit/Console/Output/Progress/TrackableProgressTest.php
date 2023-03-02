@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Console\Output\Progress;
 
 use CPSIT\FrontendAssetHandler\Console;
 use CPSIT\FrontendAssetHandler\Tests;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function fclose;
@@ -48,9 +49,7 @@ final class TrackableProgressTest extends TestCase
         $this->subject = new Console\Output\Progress\TrackableProgress($this->output, 'Do something... ');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function startStartsProgress(): void
     {
         self::assertFalse($this->subject->isRunning());
@@ -61,9 +60,7 @@ final class TrackableProgressTest extends TestCase
         self::assertSame('Do something... ', $this->fetchStreamOutput());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeDoesNothingIfProgressIsNotRunning(): void
     {
         $this->subject->write('foo');
@@ -71,9 +68,7 @@ final class TrackableProgressTest extends TestCase
         self::assertSame('', $this->fetchStreamOutput());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeWritesToProgressIfProgressIsRunning(): void
     {
         $this->subject->start();
@@ -82,9 +77,7 @@ final class TrackableProgressTest extends TestCase
         self::assertStringContainsString('Do something... foo', $this->fetchStreamOutput());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writelnDoesNothingIfProgressIsNotRunning(): void
     {
         $this->subject->writeln('foo');
@@ -92,9 +85,7 @@ final class TrackableProgressTest extends TestCase
         self::assertSame('', $this->fetchStreamOutput());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writelnWritesToProgressIfProgressIsRunning(): void
     {
         $this->subject->start();
@@ -103,9 +94,7 @@ final class TrackableProgressTest extends TestCase
         self::assertStringContainsString('Do something... foo'.PHP_EOL, $this->fetchStreamOutput());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finishDoesNothingIfProgressIsNotRunning(): void
     {
         $this->subject->finish();
@@ -113,9 +102,7 @@ final class TrackableProgressTest extends TestCase
         self::assertSame('', $this->fetchStreamOutput());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finishFinishesProgressIfProgressIsRunning(): void
     {
         $this->subject->start();
@@ -124,9 +111,7 @@ final class TrackableProgressTest extends TestCase
         self::assertStringContainsString('Do something... Done', $this->fetchStreamOutput());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function failDoesNothingIfProgressIsNotRunning(): void
     {
         $this->subject->fail();
@@ -134,9 +119,7 @@ final class TrackableProgressTest extends TestCase
         self::assertSame('', $this->fetchStreamOutput());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function failFinishesProgressIfProgressIsRunning(): void
     {
         $this->subject->start();

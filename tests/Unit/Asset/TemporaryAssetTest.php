@@ -25,6 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset;
 
 use CPSIT\FrontendAssetHandler\Asset\Definition\Source;
 use CPSIT\FrontendAssetHandler\Asset\TemporaryAsset;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -35,9 +36,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class TemporaryAssetTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsTemporaryFile(): void
     {
         $tempFile = 'foo';

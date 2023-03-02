@@ -26,6 +26,8 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Asset\Environment\Transformer;
 use CPSIT\FrontendAssetHandler\Asset\Environment\Transformer\StaticTransformer;
 use CPSIT\FrontendAssetHandler\Exception\MissingConfigurationException;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -44,12 +46,10 @@ final class StaticTransformerTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider fromArrayThrowsExceptionIfValueIsMissingOrInvalidDataProvider
-     *
      * @param array{value?: false} $config
      */
+    #[Test]
+    #[DataProvider('fromArrayThrowsExceptionIfValueIsMissingOrInvalidDataProvider')]
     public function fromArrayThrowsExceptionIfValueIsMissingOrInvalid(array $config): void
     {
         $this->expectException(MissingConfigurationException::class);
@@ -60,25 +60,19 @@ final class StaticTransformerTest extends TestCase
         StaticTransformer::fromArray($config);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromArrayReturnsTransformerInstance(): void
     {
         self::assertEquals($this->subject, StaticTransformer::fromArray(['value' => 'foo']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayReturnsArrayWithValue(): void
     {
         self::assertSame(['value' => 'foo'], $this->subject->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transformReturnsStaticValue(): void
     {
         self::assertSame('foo', $this->subject->transform('baz'));
@@ -87,7 +81,7 @@ final class StaticTransformerTest extends TestCase
     /**
      * @return \Generator<string, array{array{value?: false}}>
      */
-    public function fromArrayThrowsExceptionIfValueIsMissingOrInvalidDataProvider(): Generator
+    public static function fromArrayThrowsExceptionIfValueIsMissingOrInvalidDataProvider(): Generator
     {
         yield 'no value' => [[]];
         yield 'invalid value' => [['value' => false]];
