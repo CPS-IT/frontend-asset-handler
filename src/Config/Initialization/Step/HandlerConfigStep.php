@@ -62,7 +62,9 @@ final class HandlerConfigStep extends BaseStep implements InteractiveStepInterfa
         $input = $this->getInput($request);
         $io = new Console\Style\SymfonyStyle($input, $this->output);
 
-        $io->title('Handler');
+        if ($input->isInteractive()) {
+            $io->title('Handler');
+        }
 
         // Ask for handler type
         $handlerType = $this->questionHelper->ask(

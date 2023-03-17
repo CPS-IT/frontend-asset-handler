@@ -71,7 +71,9 @@ final class VcsConfigStep extends BaseStep implements InteractiveStepInterface
         $input = $this->getInput($request);
         $io = new Console\Style\SymfonyStyle($input, $this->output);
 
-        $io->title('VCS');
+        if ($input->isInteractive()) {
+            $io->title('VCS');
+        }
 
         // Early return if VCS should not be configured
         if (!$this->shouldConfigureVcs($request)) {
@@ -191,10 +193,16 @@ final class VcsConfigStep extends BaseStep implements InteractiveStepInterface
     {
         $config = $request->getConfig();
         $definitionId = (int) $request->getOption('definition-id');
+        $vcsType = $request->getOption('vcs-type');
+
+        // Early return if VCS type is invalid
+        if (!is_string($vcsType)) {
+            return;
+        }
 
         // Define default VCS configuration
         $vcsConfig = [
-            'type' => $request->getOption('vcs-type'),
+            'type' => $vcsType,
         ];
 
         // Merge additional VCS configuration
@@ -213,7 +221,9 @@ final class VcsConfigStep extends BaseStep implements InteractiveStepInterface
             return true;
         }
 
-        $this->output->writeln('The following VCS configuration is optional.');
+        if ($this->getInput($request)->isInteractive()) {
+            $this->output->writeln('The following VCS configuration is optional.');
+        }
 
         return $this->askBooleanQuestion($request, 'Add VCS configuration?');
     }
