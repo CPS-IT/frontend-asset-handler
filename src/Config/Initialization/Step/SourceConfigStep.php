@@ -91,7 +91,9 @@ final class SourceConfigStep extends BaseStep implements InteractiveStepInterfac
         $input = $this->getInput($request);
         $io = new Console\Style\SymfonyStyle($input, $this->output);
 
-        $io->title('Source');
+        if ($input->isInteractive()) {
+            $io->title('Source');
+        }
 
         // Initialize additional variables
         $additionalVariables = [];

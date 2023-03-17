@@ -86,7 +86,9 @@ final class TargetConfigStep extends BaseStep implements InteractiveStepInterfac
         $input = $this->getInput($request);
         $io = new Console\Style\SymfonyStyle($input, $this->output);
 
-        $io->title('Target');
+        if ($input->isInteractive()) {
+            $io->title('Target');
+        }
 
         // Initialize additional variables
         $additionalVariables = [];
