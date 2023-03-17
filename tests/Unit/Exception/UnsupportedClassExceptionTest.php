@@ -40,7 +40,6 @@ final class UnsupportedClassExceptionTest extends TestCase
     {
         $subject = UnsupportedClassException::create('Exception');
 
-        self::assertInstanceOf(UnsupportedClassException::class, $subject);
         self::assertSame('The given class "Exception" is either not available or not supported.', $subject->getMessage());
         self::assertSame(1623911858, $subject->getCode());
     }

@@ -51,6 +51,7 @@ final class PassthroughTransformerTest extends TestCase
     #[Test]
     public function toArrayReturnsEmptyArray(): void
     {
+        /* @phpstan-ignore-next-line */
         self::assertSame([], $this->subject->toArray());
     }
 

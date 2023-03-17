@@ -40,7 +40,6 @@ final class MissingConfigurationExceptionTest extends TestCase
     {
         $subject = MissingConfigurationException::create();
 
-        self::assertInstanceOf(MissingConfigurationException::class, $subject);
         self::assertSame('The asset configuration is missing.', $subject->getMessage());
         self::assertSame(1661844293, $subject->getCode());
     }
@@ -50,7 +49,6 @@ final class MissingConfigurationExceptionTest extends TestCase
     {
         $subject = MissingConfigurationException::forKey('foo');
 
-        self::assertInstanceOf(MissingConfigurationException::class, $subject);
         self::assertSame('Configuration for key "foo" is missing or invalid.', $subject->getMessage());
         self::assertSame(1623867663, $subject->getCode());
     }

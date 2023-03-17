@@ -40,7 +40,6 @@ final class InvalidRevisionExceptionTest extends TestCase
     {
         $subject = InvalidRevisionException::create('foo');
 
-        self::assertInstanceOf(InvalidRevisionException::class, $subject);
         self::assertSame('The string "foo" is not a valid revision.', $subject->getMessage());
         self::assertSame(1624639456, $subject->getCode());
     }

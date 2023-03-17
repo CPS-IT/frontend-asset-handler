@@ -42,7 +42,6 @@ final class DownloadFailedExceptionTest extends TestCase
         $previous = new Exception('dummy');
         $subject = DownloadFailedException::create('foo', 'baz', $previous);
 
-        self::assertInstanceOf(DownloadFailedException::class, $subject);
         self::assertSame('An error occurred while downloading "foo" to "baz".', $subject->getMessage());
         self::assertSame(1623862554, $subject->getCode());
         self::assertSame($previous, $subject->getPrevious());
@@ -54,7 +53,6 @@ final class DownloadFailedExceptionTest extends TestCase
         $previous = new Exception('dummy');
         $subject = DownloadFailedException::forUnauthorizedRequest('foo', $previous);
 
-        self::assertInstanceOf(DownloadFailedException::class, $subject);
         self::assertSame('You are not authorized to download "foo" (Error 401).', $subject->getMessage());
         self::assertSame(1624037646, $subject->getCode());
         self::assertSame($previous, $subject->getPrevious());
@@ -66,7 +64,6 @@ final class DownloadFailedExceptionTest extends TestCase
         $previous = new Exception('dummy');
         $subject = DownloadFailedException::forUnavailableTarget('foo', $previous);
 
-        self::assertInstanceOf(DownloadFailedException::class, $subject);
         self::assertSame('The requested URL "foo" is not available (Error 404).', $subject->getMessage());
         self::assertSame(1624037782, $subject->getCode());
         self::assertSame($previous, $subject->getPrevious());
@@ -78,7 +75,6 @@ final class DownloadFailedExceptionTest extends TestCase
         $previous = new Exception('dummy');
         $subject = DownloadFailedException::forFailedVerification('foo', 'baz', $previous);
 
-        self::assertInstanceOf(DownloadFailedException::class, $subject);
         self::assertSame('Download verification failed for target file "baz" from source "foo".', $subject->getMessage());
         self::assertSame(1625218841, $subject->getCode());
         self::assertSame($previous, $subject->getPrevious());

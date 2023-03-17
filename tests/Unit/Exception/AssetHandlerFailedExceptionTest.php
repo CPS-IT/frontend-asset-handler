@@ -49,7 +49,6 @@ final class AssetHandlerFailedExceptionTest extends TestCase
 
         $subject = AssetHandlerFailedException::create($asset);
 
-        self::assertInstanceOf(AssetHandlerFailedException::class, $subject);
         self::assertSame(
             sprintf('Processing of asset from source "%s" to target "%s" failed.', $source, $target),
             $subject->getMessage()

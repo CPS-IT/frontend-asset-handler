@@ -42,7 +42,6 @@ final class FilesystemFailureExceptionTest extends TestCase
         $previous = new Exception('dummy');
         $subject = FilesystemFailureException::forFileCreation('foo', $previous);
 
-        self::assertInstanceOf(FilesystemFailureException::class, $subject);
         self::assertSame('Unable to create file "foo".', $subject->getMessage());
         self::assertSame(1623913131, $subject->getCode());
         self::assertSame($previous, $subject->getPrevious());
@@ -54,7 +53,6 @@ final class FilesystemFailureExceptionTest extends TestCase
         $previous = new Exception('dummy');
         $subject = FilesystemFailureException::forArchiveExtraction('foo', $previous);
 
-        self::assertInstanceOf(FilesystemFailureException::class, $subject);
         self::assertSame('Failed to extract archive "foo".', $subject->getMessage());
         self::assertSame(1624040854, $subject->getCode());
         self::assertSame($previous, $subject->getPrevious());
@@ -65,7 +63,6 @@ final class FilesystemFailureExceptionTest extends TestCase
     {
         $subject = FilesystemFailureException::forMissingPath('foo');
 
-        self::assertInstanceOf(FilesystemFailureException::class, $subject);
         self::assertSame('The path "foo" was expected to exist, but it does not.', $subject->getMessage());
         self::assertSame(1624633845, $subject->getCode());
     }
@@ -75,7 +72,6 @@ final class FilesystemFailureExceptionTest extends TestCase
     {
         $subject = FilesystemFailureException::forInvalidFileContents('foo');
 
-        self::assertInstanceOf(FilesystemFailureException::class, $subject);
         self::assertSame('The contents of file "foo" are invalid.', $subject->getMessage());
         self::assertSame(1627923069, $subject->getCode());
     }
@@ -85,7 +81,6 @@ final class FilesystemFailureExceptionTest extends TestCase
     {
         $subject = FilesystemFailureException::forFailedWriteOperation('foo');
 
-        self::assertInstanceOf(FilesystemFailureException::class, $subject);
         self::assertSame('An error occurred when writing file contents to "foo".', $subject->getMessage());
         self::assertSame(1639415423, $subject->getCode());
     }
@@ -95,7 +90,6 @@ final class FilesystemFailureExceptionTest extends TestCase
     {
         $subject = FilesystemFailureException::forUnresolvableProjectDirectory();
 
-        self::assertInstanceOf(FilesystemFailureException::class, $subject);
         self::assertSame('Unable to resolve the project\'s root path.', $subject->getMessage());
         self::assertSame(1662449245, $subject->getCode());
     }
@@ -105,7 +99,6 @@ final class FilesystemFailureExceptionTest extends TestCase
     {
         $subject = FilesystemFailureException::forUnresolvableWorkingDirectory();
 
-        self::assertInstanceOf(FilesystemFailureException::class, $subject);
         self::assertSame('Unable to resolve the current working directory.', $subject->getMessage());
         self::assertSame(1662449443, $subject->getCode());
     }

@@ -40,7 +40,6 @@ final class UnexpectedValueExceptionTest extends TestCase
     {
         $actual = Exception\UnexpectedValueException::forInvalidString('foo');
 
-        self::assertInstanceOf(Exception\UnexpectedValueException::class, $actual);
         self::assertSame('The string "foo" is invalid and cannot be processed.', $actual->getMessage());
         self::assertSame(1663166818, $actual->getCode());
     }

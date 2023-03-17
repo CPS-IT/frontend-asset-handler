@@ -63,7 +63,6 @@ final class TrackableOutputTest extends TestCase
     {
         $actual = $this->subject->startProgress('Do something...');
 
-        self::assertInstanceOf(Console\Output\Progress\TrackableProgress::class, $actual);
         self::assertSame('Do something... ', $this->output->fetch());
     }
 }

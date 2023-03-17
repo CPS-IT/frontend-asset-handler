@@ -40,7 +40,6 @@ final class InvalidConfigurationExceptionTest extends TestCase
     {
         $subject = InvalidConfigurationException::forAmbiguousKey('foo');
 
-        self::assertInstanceOf(InvalidConfigurationException::class, $subject);
         self::assertSame('The given key "foo" is ambiguous. Please provide an explicit configuration key.', $subject->getMessage());
         self::assertSame(1630945791, $subject->getCode());
     }

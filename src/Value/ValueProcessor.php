@@ -75,14 +75,14 @@ final class ValueProcessor
     private function validatePlaceholderProcessors(): void
     {
         foreach ($this->placeholderProcessors as $processor) {
+            /* @phpstan-ignore-next-line */
             if (!is_object($processor)) {
                 throw Exception\UnsupportedTypeException::forTypeMismatch('object', gettype($processor));
             }
 
+            /* @phpstan-ignore-next-line */
             if (!($processor instanceof Placeholder\PlaceholderProcessorInterface)) {
-                /** @var class-string $className */
-                $className = $processor::class;
-                throw Exception\UnsupportedClassException::create($className);
+                throw Exception\UnsupportedClassException::create($processor::class);
             }
         }
     }

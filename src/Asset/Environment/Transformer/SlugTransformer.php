@@ -51,6 +51,7 @@ final class SlugTransformer implements TransformerInterface
             return new self();
         }
 
+        /* @phpstan-ignore-next-line */
         if (!is_string($pattern = $config['pattern'])) {
             throw MissingConfigurationException::forKey('pattern');
         }
