@@ -35,7 +35,6 @@ use CPSIT\FrontendAssetHandler\Exception\UnsupportedTypeException;
 
 use function call_user_func;
 use function in_array;
-use function is_array;
 use function is_string;
 
 /**
@@ -95,11 +94,9 @@ final class MapFactory
             if (is_string($transformer)) {
                 $type = StaticTransformer::getName();
                 $options += ['value' => $transformer];
-            } elseif (is_array($transformer)) {
+            } else {
                 $type = $transformer['transformer'] ?? null;
                 $options += $transformer['options'] ?? [];
-            } else {
-                throw MissingConfigurationException::forKey($inputPattern);
             }
 
             if (empty($type)) {

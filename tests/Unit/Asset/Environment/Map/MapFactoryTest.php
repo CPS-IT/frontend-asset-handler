@@ -72,17 +72,6 @@ final class MapFactoryTest extends ContainerAwareTestCase
     }
 
     #[Test]
-    public function createFromArrayThrowsExceptionOnInvalidTransformerConfiguration(): void
-    {
-        $this->expectException(MissingConfigurationException::class);
-        $this->expectExceptionCode(1623867663);
-        $this->expectExceptionMessage('Configuration for key "foo" is missing or invalid.');
-
-        /* @phpstan-ignore-next-line */
-        $this->subject->createFromArray(['foo' => null]);
-    }
-
-    #[Test]
     public function createFromArrayThrowsExceptionOnInvalidTransformerType(): void
     {
         $this->expectException(MissingConfigurationException::class);

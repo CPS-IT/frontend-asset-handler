@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Config;
 
-use ArrayObject;
 use CPSIT\FrontendAssetHandler\Config\Config;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -52,13 +51,6 @@ final class ConfigTest extends TestCase
             ],
         ];
         $this->subject = new Config($this->config, 'foo');
-    }
-
-    #[Test]
-    public function constructorBuildsIterableArrayObject(): void
-    {
-        self::assertInstanceOf(ArrayObject::class, $this->subject);
-        self::assertIsIterable($this->subject);
     }
 
     #[Test]

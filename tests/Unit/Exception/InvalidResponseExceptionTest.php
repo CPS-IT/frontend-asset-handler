@@ -40,7 +40,6 @@ final class InvalidResponseExceptionTest extends TestCase
     {
         $actual = Exception\InvalidResponseException::create('foo');
 
-        self::assertInstanceOf(Exception\InvalidResponseException::class, $actual);
         self::assertSame('The response "foo" is not valid.', $actual->getMessage());
         self::assertSame(1662554330, $actual->getCode());
     }

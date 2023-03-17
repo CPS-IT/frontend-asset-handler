@@ -29,8 +29,6 @@ use Ergebnis\Json\SchemaValidator as ErgebnisSchemaValidator;
 use JsonException;
 use Symfony\Component\Filesystem;
 
-use function is_string;
-
 /**
  * SchemaValidator.
  *
@@ -75,7 +73,7 @@ final class SchemaValidator
     {
         $schemaFile = Filesystem\Path::join(__DIR__, self::JSON_SCHEMA_FILE);
 
-        if (!is_string($schemaFile) || !$this->filesystem->exists($schemaFile)) {
+        if (!$this->filesystem->exists($schemaFile)) {
             // @codeCoverageIgnoreStart
             throw Exception\FilesystemFailureException::forMissingPath($schemaFile);
             // @codeCoverageIgnoreEnd

@@ -40,7 +40,6 @@ final class UnsupportedTypeExceptionTest extends TestCase
     {
         $subject = UnsupportedTypeException::create('foo');
 
-        self::assertInstanceOf(UnsupportedTypeException::class, $subject);
         self::assertSame('The given type "foo" is not supported by this factory.', $subject->getMessage());
         self::assertSame(1624618683, $subject->getCode());
     }
@@ -50,7 +49,6 @@ final class UnsupportedTypeExceptionTest extends TestCase
     {
         $subject = UnsupportedTypeException::forTypeMismatch('foo', 'baz');
 
-        self::assertInstanceOf(UnsupportedTypeException::class, $subject);
         self::assertSame('Expected variable of type foo, baz given.', $subject->getMessage());
         self::assertSame(1628149629, $subject->getCode());
     }

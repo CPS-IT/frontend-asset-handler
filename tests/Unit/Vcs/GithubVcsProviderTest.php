@@ -89,7 +89,7 @@ final class GithubVcsProviderTest extends TestCase
     {
         $actual = $this->subject->withVcs($this->vcs);
 
-        self::assertInstanceOf(Vcs\GithubVcsProvider::class, $actual);
+        self::assertNotSame($this->subject, $actual);
     }
 
     #[Test]

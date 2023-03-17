@@ -83,7 +83,6 @@ final class InitializationRequestTest extends TestCase
     {
         $config = $this->subject->getConfig();
 
-        self::assertInstanceOf(Config\Config::class, $config);
         self::assertSame('foo', $config->getFilePath());
         self::assertSame($config, $this->subject->getConfig());
     }

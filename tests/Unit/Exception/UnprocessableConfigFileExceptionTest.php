@@ -40,7 +40,6 @@ final class UnprocessableConfigFileExceptionTest extends TestCase
     {
         $subject = Exception\UnprocessableConfigFileException::create('foo');
 
-        self::assertInstanceOf(Exception\UnprocessableConfigFileException::class, $subject);
         self::assertSame('The config file "foo" cannot be processed.', $subject->getMessage());
         self::assertSame(1643103076, $subject->getCode());
     }

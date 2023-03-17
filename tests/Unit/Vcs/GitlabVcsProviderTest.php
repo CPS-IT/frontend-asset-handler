@@ -90,7 +90,7 @@ final class GitlabVcsProviderTest extends TestCase
     {
         $actual = $this->subject->withVcs($this->vcs);
 
-        self::assertInstanceOf(Vcs\GitlabVcsProvider::class, $actual);
+        self::assertNotSame($this->subject, $actual);
     }
 
     #[Test]
