@@ -94,7 +94,7 @@ final class EnvironmentVariableProcessorTest extends ContainerAwareTestCase
     }
 
     /**
-     * @return \Generator<string, array{string, bool}>
+     * @return Generator<string, array{string, bool}>
      */
     public static function canProcessTestsWhetherGivenPlaceholderContainsEnvironmentVariablePlaceholderDataProvider(): Generator
     {
@@ -106,7 +106,7 @@ final class EnvironmentVariableProcessorTest extends ContainerAwareTestCase
     }
 
     /**
-     * @return \Generator<string, array{string, string}>
+     * @return Generator<string, array{string, string}>
      */
     public static function processReplacesEnvironmentPlaceholderWithEnvironmentVariableDataProvider(): Generator
     {

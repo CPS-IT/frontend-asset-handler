@@ -198,7 +198,7 @@ final class FileArchiveProcessorTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{TemporaryAsset}>
+     * @return Generator<string, array{TemporaryAsset}>
      */
     public static function processAssetExtractsArchiveDataProvider(): Generator
     {

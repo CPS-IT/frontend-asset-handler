@@ -95,7 +95,7 @@ final class StringHelperTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{int, string}>
+     * @return Generator<string, array{int, string}>
      */
     public static function formatBytesReturnsHumanReadableBytesDataProvider(): Generator
     {

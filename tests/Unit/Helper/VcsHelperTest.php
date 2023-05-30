@@ -161,7 +161,7 @@ final class VcsHelperTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{array<string, string>, string|null}>
+     * @return Generator<string, array{array<string, string>, string|null}>
      */
     public static function getCurrentBranchReturnsBranchNameFromEnvironmentVariablesDataProvider(): Generator
     {
@@ -170,7 +170,7 @@ final class VcsHelperTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{array<string, string>, string|null}>
+     * @return Generator<string, array{array<string, string>, string|null}>
      */
     public static function getCurrentBranchReturnsBranchNameFromCiVariablesDataProvider(): Generator
     {

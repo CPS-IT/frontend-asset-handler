@@ -79,7 +79,7 @@ final class VersionTransformerTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{array{version?: false}}>
+     * @return Generator<string, array{array{version?: false}}>
      */
     public static function fromArrayThrowsExceptionIfVersionIsMissingOrInvalidDataProvider(): Generator
     {

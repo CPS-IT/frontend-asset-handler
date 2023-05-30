@@ -173,7 +173,7 @@ final class ExternalJsonFileWriterTest extends ContainerAwareTestCase
     }
 
     /**
-     * @return \Generator<string, array{string}>
+     * @return Generator<string, array{string}>
      */
     public static function canWriteReturnsFalseIfGivenFileIsComposerJsonFileDataProvider(): Generator
     {

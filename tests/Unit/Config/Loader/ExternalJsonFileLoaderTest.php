@@ -149,7 +149,7 @@ final class ExternalJsonFileLoaderTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{string}>
+     * @return Generator<string, array{string}>
      */
     public static function canLoadReturnsFalseIfGivenFileIsComposerJsonFileDataProvider(): Generator
     {

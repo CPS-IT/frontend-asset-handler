@@ -162,7 +162,7 @@ final class ParserTest extends ContainerAwareTestCase
     }
 
     /**
-     * @return \Generator<string, array{list<string>, array<string, array<int, array<string, array<string, mixed>>>>}>
+     * @return Generator<string, array{list<string>, array<string, array<int, array<string, array<string, mixed>>>>}>
      */
     public static function parseReturnsUnprocessedConfigDataProvider(): Generator
     {

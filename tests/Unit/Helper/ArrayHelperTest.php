@@ -127,7 +127,7 @@ final class ArrayHelperTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{string, string|array<string, string>, array<string, array<mixed>>}>
+     * @return Generator<string, array{string, string|array<string, string>, array<string, array<mixed>>}>
      */
     public static function setArrayValueByPathAppliesGivenValueToArrayAtGivenPathDataProvider(): Generator
     {
