@@ -220,7 +220,7 @@ final class GithubVcsProviderTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{Message\ResponseInterface, list<Vcs\Dto\Deployment>}>
+     * @return Generator<string, array{Message\ResponseInterface, list<Vcs\Dto\Deployment>}>
      */
     public static function getActiveDeploymentsReturnsActiveDeploymentsIfAnyPipelinesAreActiveDataProvider(): Generator
     {

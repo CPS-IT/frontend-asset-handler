@@ -79,7 +79,7 @@ final class StaticTransformerTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{array{value?: false}}>
+     * @return Generator<string, array{array{value?: false}}>
      */
     public static function fromArrayThrowsExceptionIfValueIsMissingOrInvalidDataProvider(): Generator
     {

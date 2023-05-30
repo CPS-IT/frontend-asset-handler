@@ -94,7 +94,7 @@ final class SlugTransformerTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{array{pattern?: string|false}}>
+     * @return Generator<string, array{array{pattern?: string|false}}>
      */
     public static function fromArrayThrowsExceptionIfPatternIsNotValidDataProvider(): Generator
     {
@@ -104,7 +104,7 @@ final class SlugTransformerTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{array{pattern?: string|null}, SlugTransformer}>
+     * @return Generator<string, array{array{pattern?: string|null}, SlugTransformer}>
      */
     public static function fromArrayReturnsTransformerInstanceDataProvider(): Generator
     {

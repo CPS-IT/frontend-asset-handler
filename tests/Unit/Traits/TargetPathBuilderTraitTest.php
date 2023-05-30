@@ -67,7 +67,7 @@ final class TargetPathBuilderTraitTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{string, string}>
+     * @return Generator<string, array{string, string}>
      */
     public static function buildTargetPathThrowsExceptionIfPathIsNotDefinedDataProvider(): Generator
     {

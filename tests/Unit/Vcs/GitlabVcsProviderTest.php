@@ -199,7 +199,7 @@ final class GitlabVcsProviderTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{string, string, list<Vcs\Dto\Deployment>}>
+     * @return Generator<string, array{string, string, list<Vcs\Dto\Deployment>}>
      */
     public static function getActiveDeploymentsReturnsActiveDeploymentsIfPipelinesAreEitherCreatedOrRunningDataProvider(): Generator
     {
