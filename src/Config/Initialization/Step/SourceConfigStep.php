@@ -43,6 +43,9 @@ use function json_decode;
  */
 final class SourceConfigStep extends BaseStep implements InteractiveStepInterface
 {
+    /**
+     * @param DependencyInjection\ServiceLocator<Provider\ProviderInterface> $providers
+     */
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $providers,
     ) {

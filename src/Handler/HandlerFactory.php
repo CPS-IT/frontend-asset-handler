@@ -41,6 +41,9 @@ final class HandlerFactory implements ChattyInterface
 {
     use Traits\OutputAwareTrait;
 
+    /**
+     * @param DependencyInjection\ServiceLocator<HandlerInterface> $handlers
+     */
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $handlers,
     ) {
@@ -59,11 +62,6 @@ final class HandlerFactory implements ChattyInterface
 
         // Fetch handler instance
         $handler = $this->handlers->get($type);
-
-        // Validate handler instance
-        if (!($handler instanceof HandlerInterface)) {
-            throw Exception\UnsupportedClassException::create($handler::class);
-        }
 
         // Pass output to handler
         if ($handler instanceof ChattyInterface) {

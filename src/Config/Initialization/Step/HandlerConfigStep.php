@@ -38,6 +38,9 @@ use Symfony\Component\DependencyInjection;
  */
 final class HandlerConfigStep extends BaseStep implements InteractiveStepInterface
 {
+    /**
+     * @param DependencyInjection\ServiceLocator<Handler\HandlerInterface> $handlers
+     */
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $handlers,
     ) {

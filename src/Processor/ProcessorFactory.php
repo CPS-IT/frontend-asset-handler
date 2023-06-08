@@ -41,6 +41,9 @@ final class ProcessorFactory implements ChattyInterface
 {
     use Traits\OutputAwareTrait;
 
+    /**
+     * @param DependencyInjection\ServiceLocator<ProcessorInterface> $processors
+     */
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $processors,
     ) {
@@ -59,11 +62,6 @@ final class ProcessorFactory implements ChattyInterface
 
         // Fetch processor instance
         $processor = $this->processors->get($type);
-
-        // Validate processor instance
-        if (!($processor instanceof ProcessorInterface)) {
-            throw Exception\UnsupportedClassException::create($processor::class);
-        }
 
         // Pass output to chatty processor
         if ($processor instanceof ChattyInterface) {
