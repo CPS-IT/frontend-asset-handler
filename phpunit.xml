@@ -6,12 +6,15 @@
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
 >
     <php>
-        <env name="COLUMNS" value="300" />
+        <env name="COLUMNS" value="300"/>
     </php>
     <coverage>
-        <include>
-            <directory suffix=".php">src</directory>
-        </include>
+        <report>
+            <cobertura outputFile=".build/coverage/cobertura.xml"/>
+            <clover outputFile=".build/coverage/clover.xml"/>
+            <html outputDirectory=".build/coverage/html"/>
+            <text outputFile="php://stdout"/>
+        </report>
     </coverage>
     <testsuites>
         <testsuite name="unit">
@@ -21,4 +24,9 @@
     <logging>
         <junit outputFile=".build/coverage/junit.xml"/>
     </logging>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
 </phpunit>
