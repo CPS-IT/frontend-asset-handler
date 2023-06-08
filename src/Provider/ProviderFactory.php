@@ -41,6 +41,9 @@ final class ProviderFactory implements ChattyInterface
 {
     use Traits\OutputAwareTrait;
 
+    /**
+     * @param DependencyInjection\ServiceLocator<ProviderInterface> $providers
+     */
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $providers,
     ) {
@@ -59,11 +62,6 @@ final class ProviderFactory implements ChattyInterface
 
         // Fetch provider instance
         $provider = $this->providers->get($type);
-
-        // Validate provider instance
-        if (!($provider instanceof ProviderInterface)) {
-            throw Exception\UnsupportedClassException::create($provider::class);
-        }
 
         // Pass output to chatty providers
         if ($provider instanceof ChattyInterface) {

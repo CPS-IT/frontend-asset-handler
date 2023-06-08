@@ -37,6 +37,9 @@ use Symfony\Component\DependencyInjection;
  */
 final class VcsProviderFactory
 {
+    /**
+     * @param DependencyInjection\ServiceLocator<VcsProviderInterface> $providers
+     */
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $providers,
     ) {
@@ -54,11 +57,6 @@ final class VcsProviderFactory
 
         // Fetch provider instance
         $provider = $this->providers->get($type);
-
-        // Validate provider instance
-        if (!($provider instanceof VcsProviderInterface)) {
-            throw Exception\UnsupportedClassException::create($provider::class);
-        }
 
         if (null !== $vcs) {
             $provider = $provider->withVcs($vcs);

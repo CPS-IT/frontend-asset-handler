@@ -53,7 +53,6 @@ final class ProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
                 'http' => fn () => $this->container->get(Provider\HttpFileProvider::class),
                 // Dummy providers
                 'dummy' => fn () => new Tests\Unit\Fixtures\Classes\DummyProvider(),
-                'invalid' => fn () => new \Exception(),
             ])
         );
         $this->subject->setOutput($this->output);
@@ -65,14 +64,6 @@ final class ProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
         $this->expectExceptionObject(Exception\UnsupportedTypeException::create('foo'));
 
         $this->subject->get('foo');
-    }
-
-    #[Test]
-    public function getThrowsExceptionIfResolvedProviderClassIsInvalid(): void
-    {
-        $this->expectExceptionObject(Exception\UnsupportedClassException::create(\Exception::class));
-
-        $this->subject->get('invalid');
     }
 
     #[Test]

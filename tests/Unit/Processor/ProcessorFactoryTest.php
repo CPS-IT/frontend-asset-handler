@@ -54,7 +54,6 @@ final class ProcessorFactoryTest extends Tests\Unit\ContainerAwareTestCase
                 // Dummy processors
                 'dummy' => fn () => new Tests\Unit\Fixtures\Classes\DummyProcessor(),
                 'existing' => fn () => new Tests\Unit\Fixtures\Classes\DummyProcessor(),
-                'invalid' => fn () => new \Exception(),
             ]),
         );
         $this->subject->setOutput($this->output);
@@ -66,14 +65,6 @@ final class ProcessorFactoryTest extends Tests\Unit\ContainerAwareTestCase
         $this->expectExceptionObject(Exception\UnsupportedTypeException::create('foo'));
 
         $this->subject->get('foo');
-    }
-
-    #[Test]
-    public function getThrowsExceptionIfResolvedProcessorClassIsInvalid(): void
-    {
-        $this->expectExceptionObject(Exception\UnsupportedClassException::create(\Exception::class));
-
-        $this->subject->get('invalid');
     }
 
     #[Test]

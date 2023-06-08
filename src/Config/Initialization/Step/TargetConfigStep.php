@@ -43,6 +43,9 @@ use function is_string;
  */
 final class TargetConfigStep extends BaseStep implements InteractiveStepInterface
 {
+    /**
+     * @param DependencyInjection\ServiceLocator<Processor\ProcessorInterface> $processors
+     */
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $processors,
     ) {

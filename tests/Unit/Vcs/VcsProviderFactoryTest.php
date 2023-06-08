@@ -50,7 +50,6 @@ final class VcsProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
                 'gitlab' => fn () => $this->container->get(Vcs\GitlabVcsProvider::class),
                 // Dummy providers
                 'dummy' => fn () => new Tests\Unit\Fixtures\Classes\DummyVcsProvider(),
-                'invalid' => fn () => new \Exception(),
             ])
         );
     }
@@ -63,16 +62,6 @@ final class VcsProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
         $this->expectExceptionMessage('The given type "foo" is not supported by this factory.');
 
         $this->subject->get('foo');
-    }
-
-    #[Test]
-    public function getThrowsExceptionIfResolvedProviderClassIsInvalid(): void
-    {
-        $this->expectException(Exception\UnsupportedClassException::class);
-        $this->expectExceptionCode(1623911858);
-        $this->expectExceptionMessage('The given class "Exception" is either not available or not supported.');
-
-        $this->subject->get('invalid');
     }
 
     #[Test]

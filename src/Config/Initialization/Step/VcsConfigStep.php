@@ -42,6 +42,9 @@ use function is_string;
  */
 final class VcsConfigStep extends BaseStep implements InteractiveStepInterface
 {
+    /**
+     * @param DependencyInjection\ServiceLocator<Vcs\VcsProviderInterface> $vcsProviders
+     */
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $vcsProviders,
     ) {
