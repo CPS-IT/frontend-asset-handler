@@ -46,7 +46,7 @@
 		"phpstan/phpstan-phpunit": "^1.0",
 		"phpstan/phpstan-symfony": "^1.1",
 		"phpstan/phpstan-webmozart-assert": "^1.2",
-		"phpunit/phpunit": "^10.0",
+		"phpunit/phpunit": "^10.1",
 		"rector/rector": "^0.15.0 || ^0.16.0 || ^0.17.0"
 	},
 	"autoload": {
@@ -92,7 +92,7 @@
 			"@php tests/Build/service-container.php",
 			"phpstan analyse -c phpstan.neon"
 		],
-		"test": "phpunit -c phpunit.xml",
-		"test:coverage": "phpunit -c phpunit.coverage.xml"
+		"test": "@test:coverage --no-coverage",
+		"test:coverage": "phpunit -c phpunit.xml"
 	}
 }
