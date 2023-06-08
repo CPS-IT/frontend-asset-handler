@@ -43,7 +43,6 @@ final class IOExceptionTest extends TestCase
     {
         $actual = Exception\IOException::forUnsupportedOutput(new Console\Output\NullOutput());
 
-        self::assertInstanceOf(Exception\IOException::class, $actual);
         self::assertSame(sprintf('The output "%s" is not supported.', Console\Output\NullOutput::class), $actual->getMessage());
         self::assertSame(1661872012, $actual->getCode());
     }
@@ -53,7 +52,6 @@ final class IOExceptionTest extends TestCase
     {
         $actual = Exception\IOException::forMissingOutputStream();
 
-        self::assertInstanceOf(Exception\IOException::class, $actual);
         self::assertSame('No output stream is available.', $actual->getMessage());
         self::assertSame(1661873512, $actual->getCode());
     }
@@ -63,7 +61,6 @@ final class IOExceptionTest extends TestCase
     {
         $actual = Exception\IOException::forUnprocessableOutputStream();
 
-        self::assertInstanceOf(Exception\IOException::class, $actual);
         self::assertSame('The output stream cannot be processed.', $actual->getMessage());
         self::assertSame(1661873639, $actual->getCode());
     }

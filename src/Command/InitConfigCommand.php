@@ -75,11 +75,13 @@ final class InitConfigCommand extends Console\Command\Command
      */
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
     {
-        $output->writeln([
-            'Welcome to the Frontend Asset Handler!',
-            'You can use the following command to initialize a new asset configuration for your Frontend assets.',
-            'Follow the guide and answer all relevant questions to get started.',
-        ]);
+        if ($input->isInteractive()) {
+            $output->writeln([
+                'Welcome to the Frontend Asset Handler!',
+                'You can use the following command to initialize a new asset configuration for your Frontend assets.',
+                'Follow the guide and answer all relevant questions to get started.',
+            ]);
+        }
 
         $request = Config\Initialization\InitializationRequest::fromCommandInput($input);
 
@@ -104,7 +106,10 @@ final class InitConfigCommand extends Console\Command\Command
             throw Exception\FilesystemFailureException::forFailedWriteOperation($request->getConfigFile());
         }
 
-        $this->io->newLine();
+        if ($input->isInteractive()) {
+            $this->io->newLine();
+        }
+
         $this->io->success(
             sprintf('Asset configuration was successfully written to %s', $request->getConfigFile()),
         );

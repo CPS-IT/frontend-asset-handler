@@ -280,7 +280,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
     }
 
     /**
-     * @return \Generator<string, array{array<string, bool|string>, string}>
+     * @return Generator<string, array{array<string, bool|string>, string}>
      */
     public static function executeFailsAndWritesErrorIfConflictingParametersAreGivenDataProvider(): Generator
     {
@@ -320,7 +320,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
     }
 
     /**
-     * @return \Generator<string, array{string, array{frontend-assets: list<array<string, string|array<string, mixed>>>}}>
+     * @return Generator<string, array{string, array{frontend-assets: list<array<string, string|array<string, mixed>>>}}>
      */
     public static function executeUnsetsConfigurationAtGivenPathDataProvider(): Generator
     {

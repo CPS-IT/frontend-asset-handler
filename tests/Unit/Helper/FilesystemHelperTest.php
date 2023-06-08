@@ -105,7 +105,6 @@ final class FilesystemHelperTest extends TestCase
         $expected->foo = 'baz';
         $actual = Helper\FilesystemHelper::parseJsonFileContents($filePath);
 
-        self::assertInstanceOf(Normalizer\Json::class, $actual);
         self::assertEquals($expected, $actual->decoded());
         self::assertJsonStringEqualsJsonString('{"foo":"baz"}', $actual->encoded());
     }

@@ -72,7 +72,6 @@ final class AssetHandlerTest extends ContainerAwareTestCase
         $source = new Source([]);
         $target = new Target(['type' => 'dummy']);
 
-        /** @var ExistingAsset $actual */
         $actual = $this->subject->handle($source, $target);
 
         self::assertInstanceOf(ExistingAsset::class, $actual);
@@ -101,7 +100,6 @@ final class AssetHandlerTest extends ContainerAwareTestCase
         $source = new Source(['type' => 'dummy', 'foo' => 'baz']);
         $target = new Target(['type' => 'dummy', 'foo' => 'baz']);
 
-        /** @var ProcessedAsset $actual */
         $actual = $this->subject->handle($source, $target, Strategy::FetchNew);
 
         self::assertInstanceOf(ProcessedAsset::class, $actual);

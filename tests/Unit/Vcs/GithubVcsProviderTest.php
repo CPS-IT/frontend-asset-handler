@@ -89,7 +89,7 @@ final class GithubVcsProviderTest extends TestCase
     {
         $actual = $this->subject->withVcs($this->vcs);
 
-        self::assertInstanceOf(Vcs\GithubVcsProvider::class, $actual);
+        self::assertNotSame($this->subject, $actual);
     }
 
     #[Test]
@@ -220,7 +220,7 @@ final class GithubVcsProviderTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{Message\ResponseInterface, list<Vcs\Dto\Deployment>}>
+     * @return Generator<string, array{Message\ResponseInterface, list<Vcs\Dto\Deployment>}>
      */
     public static function getActiveDeploymentsReturnsActiveDeploymentsIfAnyPipelinesAreActiveDataProvider(): Generator
     {

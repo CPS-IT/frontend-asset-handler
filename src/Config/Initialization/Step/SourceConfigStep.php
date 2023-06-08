@@ -43,6 +43,9 @@ use function json_decode;
  */
 final class SourceConfigStep extends BaseStep implements InteractiveStepInterface
 {
+    /**
+     * @param DependencyInjection\ServiceLocator<Provider\ProviderInterface> $providers
+     */
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $providers,
     ) {
@@ -91,7 +94,9 @@ final class SourceConfigStep extends BaseStep implements InteractiveStepInterfac
         $input = $this->getInput($request);
         $io = new Console\Style\SymfonyStyle($input, $this->output);
 
-        $io->title('Source');
+        if ($input->isInteractive()) {
+            $io->title('Source');
+        }
 
         // Initialize additional variables
         $additionalVariables = [];

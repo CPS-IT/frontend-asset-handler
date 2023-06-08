@@ -38,6 +38,9 @@ use Symfony\Component\DependencyInjection;
  */
 final class HandlerConfigStep extends BaseStep implements InteractiveStepInterface
 {
+    /**
+     * @param DependencyInjection\ServiceLocator<Handler\HandlerInterface> $handlers
+     */
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $handlers,
     ) {
@@ -62,7 +65,9 @@ final class HandlerConfigStep extends BaseStep implements InteractiveStepInterfa
         $input = $this->getInput($request);
         $io = new Console\Style\SymfonyStyle($input, $this->output);
 
-        $io->title('Handler');
+        if ($input->isInteractive()) {
+            $io->title('Handler');
+        }
 
         // Ask for handler type
         $handlerType = $this->questionHelper->ask(

@@ -53,7 +53,6 @@ final class HandlerFactoryTest extends Tests\Unit\ContainerAwareTestCase
                 'default' => fn () => $this->container->get(Handler\AssetHandler::class),
                 // Dummy handlers
                 'dummy' => fn () => new Tests\Unit\Fixtures\Classes\DummyHandler(),
-                'invalid' => fn () => new \Exception(),
             ])
         );
         $this->subject->setOutput($this->output);
@@ -65,14 +64,6 @@ final class HandlerFactoryTest extends Tests\Unit\ContainerAwareTestCase
         $this->expectExceptionObject(Exception\UnsupportedTypeException::create('foo'));
 
         $this->subject->get('foo');
-    }
-
-    #[Test]
-    public function getThrowsExceptionIfResolvedProviderClassIsInvalid(): void
-    {
-        $this->expectExceptionObject(Exception\UnsupportedClassException::create(\Exception::class));
-
-        $this->subject->get('invalid');
     }
 
     #[Test]

@@ -40,7 +40,6 @@ final class UnsupportedEnvironmentExceptionTest extends TestCase
     {
         $subject = UnsupportedEnvironmentException::forMissingVCS();
 
-        self::assertInstanceOf(UnsupportedEnvironmentException::class, $subject);
         self::assertSame('Unable to determine default environment without initialized VCS.', $subject->getMessage());
         self::assertSame(1623916365, $subject->getCode());
     }
@@ -50,7 +49,6 @@ final class UnsupportedEnvironmentExceptionTest extends TestCase
     {
         $subject = UnsupportedEnvironmentException::forInvalidEnvironment('foo');
 
-        self::assertInstanceOf(UnsupportedEnvironmentException::class, $subject);
         self::assertSame('The given environment "foo" is not valid.', $subject->getMessage());
         self::assertSame(1623916415, $subject->getCode());
     }
@@ -60,7 +58,6 @@ final class UnsupportedEnvironmentExceptionTest extends TestCase
     {
         $subject = UnsupportedEnvironmentException::forMisconfiguredEnvironments(['foo', 'baz']);
 
-        self::assertInstanceOf(UnsupportedEnvironmentException::class, $subject);
         self::assertSame('The following environment(s) are misconfigured: "foo", "baz"', $subject->getMessage());
         self::assertSame(1630773354, $subject->getCode());
     }

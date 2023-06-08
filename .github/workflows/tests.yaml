@@ -71,7 +71,7 @@ jobs:
         working-directory: .build/coverage
         run: sed -i 's#/home/runner/work/frontend-asset-handler/frontend-asset-handler#${{ github.workspace }}#g' clover.xml
       - name: CodeClimate report
-        uses: paambaati/codeclimate-action@v3.2.0
+        uses: paambaati/codeclimate-action@v4.0.0
         if: env.CC_TEST_REPORTER_ID
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
@@ -85,3 +85,38 @@ jobs:
           directory: .build/coverage
           fail_ci_if_error: true
           verbose: true
+
+  e2e:
+    name: Tests (E2E)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # Prepare environment
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          tools: composer:v2, phive
+
+      # Compile PHAR
+      - name: Install box
+        run: phive install --trust-gpg-keys 2DF45277AEF09A2F humbug/box
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
+        with:
+          composer-options: "--no-dev"
+      - name: Compile PHAR
+        run: ./tools/box compile
+
+      # Run test with PHAR
+      - name: Test PHAR
+        run: |
+          .build/frontend-asset-handler.phar init \
+            --source-type=http \
+            --source-url=https://www.example.com \
+            --target-type=archive \
+            --target-path=.build/assets \
+            --handler-type=default

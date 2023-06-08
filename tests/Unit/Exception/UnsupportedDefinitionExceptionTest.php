@@ -42,7 +42,6 @@ final class UnsupportedDefinitionExceptionTest extends TestCase
         $definition = new DummyAssetDefinition([]);
         $subject = UnsupportedDefinitionException::create($definition);
 
-        self::assertInstanceOf(UnsupportedDefinitionException::class, $subject);
         self::assertMatchesRegularExpression('/^The given asset definition "[^"]+" is not supported\.$/', $subject->getMessage());
         self::assertSame(1624636359, $subject->getCode());
     }

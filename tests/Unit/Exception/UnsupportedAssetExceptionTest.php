@@ -49,7 +49,6 @@ final class UnsupportedAssetExceptionTest extends TestCase
 
         $subject = UnsupportedAssetException::create($asset);
 
-        self::assertInstanceOf(UnsupportedAssetException::class, $subject);
         self::assertSame(
             sprintf('The asset with source "%s" and target "%s" is not supported.', $source, $target),
             $subject->getMessage()
