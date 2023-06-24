@@ -35,6 +35,7 @@ use GraphQL\Util;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7;
 
+use function class_exists;
 use function explode;
 use function in_array;
 use function is_array;
@@ -240,15 +241,26 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
         return $data;
     }
 
+    /**
+     * @throws Exception\MissingPackageException
+     */
     private function getClient(): Client
     {
-        if (null === $this->graphQlClient) {
-            $this->graphQlClient = new Client(
-                self::API_URL,
-                ['Authorization' => 'Bearer '.$this->accessToken],
-                httpClient: new Util\GuzzleAdapter($this->client),
-            );
+        if (null !== $this->graphQlClient) {
+            return $this->graphQlClient;
         }
+
+        // @codeCoverageIgnoreStart
+        if (!class_exists(Client::class)) {
+            throw Exception\MissingPackageException::create('gmostafa/php-graphql-client');
+        }
+        // @codeCoverageIgnoreEnd
+
+        $this->graphQlClient = new Client(
+            self::API_URL,
+            ['Authorization' => 'Bearer '.$this->accessToken],
+            httpClient: new Util\GuzzleAdapter($this->client),
+        );
 
         return $this->graphQlClient;
     }

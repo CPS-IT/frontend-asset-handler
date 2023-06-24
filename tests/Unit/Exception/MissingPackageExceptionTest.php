@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Composer package "cpsit/frontend-asset-handler".
  *
- * Copyright (C) 2021 Elias Häußler <e.haeussler@familie-redlich.de>
+ * Copyright (C) 2023 Elias Häußler <e.haeussler@familie-redlich.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,25 +21,26 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace CPSIT\FrontendAssetHandler\Exception;
+namespace CPSIT\FrontendAssetHandler\Tests\Unit\Exception;
 
-use Exception;
+use CPSIT\FrontendAssetHandler\Exception\MissingPackageException;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 /**
- * MissingConfigurationException.
+ * MissingPackageExceptionTest.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class MissingConfigurationException extends Exception
+final class MissingPackageExceptionTest extends TestCase
 {
-    public static function create(): self
+    #[Test]
+    public function createReturnsExceptionForMissingPackage(): void
     {
-        return new self('The asset configuration is missing.', 1661844293);
-    }
+        $subject = MissingPackageException::create('foo');
 
-    public static function forKey(string $key): self
-    {
-        return new self(sprintf('Configuration for key "%s" is missing or invalid.', $key), 1623867663);
+        self::assertSame('The package "foo" is not installed. Please run "composer require foo".', $subject->getMessage());
+        self::assertSame(1687631353, $subject->getCode());
     }
 }
