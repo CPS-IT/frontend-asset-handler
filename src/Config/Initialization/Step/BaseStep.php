@@ -135,7 +135,7 @@ abstract class BaseStep implements StepInterface, ChattyInterface
 
         $placeholders = array_diff(
             Helper\StringHelper::extractPlaceholders($string),
-            ['environment', 'revision'],
+            ['environment', 'revision', 'temp', 'cwd'],
             array_keys($request->getOptions()),
             array_keys($additionalVariables),
         );
