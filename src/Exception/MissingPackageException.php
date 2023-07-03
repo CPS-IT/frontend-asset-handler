@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Composer package "cpsit/frontend-asset-handler".
  *
- * Copyright (C) 2021 Elias Häußler <e.haeussler@familie-redlich.de>
+ * Copyright (C) 2023 Elias Häußler <e.haeussler@familie-redlich.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,21 +25,24 @@ namespace CPSIT\FrontendAssetHandler\Exception;
 
 use Exception;
 
+use function sprintf;
+
 /**
- * MissingConfigurationException.
+ * MissingPackageException.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class MissingConfigurationException extends Exception
+final class MissingPackageException extends Exception
 {
-    public static function create(): self
+    /**
+     * @param non-empty-string $packageName
+     */
+    public static function create(string $packageName): self
     {
-        return new self('The asset configuration is missing.', 1661844293);
-    }
-
-    public static function forKey(string $key): self
-    {
-        return new self(sprintf('Configuration for key "%s" is missing or invalid.', $key), 1623867663);
+        return new self(
+            sprintf('The package "%1$s" is not installed. Please run "composer require %1$s".', $packageName),
+            1687631353,
+        );
     }
 }

@@ -117,6 +117,27 @@ final class GithubVcsProviderTest extends TestCase
     }
 
     #[Test]
+    public function getSourceUrlReusesInitializedGraphQLClient(): void
+    {
+        $this->expectNotToPerformAssertions();
+
+        for ($i = 0; $i < 2; ++$i) {
+            $this->mockHandler->append($response = new Psr7\Response());
+
+            $response->getBody()->write('{"data":{"repository":{"url":"foo"}}}');
+            $response->getBody()->rewind();
+        }
+
+        $subject = $this->subject->withVcs($this->vcs);
+
+        // First call creates a new client
+        $subject->getSourceUrl();
+
+        // Second call re-uses existing client
+        $subject->getSourceUrl();
+    }
+
+    #[Test]
     public function getLatestRevisionReturnsNullIfApiResponseIsUnexpected(): void
     {
         $this->mockHandler->append(new GuzzleException\TransferException());
@@ -238,7 +259,7 @@ final class GithubVcsProviderTest extends TestCase
                     'repository' => [
                         'deployments' => [
                             'nodes' => array_map(
-                                fn (string $status) => [
+                                static fn (string $status) => [
                                     'latestStatus' => [
                                         'state' => $status,
                                         'logUrl' => 'https://www.example.com',
