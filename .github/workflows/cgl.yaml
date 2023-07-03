@@ -30,7 +30,7 @@ jobs:
 
       # Install dependencies
       - name: Install Composer dependencies
-        run: composer require --no-progress gmostafa/php-graphql-client:"^1.3"
+        run: composer require --no-progress gmostafa/php-graphql-client:"^1.13"
 
       # Check Composer dependencies
       - name: Check dependencies
