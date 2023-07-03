@@ -102,6 +102,50 @@ final class SourceConfigStep extends BaseStep implements InteractiveStepInterfac
         $additionalVariables = [];
 
         // Source type
+        $this->askForSourceType($input, $request);
+
+        // Source url
+        $this->askForSourceUrl($input, $request);
+        $this->askForPlaceholderVariables(
+            $request,
+            $request->getOption('source-url'),
+            'URL placeholder "%s" (optional)',
+            $additionalVariables,
+        );
+
+        // Source revision url
+        $this->askForSourceRevisionUrl($input, $request);
+        $this->askForPlaceholderVariables(
+            $request,
+            $request->getOption('source-revision-url'),
+            'Revision URL placeholder "%s" (optional)',
+            $additionalVariables,
+        );
+
+        // Additional variables for specific providers
+        switch ($request->getOption('source-type')) {
+            case Provider\HttpFileProvider::getName():
+                $this->requestAdditionalVariablesForHttpFileProvider($input, $request);
+                break;
+
+            case Provider\LocalPathProvider::getName():
+                $this->requestAdditionalVariablesForLocalPathProvider($request, $additionalVariables);
+                break;
+        }
+
+        // Source config extra
+        $this->askForSourceConfigExtra($input, $request, $additionalVariables);
+
+        // Build source
+        $this->buildSource($request);
+
+        return true;
+    }
+
+    private function askForSourceType(
+        Console\Input\InputInterface $input,
+        Config\Initialization\InitializationRequest $request,
+    ): void {
         $sourceType = $this->questionHelper->ask(
             $input,
             $this->output,
@@ -112,28 +156,45 @@ final class SourceConfigStep extends BaseStep implements InteractiveStepInterfac
             ),
         );
         $request->setOption('source-type', $sourceType);
+    }
 
-        // Source url
+    private function askForSourceUrl(
+        Console\Input\InputInterface $input,
+        Config\Initialization\InitializationRequest $request,
+    ): void {
+        $sourceType = $request->getOption('source-type');
+
+        if (Provider\LocalPathProvider::getName() === $sourceType) {
+            $this->output->writeln([
+                'Please provide the local path where we frontend assets can be found.',
+                'You can use the special placeholder <comment>{temp}</comment> in combination with a command',
+                'to prepare the asset source (can be configured later), e.g. <comment>{temp}.tar.gz</comment>.',
+                'It will be replaced by a unique temporary file identifier during runtime.',
+            ]);
+        }
+
         $sourceUrl = $this->questionHelper->ask(
             $input,
             $this->output,
             $this->createQuestion(
-                'URL',
+                match ($sourceType) {
+                    Provider\LocalPathProvider::getName() => 'Local path',
+                    default => 'URL',
+                },
                 $request->getOption('source-url'),
-                validator: ['notEmpty', 'url'],
+                validator: match ($sourceType) {
+                    Provider\LocalPathProvider::getName() => ['notEmpty'],
+                    default => ['notEmpty', 'url'],
+                },
             ),
         );
         $request->setOption('source-url', $sourceUrl);
+    }
 
-        // Source url placeholders
-        $this->askForPlaceholderVariables(
-            $request,
-            $sourceUrl,
-            'URL placeholder "%s" (optional)',
-            $additionalVariables,
-        );
-
-        // Source revision url
+    private function askForSourceRevisionUrl(
+        Console\Input\InputInterface $input,
+        Config\Initialization\InitializationRequest $request,
+    ): void {
         $sourceRevisionUrl = $this->questionHelper->ask(
             $input,
             $this->output,
@@ -144,27 +205,16 @@ final class SourceConfigStep extends BaseStep implements InteractiveStepInterfac
             ),
         );
         $request->setOption('source-revision-url', $sourceRevisionUrl);
+    }
 
-        // Source revision url placeholders
-        $this->askForPlaceholderVariables(
-            $request,
-            $sourceRevisionUrl,
-            'Revision URL placeholder "%s" (optional)',
-            $additionalVariables,
-        );
-
-        // Source version
-        $sourceVersion = $this->questionHelper->ask(
-            $input,
-            $this->output,
-            $this->createQuestion(
-                'Locked version',
-                $request->getOption('source-version'),
-            ),
-        );
-        $request->setOption('source-version', $sourceVersion);
-
-        // Source config extra
+    /**
+     * @param array<string, mixed> $additionalVariables
+     */
+    private function askForSourceConfigExtra(
+        Console\Input\InputInterface $input,
+        Config\Initialization\InitializationRequest $request,
+        array $additionalVariables,
+    ): void {
         $sourceConfigExtra = $this->questionHelper->ask(
             $input,
             $this->output,
@@ -183,11 +233,47 @@ final class SourceConfigStep extends BaseStep implements InteractiveStepInterfac
         }
 
         $request->setOption('source-config-extra', $additionalVariables);
+    }
 
-        // Build source
-        $this->buildSource($request);
+    private function requestAdditionalVariablesForHttpFileProvider(
+        Console\Input\InputInterface $input,
+        Config\Initialization\InitializationRequest $request
+    ): void {
+        $this->output->writeln([
+            'You may specify a stable asset version used for main/master branches.',
+            'This version should be bumped once a new frontend asset release is published.',
+        ]);
 
-        return true;
+        $sourceVersion = $this->questionHelper->ask(
+            $input,
+            $this->output,
+            $this->createQuestion(
+                'Locked version',
+                $request->getOption('source-version'),
+            ),
+        );
+        $request->setOption('source-version', $sourceVersion);
+    }
+
+    /**
+     * @param array<string, mixed> $additionalVariables
+     */
+    private function requestAdditionalVariablesForLocalPathProvider(
+        Config\Initialization\InitializationRequest $request,
+        array &$additionalVariables,
+    ): void {
+        $this->output->writeln([
+            'You may specify an additional command to prepare the source for further processing.',
+            'The special placeholders <comment>{cwd}</comment> and <comment>{url}</comment> can be used.',
+            'They will be replaced by the current working directory and configured URL during runtime.',
+        ]);
+
+        $this->askForAdditionalVariable(
+            $request,
+            'Command (optional)',
+            'command',
+            $additionalVariables,
+        );
     }
 
     private function buildSource(Config\Initialization\InitializationRequest $request): void
