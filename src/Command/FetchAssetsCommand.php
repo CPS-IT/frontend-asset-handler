@@ -33,7 +33,6 @@ use CPSIT\FrontendAssetHandler\Strategy;
 use Symfony\Component\Console;
 
 use function count;
-use function is_string;
 
 /**
  * FetchAssetsCommand.
@@ -69,8 +68,8 @@ final class FetchAssetsCommand extends BaseAssetsCommand
         $this->addArgument(
             'branch',
             Console\Input\InputArgument::OPTIONAL,
-            'Optional branch name, will be resolved to an asset environment and overrides default environment derived from current branch',
-            Helper\VcsHelper::getCurrentBranch()
+            'Optional branch name, will be resolved to an asset environment and overrides default environment derived from current branch.',
+            Helper\VcsHelper::getCurrentBranch(),
         );
         $this->addOption(
             'force',
@@ -98,8 +97,7 @@ final class FetchAssetsCommand extends BaseAssetsCommand
         $branch = $input->getArgument('branch');
 
         // Handle missing or invalid environments
-        /* @phpstan-ignore-next-line */
-        if (!is_string($branch)) {
+        if (null === $branch) {
             throw Exception\UnsupportedEnvironmentException::forMissingVCS();
         }
         if ('' === trim($branch)) {

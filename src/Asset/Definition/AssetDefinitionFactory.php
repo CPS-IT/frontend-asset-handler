@@ -99,8 +99,7 @@ final class AssetDefinitionFactory
     private function buildEnvironmentResolver(array $configuration, string $version = null): Asset\Environment\EnvironmentResolver
     {
         $mapConfig = $configuration['map'] ?? [];
-        /* @phpstan-ignore-next-line */
-        $merge = (bool) ($configuration['merge'] ?? false);
+        $merge = $configuration['merge'] ?? false;
         $defaultMap = Asset\Environment\Map\MapFactory::createDefault($version);
 
         if ([] === $mapConfig) {

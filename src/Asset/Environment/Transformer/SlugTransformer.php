@@ -26,8 +26,6 @@ namespace CPSIT\FrontendAssetHandler\Asset\Environment\Transformer;
 use CPSIT\FrontendAssetHandler\Exception\MissingConfigurationException;
 use CPSIT\FrontendAssetHandler\Helper;
 
-use function is_string;
-
 /**
  * SlugTransformer.
  *
@@ -51,12 +49,7 @@ final class SlugTransformer implements TransformerInterface
             return new self();
         }
 
-        /* @phpstan-ignore-next-line */
-        if (!is_string($pattern = $config['pattern'])) {
-            throw MissingConfigurationException::forKey('pattern');
-        }
-
-        return new self($pattern);
+        return new self($config['pattern']);
     }
 
     /**

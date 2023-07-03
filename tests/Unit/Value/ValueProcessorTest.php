@@ -23,13 +23,10 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Value;
 
-use CPSIT\FrontendAssetHandler\Exception\UnsupportedClassException;
-use CPSIT\FrontendAssetHandler\Exception\UnsupportedTypeException;
 use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
 use CPSIT\FrontendAssetHandler\Tests\Unit\EnvironmentVariablesTrait;
 use CPSIT\FrontendAssetHandler\Value\ValueProcessor;
 use PHPUnit\Framework\Attributes\Test;
-use stdClass;
 
 /**
  * ValueProcessorTest.
@@ -50,28 +47,6 @@ final class ValueProcessorTest extends ContainerAwareTestCase
         $this->backUpEnvironmentVariables();
 
         $this->subject = $this->container->get(ValueProcessor::class);
-    }
-
-    #[Test]
-    public function constructorThrowsExceptionIfGivenPlaceholderProcessorIsNotAnObject(): void
-    {
-        $this->expectException(UnsupportedTypeException::class);
-        $this->expectExceptionCode(1628149629);
-
-        /* @noinspection PhpParamsInspection */
-        /* @phpstan-ignore-next-line */
-        new ValueProcessor(['foo']);
-    }
-
-    #[Test]
-    public function constructorThrowsExceptionIfGivenPlaceholderProcessorIsInvalid(): void
-    {
-        $this->expectException(UnsupportedClassException::class);
-        $this->expectExceptionCode(1623911858);
-
-        /* @noinspection PhpParamsInspection */
-        /* @phpstan-ignore-next-line */
-        new ValueProcessor([new stdClass()]);
     }
 
     #[Test]

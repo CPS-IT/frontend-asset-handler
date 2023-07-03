@@ -53,7 +53,6 @@ trait DefaultConfigurationAwareTrait
      */
     protected function validateAssetDefinition(Asset\Definition\AssetDefinition $assetDefinition): void
     {
-        /** @var mixed $configValue */
         foreach ($this->getDefaultConfiguration() as $configKey => $configValue) {
             if (!isset($assetDefinition[$configKey]) && null === $configValue) {
                 throw Exception\MissingConfigurationException::forKey($configKey);

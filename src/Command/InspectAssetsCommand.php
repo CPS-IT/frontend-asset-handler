@@ -35,7 +35,6 @@ use Symfony\Component\Console;
 
 use function array_pop;
 use function count;
-use function is_string;
 use function sprintf;
 
 /**
@@ -84,8 +83,8 @@ final class InspectAssetsCommand extends BaseAssetsCommand
         $this->addArgument(
             'branch',
             Console\Input\InputArgument::OPTIONAL,
-            'Optional branch name, will be resolved to an asset environment and overrides default environment derived from current branch',
-            Helper\VcsHelper::getCurrentBranch()
+            'Optional branch name, will be resolved to an asset environment and overrides default environment derived from current branch.',
+            Helper\VcsHelper::getCurrentBranch(),
         );
         $this->addOption(
             'wait-for-deployments',
@@ -103,8 +102,7 @@ final class InspectAssetsCommand extends BaseAssetsCommand
         $wait = $input->getOption('wait-for-deployments');
 
         // Handle missing or invalid environments
-        /* @phpstan-ignore-next-line */
-        if (!is_string($branch)) {
+        if (null === $branch) {
             throw Exception\UnsupportedEnvironmentException::forMissingVCS();
         }
         if ('' === trim($branch)) {

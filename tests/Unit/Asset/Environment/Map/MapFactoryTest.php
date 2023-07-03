@@ -92,7 +92,6 @@ final class MapFactoryTest extends ContainerAwareTestCase
         $this->expectExceptionCode(1623911858);
         $this->expectExceptionMessage('The given class "Foo\\Baz" is either not available or not supported.');
 
-        /* @phpstan-ignore-next-line */
         $subject = new MapFactory([
             'foo' => 'Foo\\Baz',
         ]);
@@ -110,7 +109,6 @@ final class MapFactoryTest extends ContainerAwareTestCase
         $this->expectExceptionCode(1623911858);
         $this->expectExceptionMessage('The given class "Exception" is either not available or not supported.');
 
-        /* @phpstan-ignore-next-line */
         $subject = new MapFactory([
             'foo' => Exception::class,
         ]);
