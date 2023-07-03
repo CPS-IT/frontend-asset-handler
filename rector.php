@@ -24,6 +24,7 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 use Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector;
 use Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector;
+use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 use Rector\Set\ValueObject\LevelSetList;
 
 return static function (RectorConfig $rectorConfig): void {
@@ -35,6 +36,10 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
         AddLiteralSeparatorToNumberRector::class,
         JsonThrowOnErrorRector::class,
+        NullToStrictStringFuncCallArgRector::class => [
+            __DIR__.'/src/Command/FetchAssetsCommand.php',
+            __DIR__.'/src/Command/InspectAssetsCommand.php',
+        ],
     ]);
 
     $rectorConfig->sets([
