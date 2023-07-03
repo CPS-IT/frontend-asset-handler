@@ -91,6 +91,27 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
     }
 
     #[Test]
+    public function executeShowsAdditionalInformationForSourceUrlWithLocalPathProvider(): void
+    {
+        $input = $this->request->getInput();
+
+        self::assertInstanceOf(Console\Input\StreamableInputInterface::class, $input);
+
+        self::setInputs(['local', '/foo/assets.tar.gz', '', '', ''], $input);
+
+        self::assertTrue($this->subject->execute($this->request));
+        self::assertSame(
+            Provider\LocalPathProvider::getName(),
+            $this->request->getConfig()['frontend-assets'][0]['source']['type'],
+        );
+
+        $output = $this->output->fetch();
+
+        self::assertStringContainsString('You can use the special placeholder {temp}', $output);
+        self::assertStringContainsString('Local path', $output);
+    }
+
+    #[Test]
     public function executeAsksForPlaceholdersInGivenSourceUrl(): void
     {
         $input = $this->request->getInput();
@@ -142,7 +163,7 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
     }
 
     #[Test]
-    public function executeAsksForSourceVersion(): void
+    public function executeAsksForSourceVersionWithHttpFileProvider(): void
     {
         $input = $this->request->getInput();
 
@@ -161,11 +182,39 @@ final class SourceConfigStepTest extends Tests\Unit\ContainerAwareTestCase
 
         $output = $this->output->fetch();
 
+        self::assertStringContainsString(
+            'You may specify a stable asset version used for main/master branches.',
+            $output,
+        );
         self::assertStringContainsString('Locked version', $output);
     }
 
     #[Test]
-    public function executeShowErrorIfGivenSourceConfigExtraIsNotValidJson(): void
+    public function executeAsksForCommandWithLocalPathProvider(): void
+    {
+        $input = $this->request->getInput();
+
+        self::assertInstanceOf(Console\Input\StreamableInputInterface::class, $input);
+
+        self::setInputs(['local', '/foo/assets.tar.gz', '', 'foo baz', ''], $input);
+
+        self::assertTrue($this->subject->execute($this->request));
+        self::assertSame(
+            'foo baz',
+            $this->request->getConfig()['frontend-assets'][0]['source']['command'],
+        );
+
+        $output = $this->output->fetch();
+
+        self::assertStringContainsString(
+            'You may specify an additional command to prepare the source for further processing.',
+            $output,
+        );
+        self::assertStringContainsString('Command (optional)', $output);
+    }
+
+    #[Test]
+    public function executeShowsErrorIfGivenSourceConfigExtraIsNotValidJson(): void
     {
         $input = $this->request->getInput();
 

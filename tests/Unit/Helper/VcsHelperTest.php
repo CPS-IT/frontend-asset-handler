@@ -24,11 +24,11 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Helper;
 
 use CPSIT\FrontendAssetHandler\Helper;
+use CPSIT\FrontendAssetHandler\Tests;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Filesystem;
 use Symfony\Component\Process;
 
 /**
@@ -39,16 +39,12 @@ use Symfony\Component\Process;
  */
 final class VcsHelperTest extends TestCase
 {
-    private ?string $temporaryDirectory = null;
-
-    /**
-     * @var array<string, string>
-     */
-    private array $backedUpEnvironmentVariables = [];
+    use Tests\Unit\EnvironmentVariablesTrait;
+    use Tests\Unit\FunctionExecutorTrait;
 
     protected function setUp(): void
     {
-        $this->backedUpEnvironmentVariables = getenv();
+        $this->backUpEnvironmentVariables();
 
         // Unset environment variables used in CI context to simulate
         // clean state for Git-related test scenarios
@@ -61,17 +57,9 @@ final class VcsHelperTest extends TestCase
     #[Test]
     public function getCurrentBranchReturnsNullIfBranchCannotBeDetermined(): void
     {
-        // Create temporary directory
-        $temporaryDirectory = $this->createTemporaryDirectory();
-
-        // Go to temporary directory
-        $previousLocation = getcwd() ?: './';
-        chdir($temporaryDirectory);
-
-        self::assertNull(Helper\VcsHelper::getCurrentBranch());
-
-        // Go back to original location
-        chdir($previousLocation);
+        $this->executeInDirectory(
+            static fn () => self::assertNull(Helper\VcsHelper::getCurrentBranch())
+        );
     }
 
     /**
@@ -81,27 +69,21 @@ final class VcsHelperTest extends TestCase
     #[DataProvider('getCurrentBranchReturnsBranchNameFromEnvironmentVariablesDataProvider')]
     public function getCurrentBranchReturnsBranchNameFromEnvironmentVariables(array $variables, ?string $expected): void
     {
-        // Create temporary directory
-        $temporaryDirectory = $this->createTemporaryDirectory();
+        $this->executeInDirectory(
+            function () use ($variables, $expected) {
+                // Create environment variables
+                foreach ($variables as $name => $value) {
+                    $this->setEnvironmentVariable($name, $value);
+                }
 
-        // Go to temporary directory
-        $previousLocation = getcwd() ?: './';
-        chdir($temporaryDirectory);
+                self::assertSame($expected, Helper\VcsHelper::getCurrentBranch());
 
-        // Create environment variables
-        foreach ($variables as $name => $value) {
-            $this->setEnvironmentVariable($name, $value);
-        }
-
-        self::assertSame($expected, Helper\VcsHelper::getCurrentBranch());
-
-        // Unset environment variables
-        foreach (array_keys($variables) as $name) {
-            $this->unsetEnvironmentVariable($name);
-        }
-
-        // Go back to original location
-        chdir($previousLocation);
+                // Unset environment variables
+                foreach (array_keys($variables) as $name) {
+                    $this->unsetEnvironmentVariable($name);
+                }
+            }
+        );
     }
 
     /**
@@ -112,52 +94,40 @@ final class VcsHelperTest extends TestCase
     public function getCurrentBranchReturnsBranchNameFromCiVariables(array $variables, ?string $expected): void
     {
         if (false !== getenv('CI')) {
-            $this->markTestSkipped('Unable to execute this test in CI context.');
+            self::markTestSkipped('Unable to execute this test in CI context.');
         }
 
-        // Create temporary directory
-        $temporaryDirectory = $this->createTemporaryDirectory();
+        $this->executeInDirectory(
+            function () use ($variables, $expected) {
+                // Create environment variables
+                foreach ($variables as $name => $value) {
+                    $this->setEnvironmentVariable($name, $value);
+                }
 
-        // Go to temporary directory
-        $previousLocation = getcwd() ?: './';
-        chdir($temporaryDirectory);
+                self::assertSame($expected, Helper\VcsHelper::getCurrentBranch());
 
-        // Create environment variables
-        foreach ($variables as $name => $value) {
-            $this->setEnvironmentVariable($name, $value);
-        }
-
-        self::assertSame($expected, Helper\VcsHelper::getCurrentBranch());
-
-        // Unset environment variables
-        foreach (array_keys($variables) as $name) {
-            $this->unsetEnvironmentVariable($name);
-        }
-
-        // Go back to original location
-        chdir($previousLocation);
+                // Unset environment variables
+                foreach (array_keys($variables) as $name) {
+                    $this->unsetEnvironmentVariable($name);
+                }
+            }
+        );
     }
 
     #[Test]
     public function getCurrentBranchReturnsCurrentlyCheckedOutGitBranch(): void
     {
-        // Create temporary directory
-        $temporaryDirectory = $this->createTemporaryDirectory();
+        $this->executeInDirectory(
+            static function () {
+                // Initialize Git repository
+                $initProcess = new Process\Process(['git', 'init']);
+                $initProcess->run();
+                $newBranchProcess = new Process\Process(['git', 'checkout', '-b', 'test']);
+                $newBranchProcess->run();
 
-        // Go to temporary directory
-        $previousLocation = getcwd() ?: './';
-        chdir($temporaryDirectory);
-
-        // Initialize Git repository
-        $initProcess = new Process\Process(['git', 'init']);
-        $initProcess->run();
-        $newBranchProcess = new Process\Process(['git', 'checkout', '-b', 'test']);
-        $newBranchProcess->run();
-
-        self::assertSame('test', Helper\VcsHelper::getCurrentBranch());
-
-        // Go back to original location
-        chdir($previousLocation);
+                self::assertSame('test', Helper\VcsHelper::getCurrentBranch());
+            }
+        );
     }
 
     /**
@@ -181,41 +151,6 @@ final class VcsHelperTest extends TestCase
 
     protected function tearDown(): void
     {
-        foreach ($this->backedUpEnvironmentVariables as $key => $value) {
-            $this->setEnvironmentVariable($key, $value);
-        }
-
-        $this->removeTemporaryDirectory();
-    }
-
-    private function createTemporaryDirectory(): string
-    {
-        $filesystem = new Filesystem\Filesystem();
-        $this->temporaryDirectory = $filesystem->tempnam(sys_get_temp_dir(), 'asset_handler_test_');
-        $filesystem->remove($this->temporaryDirectory);
-        $filesystem->mkdir($this->temporaryDirectory);
-
-        return $this->temporaryDirectory;
-    }
-
-    private function removeTemporaryDirectory(): void
-    {
-        $filesystem = new Filesystem\Filesystem();
-
-        if (null !== $this->temporaryDirectory && $filesystem->exists($this->temporaryDirectory)) {
-            $filesystem->remove($this->temporaryDirectory);
-        }
-    }
-
-    private function setEnvironmentVariable(string $name, mixed $value): void
-    {
-        putenv(sprintf('%s=%s', $name, $value));
-        $_ENV[$name] = $value;
-    }
-
-    private function unsetEnvironmentVariable(string $name): void
-    {
-        putenv($name);
-        unset($_ENV[$name]);
+        $this->restoreEnvironmentVariables();
     }
 }

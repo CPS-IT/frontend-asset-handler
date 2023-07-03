@@ -83,8 +83,8 @@ final class InspectAssetsCommand extends BaseAssetsCommand
         $this->addArgument(
             'branch',
             Console\Input\InputArgument::OPTIONAL,
-            'Optional branch name, will be resolved to an asset environment and overrides default environment derived from current branch',
-            Helper\VcsHelper::getCurrentBranch()
+            'Optional branch name, will be resolved to an asset environment and overrides default environment derived from current branch.',
+            Helper\VcsHelper::getCurrentBranch(),
         );
         $this->addOption(
             'wait-for-deployments',
@@ -102,10 +102,10 @@ final class InspectAssetsCommand extends BaseAssetsCommand
         $wait = $input->getOption('wait-for-deployments');
 
         // Handle missing or invalid environments
-        if (empty($branch)) {
+        if (null === $branch) {
             throw Exception\UnsupportedEnvironmentException::forMissingVCS();
         }
-        if ('' === trim((string) $branch)) {
+        if ('' === trim($branch)) {
             throw Exception\UnsupportedEnvironmentException::forInvalidEnvironment($branch);
         }
 

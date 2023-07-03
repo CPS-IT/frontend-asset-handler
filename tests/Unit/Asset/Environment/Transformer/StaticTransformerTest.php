@@ -56,7 +56,6 @@ final class StaticTransformerTest extends TestCase
         $this->expectExceptionCode(1623867663);
         $this->expectExceptionMessage('Configuration for key "value" is missing or invalid.');
 
-        /* @phpstan-ignore-next-line */
         StaticTransformer::fromArray($config);
     }
 

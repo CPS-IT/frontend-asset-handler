@@ -47,7 +47,7 @@ final class ServicesParser
     {
         $newConfig = new Config\Config(['services' => []], $config->getFilePath());
 
-        if (empty($config['services'])) {
+        if ([] === ($config['services'] ?? [])) {
             return $newConfig;
         }
 

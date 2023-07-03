@@ -23,12 +23,10 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Value;
 
-use CPSIT\FrontendAssetHandler\Exception\UnsupportedClassException;
-use CPSIT\FrontendAssetHandler\Exception\UnsupportedTypeException;
 use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
+use CPSIT\FrontendAssetHandler\Tests\Unit\EnvironmentVariablesTrait;
 use CPSIT\FrontendAssetHandler\Value\ValueProcessor;
 use PHPUnit\Framework\Attributes\Test;
-use stdClass;
 
 /**
  * ValueProcessorTest.
@@ -38,35 +36,17 @@ use stdClass;
  */
 final class ValueProcessorTest extends ContainerAwareTestCase
 {
+    use EnvironmentVariablesTrait;
+
     private ValueProcessor $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->backUpEnvironmentVariables();
+
         $this->subject = $this->container->get(ValueProcessor::class);
-    }
-
-    #[Test]
-    public function constructorThrowsExceptionIfGivenPlaceholderProcessorIsNotAnObject(): void
-    {
-        $this->expectException(UnsupportedTypeException::class);
-        $this->expectExceptionCode(1628149629);
-
-        /* @noinspection PhpParamsInspection */
-        /* @phpstan-ignore-next-line */
-        new ValueProcessor(['foo']);
-    }
-
-    #[Test]
-    public function constructorThrowsExceptionIfGivenPlaceholderProcessorIsInvalid(): void
-    {
-        $this->expectException(UnsupportedClassException::class);
-        $this->expectExceptionCode(1623911858);
-
-        /* @noinspection PhpParamsInspection */
-        /* @phpstan-ignore-next-line */
-        new ValueProcessor([new stdClass()]);
     }
 
     #[Test]
@@ -91,24 +71,22 @@ final class ValueProcessorTest extends ContainerAwareTestCase
             ],
         ];
 
-        putenv('baz=baz');
-        putenv('hello=hello');
+        $this->setEnvironmentVariable('baz', 'baz');
+        $this->setEnvironmentVariable('hello', 'hello');
 
         self::assertSame($expected, $this->subject->process($array));
-
-        // Unset temporary environment variables
-        putenv('baz');
-        putenv('hello');
     }
 
     #[Test]
     public function processSingleValueProcessesGivenValue(): void
     {
-        putenv('foo=baz');
+        $this->setEnvironmentVariable('foo', 'baz');
 
         self::assertSame('baz', $this->subject->processSingleValue('%env(foo)%'));
+    }
 
-        // Unset temporary environment variable
-        putenv('foo');
+    protected function tearDown(): void
+    {
+        $this->restoreEnvironmentVariables();
     }
 }

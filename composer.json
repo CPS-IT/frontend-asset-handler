@@ -20,7 +20,6 @@
 		"ergebnis/json-normalizer": ">= 1.0 < 3.0",
 		"ergebnis/json-printer": "^3.0",
 		"ergebnis/json-schema-validator": "^2.0",
-		"gmostafa/php-graphql-client": "^1.13",
 		"guzzlehttp/guzzle": "^7.0",
 		"guzzlehttp/psr7": ">= 1.8 < 3.0",
 		"justinrainbow/json-schema": "^5.2",
@@ -40,14 +39,19 @@
 		"armin/editorconfig-cli": "^1.5",
 		"ergebnis/composer-normalize": "^2.18",
 		"friendsofphp/php-cs-fixer": "^3.0",
+		"gmostafa/php-graphql-client": "^1.13",
 		"phpstan/extension-installer": "^1.2",
 		"phpstan/phpstan": "^1.2",
 		"phpstan/phpstan-deprecation-rules": "^1.1",
 		"phpstan/phpstan-phpunit": "^1.0",
+		"phpstan/phpstan-strict-rules": "^1.5",
 		"phpstan/phpstan-symfony": "^1.1",
 		"phpstan/phpstan-webmozart-assert": "^1.2",
 		"phpunit/phpunit": "^10.1",
 		"rector/rector": "^0.15.0 || ^0.16.0 || ^0.17.0"
+	},
+	"suggest": {
+		"gmostafa/php-graphql-client": "Used to perform GraphQL requests within GithubVcsProvider (^1.13)"
 	},
 	"autoload": {
 		"psr-4": {
@@ -70,17 +74,22 @@
 		"sort-packages": true
 	},
 	"scripts": {
-		"lint": [
-			"@lint:composer:fix",
-			"@lint:editorconfig:fix",
-			"@lint:php:fix"
+		"fix": [
+			"@fix:composer",
+			"@fix:editorconfig",
+			"@fix:php"
 		],
-		"lint:composer": "@lint:composer:fix --dry-run",
-		"lint:composer:fix": "@composer normalize --no-check-lock --no-update-lock",
+		"fix:composer": "@composer normalize",
+		"fix:editorconfig": "@lint:editorconfig --fix",
+		"fix:php": "php-cs-fixer fix",
+		"lint": [
+			"@lint:composer",
+			"@lint:editorconfig",
+			"@lint:php"
+		],
+		"lint:composer": "@fix:composer --dry-run",
 		"lint:editorconfig": "ec",
-		"lint:editorconfig:fix": "@lint:editorconfig --fix",
-		"lint:php": "@lint:php:fix --dry-run",
-		"lint:php:fix": "php-cs-fixer fix",
+		"lint:php": "@fix:php --dry-run",
 		"migration": [
 			"@migration:rector"
 		],

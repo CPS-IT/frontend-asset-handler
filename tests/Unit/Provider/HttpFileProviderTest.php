@@ -195,9 +195,8 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
         // Determine expected bytes of downloaded file
         $filesystem = new Filesystem();
         $targetFile = $filesystem->tempnam(sys_get_temp_dir(), 'asset_handler_test_');
-        /* @phpstan-ignore-next-line */
-        $filesystem->dumpFile($targetFile, $body);
-        $this->expectedBytes = filesize($targetFile) ?: 0;
+        $filesystem->dumpFile($targetFile, (string) $body);
+        $this->expectedBytes = (int) filesize($targetFile);
         $filesystem->remove($targetFile);
 
         $actual = $this->subject->fetchAsset($this->source);

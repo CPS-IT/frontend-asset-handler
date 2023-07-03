@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Composer package "cpsit/frontend-asset-handler".
  *
- * Copyright (C) 2022 Elias Häußler <e.haeussler@familie-redlich.de>
+ * Copyright (C) 2023 Elias Häußler <e.haeussler@familie-redlich.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,14 +21,28 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace CPSIT\FrontendAssetHandler\DependencyInjection;
+namespace CPSIT\FrontendAssetHandler\Exception;
 
-use Symfony\Component\DependencyInjection;
+use Exception;
 
-return static function (
-    DependencyInjection\Loader\Configurator\ContainerConfigurator $configurator,
-    DependencyInjection\ContainerBuilder $container,
-): void {
-    $container->addCompilerPass(new CompilerPass\PublicServicePass());
-    $container->addCompilerPass(new CompilerPass\NonSharedServicePass('console.command'));
-};
+use function sprintf;
+
+/**
+ * MissingPackageException.
+ *
+ * @author Elias Häußler <e.haeussler@familie-redlich.de>
+ * @license GPL-3.0-or-later
+ */
+final class MissingPackageException extends Exception
+{
+    /**
+     * @param non-empty-string $packageName
+     */
+    public static function create(string $packageName): self
+    {
+        return new self(
+            sprintf('The package "%1$s" is not installed. Please run "composer require %1$s".', $packageName),
+            1687631353,
+        );
+    }
+}

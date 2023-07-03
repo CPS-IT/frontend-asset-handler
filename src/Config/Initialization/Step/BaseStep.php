@@ -37,6 +37,7 @@ use function is_array;
 use function is_string;
 use function sprintf;
 use function str_starts_with;
+use function trim;
 
 /**
  * BaseStep.
@@ -101,7 +102,7 @@ abstract class BaseStep implements StepInterface, ChattyInterface
         $label = sprintf('▶ <info>%s</info>', $label);
 
         if (null !== $default) {
-            $label .= ' ['.$default.($alternative ? '/'.$alternative : '').']';
+            $label .= ' ['.$default.(null !== $alternative && '' !== trim($alternative) ? '/'.$alternative : '').']';
         }
 
         return $label.': ';
@@ -135,7 +136,7 @@ abstract class BaseStep implements StepInterface, ChattyInterface
 
         $placeholders = array_diff(
             Helper\StringHelper::extractPlaceholders($string),
-            ['environment', 'revision'],
+            ['environment', 'revision', 'temp', 'cwd'],
             array_keys($request->getOptions()),
             array_keys($additionalVariables),
         );

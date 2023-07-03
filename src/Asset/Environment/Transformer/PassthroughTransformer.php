@@ -31,9 +31,6 @@ namespace CPSIT\FrontendAssetHandler\Asset\Environment\Transformer;
  */
 final class PassthroughTransformer implements TransformerInterface
 {
-    /**
-     * @param array{} $config
-     */
     public static function fromArray(array $config): static
     {
         return new self();

@@ -72,7 +72,7 @@ final class FilesystemHelper
 
     public static function getWorkingDirectory(): string
     {
-        if (Phar::running()) {
+        if ('' !== Phar::running()) {
             $cwd = getcwd();
         } else {
             $cwd = InstalledVersions::getRootPackage()['install_path'];
@@ -104,7 +104,7 @@ final class FilesystemHelper
             throw Exception\FilesystemFailureException::forMissingPath($filePath);
         }
 
-        $encoded = file_get_contents($filePath) ?: '';
+        $encoded = (string) file_get_contents($filePath);
 
         return Normalizer\Json::fromEncoded($encoded);
     }
@@ -120,7 +120,7 @@ final class FilesystemHelper
 
         // Create temporary file
         $extension = ltrim($extension, '.');
-        $tempFile = $filesystem->tempnam(sys_get_temp_dir(), 'frontend_asset_handler_', $extension ? '.'.$extension : '');
+        $tempFile = $filesystem->tempnam(sys_get_temp_dir(), 'frontend_asset_handler_', '' !== $extension ? '.'.$extension : '');
 
         if ($filenameOnly) {
             // Remove file if only filename should be returned

@@ -23,11 +23,6 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Value;
 
-use CPSIT\FrontendAssetHandler\Exception;
-
-use function gettype;
-use function is_object;
-
 /**
  * ValueProcessor.
  *
@@ -42,7 +37,6 @@ final class ValueProcessor
     public function __construct(
         private readonly iterable $placeholderProcessors,
     ) {
-        $this->validatePlaceholderProcessors();
     }
 
     /**
@@ -70,20 +64,5 @@ final class ValueProcessor
         }
 
         return $processedValue;
-    }
-
-    private function validatePlaceholderProcessors(): void
-    {
-        foreach ($this->placeholderProcessors as $processor) {
-            /* @phpstan-ignore-next-line */
-            if (!is_object($processor)) {
-                throw Exception\UnsupportedTypeException::forTypeMismatch('object', gettype($processor));
-            }
-
-            /* @phpstan-ignore-next-line */
-            if (!($processor instanceof Placeholder\PlaceholderProcessorInterface)) {
-                throw Exception\UnsupportedClassException::create($processor::class);
-            }
-        }
     }
 }

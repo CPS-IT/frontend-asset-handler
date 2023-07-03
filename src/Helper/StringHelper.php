@@ -52,8 +52,9 @@ final class StringHelper
             throw new OutOfBoundsException(sprintf('Number of bytes must not be lower than zero, %d given.', $bytes), 1624613494);
         }
 
+        $i = 0;
         $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-        for ($i = 0; $bytes > 1024; ++$i) {
+        for (; $bytes > 1024; ++$i) {
             $bytes /= 1024;
         }
 
@@ -75,7 +76,7 @@ final class StringHelper
 
         $result = strtr($string, $normalizedPairs);
 
-        if ($matches = self::extractPlaceholders($result)) {
+        if ([] !== ($matches = self::extractPlaceholders($result))) {
             throw Exception\MissingConfigurationException::forKey(reset($matches));
         }
 

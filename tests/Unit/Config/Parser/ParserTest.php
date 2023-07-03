@@ -28,6 +28,7 @@ use CPSIT\FrontendAssetHandler\Config\Parser\Parser;
 use CPSIT\FrontendAssetHandler\Config\Parser\ParserInstructions;
 use CPSIT\FrontendAssetHandler\Exception\InvalidConfigurationException;
 use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
+use CPSIT\FrontendAssetHandler\Tests\Unit\EnvironmentVariablesTrait;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -40,12 +41,16 @@ use PHPUnit\Framework\Attributes\Test;
  */
 final class ParserTest extends ContainerAwareTestCase
 {
+    use EnvironmentVariablesTrait;
+
     private Parser $subject;
     private Config $config;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->backUpEnvironmentVariables();
 
         $this->subject = $this->container->get(Parser::class);
         $this->config = new Config([
@@ -118,8 +123,8 @@ final class ParserTest extends ContainerAwareTestCase
     {
         $instructions = new ParserInstructions($this->config);
 
-        putenv('FOO=foo');
-        putenv('BAZ=baz');
+        $this->setEnvironmentVariable('FOO', 'foo');
+        $this->setEnvironmentVariable('BAZ', 'baz');
 
         $expected = [
             'frontend-assets' => [
@@ -156,9 +161,6 @@ final class ParserTest extends ContainerAwareTestCase
         ];
 
         self::assertSame($expected, $this->subject->parse($instructions)->asArray());
-
-        putenv('FOO');
-        putenv('BAZ');
     }
 
     /**
@@ -263,5 +265,10 @@ final class ParserTest extends ContainerAwareTestCase
                 ],
             ],
         ];
+    }
+
+    protected function tearDown(): void
+    {
+        $this->restoreEnvironmentVariables();
     }
 }

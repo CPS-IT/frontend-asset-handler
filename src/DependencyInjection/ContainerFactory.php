@@ -30,6 +30,7 @@ use Symfony\Component\DependencyInjection as SymfonyDI;
 use Symfony\Component\Filesystem;
 
 use function dirname;
+use function trim;
 
 /**
  * ContainerFactory.
@@ -51,7 +52,7 @@ final class ContainerFactory
         bool $debug = null,
         private readonly bool $includeTestSources = false,
     ) {
-        $this->configFile = $configFile ? Helper\FilesystemHelper::resolveRelativePath($configFile) : null;
+        $this->configFile = null !== $configFile && '' !== trim($configFile) ? Helper\FilesystemHelper::resolveRelativePath($configFile) : null;
         $this->cache = new Cache\ContainerCache($this->configFile, $this->includeTestSources, $debug);
         $this->configLoader = new Config\Loader\ExternalJsonFileLoader();
         $this->servicesParser = new Config\Parser\ServicesParser();
@@ -60,7 +61,7 @@ final class ContainerFactory
     public function get(): SymfonyDI\ContainerInterface
     {
         // Return existing container from cache
-        if ($container = $this->cache->get()) {
+        if (null !== ($container = $this->cache->get())) {
             $this->setSyntheticServices($container);
 
             return $container;
