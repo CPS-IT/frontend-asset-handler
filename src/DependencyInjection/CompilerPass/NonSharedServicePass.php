@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Composer package "cpsit/frontend-asset-handler".
  *
- * Copyright (C) 2021 Elias Häußler <e.haeussler@familie-redlich.de>
+ * Copyright (C) 2023 Elias Häußler <e.haeussler@familie-redlich.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,48 +21,33 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace CPSIT\FrontendAssetHandler\Value;
+namespace CPSIT\FrontendAssetHandler\DependencyInjection\CompilerPass;
+
+use Symfony\Component\DependencyInjection;
 
 /**
- * ValueProcessor.
+ * NonSharedServicePass.
  *
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
+ *
+ * @internal Only to be used for testing purposes
+ *
+ * @codeCoverageIgnore
  */
-final class ValueProcessor
+final class NonSharedServicePass implements DependencyInjection\Compiler\CompilerPassInterface
 {
-    /**
-     * @param iterable<Placeholder\PlaceholderProcessorInterface> $placeholderProcessors
-     */
     public function __construct(
-        private readonly iterable $placeholderProcessors,
+        private readonly string $tagName,
     ) {
     }
 
-    /**
-     * @param mixed[] $array
-     *
-     * @return mixed[]
-     */
-    public function process(array $array): array
+    public function process(DependencyInjection\ContainerBuilder $container): void
     {
-        array_walk_recursive($array, function (&$value) {
-            $value = $this->processSingleValue((string) $value);
-        });
-
-        return $array;
-    }
-
-    public function processSingleValue(string $value): mixed
-    {
-        $processedValue = $value;
-
-        foreach ($this->placeholderProcessors as $processor) {
-            if ($processor->canProcess($processedValue)) {
-                $processedValue = $processor->process((string) $processedValue);
+        foreach ($container->findTaggedServiceIds($this->tagName) as $serviceId => $tags) {
+            if ($container->hasDefinition($serviceId)) {
+                $container->findDefinition($serviceId)->setShared(false);
             }
         }
-
-        return $processedValue;
     }
 }

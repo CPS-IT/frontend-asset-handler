@@ -34,6 +34,7 @@ use Generator;
 use GuzzleHttp\Psr7;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\Console;
 use Symfony\Component\DependencyInjection;
 
 use function dirname;
@@ -48,12 +49,24 @@ use function sprintf;
  */
 final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
 {
+    use Tests\Unit\EnvironmentVariablesTrait;
+    use Tests\Unit\FunctionExecutorTrait;
+
     private Tests\Unit\Fixtures\Classes\DummyRevisionProvider $revisionProvider;
     private Tests\Unit\Fixtures\Classes\DummyVcsProvider $vcsProvider;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->backUpEnvironmentVariables();
+
+        // Unset environment variables used in CI context to simulate
+        // clean state for Git-related test scenarios
+        $this->unsetEnvironmentVariable('GITHUB_ACTIONS');
+        $this->unsetEnvironmentVariable('GITLAB_CI');
+        $this->unsetEnvironmentVariable('CI_COMMIT_REF_NAME');
+        $this->unsetEnvironmentVariable('FRONTEND_ASSETS_BRANCH');
 
         $this->revisionProvider = $this->container->get(Tests\Unit\Fixtures\Classes\DummyRevisionProvider::class);
         $this->vcsProvider = new Tests\Unit\Fixtures\Classes\DummyVcsProvider();
@@ -82,13 +95,18 @@ final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCa
     }
 
     #[Test]
-    public function executeThrowsExceptionIfGivenBranchIsEmpty(): void
+    public function executeThrowsExceptionIfGivenBranchIsMissing(): void
     {
         $this->expectExceptionObject(Exception\UnsupportedEnvironmentException::forMissingVCS());
 
-        $this->commandTester->execute([
-            'branch' => '',
-        ]);
+        $this->executeInDirectory(
+            function () {
+                $command = $this->container->get(Command\InspectAssetsCommand::class);
+                $commandTester = new Console\Tester\CommandTester($command);
+
+                $commandTester->execute([]);
+            }
+        );
     }
 
     #[Test]
@@ -196,5 +214,12 @@ final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCa
     protected static function getCoveredCommand(): string
     {
         return Command\InspectAssetsCommand::class;
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->restoreEnvironmentVariables();
     }
 }

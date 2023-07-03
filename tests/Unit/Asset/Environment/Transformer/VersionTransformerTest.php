@@ -56,7 +56,6 @@ final class VersionTransformerTest extends TestCase
         $this->expectExceptionCode(1623867663);
         $this->expectExceptionMessage('Configuration for key "version" is missing or invalid.');
 
-        /* @phpstan-ignore-next-line */
         VersionTransformer::fromArray($config);
     }
 

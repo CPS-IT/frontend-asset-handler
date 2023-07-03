@@ -26,6 +26,8 @@ namespace CPSIT\FrontendAssetHandler\Helper;
 use OndraM\CiDetector\CiDetector;
 use Symfony\Component\Process;
 
+use function trim;
+
 /**
  * VcsHelper.
  *
@@ -57,7 +59,9 @@ final class VcsHelper
 
     private static function getCurrentBranchFromEnvironment(): ?string
     {
-        if ($branch = getenv('FRONTEND_ASSETS_BRANCH')) {
+        $branch = getenv('FRONTEND_ASSETS_BRANCH');
+
+        if (false !== $branch) {
             return $branch;
         }
 
@@ -72,6 +76,12 @@ final class VcsHelper
             return null;
         }
 
-        return $ciDetector->detect()->getBranch() ?: null;
+        $branch = $ciDetector->detect()->getBranch();
+
+        if ('' === trim($branch)) {
+            return null;
+        }
+
+        return $branch;
     }
 }

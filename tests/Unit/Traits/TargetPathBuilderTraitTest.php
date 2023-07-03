@@ -72,6 +72,6 @@ final class TargetPathBuilderTraitTest extends TestCase
     public static function buildTargetPathThrowsExceptionIfPathIsNotDefinedDataProvider(): Generator
     {
         yield 'absolute path' => ['/foo/baz', '/foo/baz'];
-        yield 'relative path' => ['foo/baz', Path::join(getcwd() ?: dirname(__DIR__, 3), 'foo/baz')];
+        yield 'relative path' => ['foo/baz', Path::join(dirname(__DIR__, 3), 'foo/baz')];
     }
 }

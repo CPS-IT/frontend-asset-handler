@@ -233,7 +233,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
     public function executeWritesNewValueToGivenPath(): void
     {
         $originalFile = $this->container->get('app.cache')->getConfigFile()
-            ?? $this->fail('No config file given.');
+            ?? self::fail('No config file given.');
         $targetFile = $this->filesystem->tempnam(sys_get_temp_dir(), 'fah_assets.json_', '.json');
 
         $this->filesystem->copy($originalFile, $targetFile, true);
@@ -256,7 +256,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
     public function executeWritesJsonEncodedNewValueToGivenPath(): void
     {
         $originalFile = $this->container->get('app.cache')->getConfigFile()
-            ?? $this->fail('No config file given.');
+            ?? self::fail('No config file given.');
         $targetFile = $this->filesystem->tempnam(sys_get_temp_dir(), 'fah_assets.json_', '.json');
 
         $this->filesystem->copy($originalFile, $targetFile, true);

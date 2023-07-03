@@ -1,0 +1,86 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$config \\(array\\{pattern\\?\\: string\\}\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\SlugTransformer\\:\\:fromArray\\(\\) should be contravariant with parameter \\$config \\(array\\<string, mixed\\>\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\TransformerInterface\\:\\:fromArray\\(\\)$#"
+			count: 1
+			path: src/Asset/Environment/Transformer/SlugTransformer.php
+
+		-
+			message: "#^Parameter \\#1 \\$config \\(array\\{value\\?\\: string\\}\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\StaticTransformer\\:\\:fromArray\\(\\) should be contravariant with parameter \\$config \\(array\\<string, mixed\\>\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\TransformerInterface\\:\\:fromArray\\(\\)$#"
+			count: 1
+			path: src/Asset/Environment/Transformer/StaticTransformer.php
+
+		-
+			message: "#^Parameter \\#1 \\$config \\(array\\{version\\?\\: string\\}\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\VersionTransformer\\:\\:fromArray\\(\\) should be contravariant with parameter \\$config \\(array\\<string, mixed\\>\\) of method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\TransformerInterface\\:\\:fromArray\\(\\)$#"
+			count: 1
+			path: src/Asset/Environment/Transformer/VersionTransformer.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between null and string will always evaluate to false\\.$#"
+			count: 1
+			path: src/Command/FetchAssetsCommand.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between null and string will always evaluate to false\\.$#"
+			count: 1
+			path: src/Command/InspectAssetsCommand.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: src/Processor/FileArchiveProcessor.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between null and string will always evaluate to false\\.$#"
+			count: 1
+			path: src/Processor/FileArchiveProcessor.php
+
+		-
+			message: "#^Parameter \\#1 \\$transformers of class CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Map\\\\MapFactory constructor expects array\\<string, class\\-string\\<CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\TransformerInterface\\>\\>, array\\<string, string\\> given\\.$#"
+			count: 2
+			path: tests/Unit/Asset/Environment/Map/MapFactoryTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$pairs of class CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Map\\\\Map constructor expects list\\<CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Map\\\\Pair\\>, array\\{1\\: CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Map\\\\Pair, 0\\: CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Map\\\\Pair\\} given\\.$#"
+			count: 1
+			path: tests/Unit/Asset/Environment/Map/MapTest.php
+
+		-
+			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\{\\} and array\\{\\} will always evaluate to true\\.$#"
+			count: 1
+			path: tests/Unit/Asset/Environment/Transformer/PassthroughTransformerTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$config of static method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\SlugTransformer\\:\\:fromArray\\(\\) expects array\\{pattern\\?\\: string\\}, array\\{pattern\\?\\: string\\|false\\} given\\.$#"
+			count: 1
+			path: tests/Unit/Asset/Environment/Transformer/SlugTransformerTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$config of static method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\SlugTransformer\\:\\:fromArray\\(\\) expects array\\{pattern\\?\\: string\\}, array\\{pattern\\?\\: string\\|null\\} given\\.$#"
+			count: 1
+			path: tests/Unit/Asset/Environment/Transformer/SlugTransformerTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$config of static method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\StaticTransformer\\:\\:fromArray\\(\\) expects array\\{value\\?\\: string\\}, array\\{value\\?\\: false\\} given\\.$#"
+			count: 1
+			path: tests/Unit/Asset/Environment/Transformer/StaticTransformerTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$config of static method CPSIT\\\\FrontendAssetHandler\\\\Asset\\\\Environment\\\\Transformer\\\\VersionTransformer\\:\\:fromArray\\(\\) expects array\\{version\\?\\: string\\}, array\\{version\\?\\: false\\} given\\.$#"
+			count: 1
+			path: tests/Unit/Asset/Environment/Transformer/VersionTransformerTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$files \\(iterable\\<string\\>\\|string\\) of method CPSIT\\\\FrontendAssetHandler\\\\Tests\\\\Unit\\\\Fixtures\\\\Classes\\\\DummyFilesystem\\:\\:remove\\(\\) should be contravariant with parameter \\$files \\(iterable\\|string\\) of method Symfony\\\\Component\\\\Filesystem\\\\Filesystem\\:\\:remove\\(\\)$#"
+			count: 1
+			path: tests/Unit/Fixtures/Classes/DummyFilesystem.php
+
+		-
+			message: "#^Parameter \\#3 \\$iterator \\(Traversable\\<mixed, SplFileInfo\\>\\|null\\) of method CPSIT\\\\FrontendAssetHandler\\\\Tests\\\\Unit\\\\Fixtures\\\\Classes\\\\DummyFilesystem\\:\\:mirror\\(\\) should be contravariant with parameter \\$iterator \\(Traversable\\|null\\) of method Symfony\\\\Component\\\\Filesystem\\\\Filesystem\\:\\:mirror\\(\\)$#"
+			count: 1
+			path: tests/Unit/Fixtures/Classes/DummyFilesystem.php
+
+		-
+			message: "#^Parameter \\#4 \\$options \\(array\\<string, bool\\>\\) of method CPSIT\\\\FrontendAssetHandler\\\\Tests\\\\Unit\\\\Fixtures\\\\Classes\\\\DummyFilesystem\\:\\:mirror\\(\\) should be contravariant with parameter \\$options \\(array\\) of method Symfony\\\\Component\\\\Filesystem\\\\Filesystem\\:\\:mirror\\(\\)$#"
+			count: 1
+			path: tests/Unit/Fixtures/Classes/DummyFilesystem.php

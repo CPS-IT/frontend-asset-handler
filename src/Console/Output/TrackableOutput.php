@@ -123,7 +123,13 @@ final class TrackableOutput extends SymfonyConsole\Output\ConsoleOutput
             return $this->output->getStream();
         }
 
-        return fopen('php://temp', 'w+') ?: throw Exception\IOException::forMissingOutputStream();
+        $stream = fopen('php://temp', 'w+');
+
+        if (false === $stream) {
+            throw Exception\IOException::forMissingOutputStream();
+        }
+
+        return $stream;
     }
 
     public function getOutput(): SymfonyConsole\Output\OutputInterface

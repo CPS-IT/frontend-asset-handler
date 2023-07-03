@@ -30,6 +30,7 @@ use CPSIT\FrontendAssetHandler\Processor;
 use CPSIT\FrontendAssetHandler\Strategy;
 use CPSIT\FrontendAssetHandler\Tests;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\Console;
 
 use function dirname;
 
@@ -41,12 +42,24 @@ use function dirname;
  */
 final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
 {
+    use Tests\Unit\EnvironmentVariablesTrait;
+    use Tests\Unit\FunctionExecutorTrait;
+
     private Tests\Unit\Fixtures\Classes\DummyHandler $handler;
     private Asset\ProcessedAsset $processedAsset;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->backUpEnvironmentVariables();
+
+        // Unset environment variables used in CI context to simulate
+        // clean state for Git-related test scenarios
+        $this->unsetEnvironmentVariable('GITHUB_ACTIONS');
+        $this->unsetEnvironmentVariable('GITLAB_CI');
+        $this->unsetEnvironmentVariable('CI_COMMIT_REF_NAME');
+        $this->unsetEnvironmentVariable('FRONTEND_ASSETS_BRANCH');
 
         $this->initializeCommandTester(
             dirname(__DIR__).'/Fixtures/JsonFiles/assets.json',
@@ -65,13 +78,18 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
     }
 
     #[Test]
-    public function executeThrowsExceptionIfGivenBranchIsEmpty(): void
+    public function executeThrowsExceptionIfGivenBranchIsMissing(): void
     {
         $this->expectExceptionObject(Exception\UnsupportedEnvironmentException::forMissingVCS());
 
-        $this->commandTester->execute([
-            'branch' => '',
-        ]);
+        $this->executeInDirectory(
+            function () {
+                $command = $this->container->get(Command\FetchAssetsCommand::class);
+                $commandTester = new Console\Tester\CommandTester($command);
+
+                $commandTester->execute([]);
+            }
+        );
     }
 
     #[Test]
@@ -281,6 +299,13 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
         self::assertStringContainsString('Processing of asset definition #1', $output);
         self::assertStringContainsString('Processing of asset definition #2', $output);
         self::assertStringContainsString('Assets successfully downloaded to foo.', $output);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->restoreEnvironmentVariables();
     }
 
     protected static function getCoveredCommand(): string

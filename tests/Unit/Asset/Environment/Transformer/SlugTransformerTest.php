@@ -66,7 +66,6 @@ final class SlugTransformerTest extends TestCase
         $this->expectExceptionCode(1623867663);
         $this->expectExceptionMessage('Configuration for key "pattern" is missing or invalid.');
 
-        /* @phpstan-ignore-next-line */
         SlugTransformer::fromArray($config);
     }
 
@@ -77,7 +76,6 @@ final class SlugTransformerTest extends TestCase
     #[DataProvider('fromArrayReturnsTransformerInstanceDataProvider')]
     public function fromArrayReturnsTransformerInstance(array $config, SlugTransformer $expected): void
     {
-        /* @phpstan-ignore-next-line */
         self::assertEquals($expected, SlugTransformer::fromArray($config));
     }
 
@@ -100,7 +98,6 @@ final class SlugTransformerTest extends TestCase
     {
         yield 'empty pattern' => [['pattern' => '']];
         yield 'invalid pattern' => [['pattern' => 'foo']];
-        yield 'false-typed pattern' => [['pattern' => false]];
     }
 
     /**

@@ -24,13 +24,12 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests\Unit\Value\Placeholder;
 
 use CPSIT\FrontendAssetHandler\Tests\Unit\ContainerAwareTestCase;
+use CPSIT\FrontendAssetHandler\Tests\Unit\EnvironmentVariablesTrait;
 use CPSIT\FrontendAssetHandler\Value\Placeholder\EnvironmentVariableProcessor;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use UnexpectedValueException;
-
-use function putenv;
 
 /**
  * EnvironmentVariableProcessorTest.
@@ -40,11 +39,15 @@ use function putenv;
  */
 final class EnvironmentVariableProcessorTest extends ContainerAwareTestCase
 {
+    use EnvironmentVariablesTrait;
+
     private EnvironmentVariableProcessor $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->backUpEnvironmentVariables();
 
         $this->subject = $this->container->get(EnvironmentVariableProcessor::class);
     }
@@ -69,7 +72,7 @@ final class EnvironmentVariableProcessorTest extends ContainerAwareTestCase
     public function processThrowsExceptionIfRequiredEnvironmentVariableIsNotSet(): void
     {
         // Ensure environment variable is not set
-        putenv('foo');
+        $this->unsetEnvironmentVariable('foo');
 
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionCode(1628147471);
@@ -81,16 +84,11 @@ final class EnvironmentVariableProcessorTest extends ContainerAwareTestCase
     #[DataProvider('processReplacesEnvironmentPlaceholderWithEnvironmentVariableDataProvider')]
     public function processReplacesEnvironmentPlaceholderWithEnvironmentVariable(string $placeholder, string $expected): void
     {
-        putenv('foo=baz');
-        putenv('baz=boo');
-        putenv('dummy=New York');
+        $this->setEnvironmentVariable('foo', 'baz');
+        $this->setEnvironmentVariable('baz', 'boo');
+        $this->setEnvironmentVariable('dummy', 'New York');
 
         self::assertSame($expected, $this->subject->process($placeholder));
-
-        // Unset temporary environment variable
-        putenv('foo');
-        putenv('baz');
-        putenv('dummy');
     }
 
     /**
@@ -116,5 +114,10 @@ final class EnvironmentVariableProcessorTest extends ContainerAwareTestCase
             'Hello, %env(foo)% %env(baz)%! Welcome to %env(dummy)%.',
             'Hello, baz boo! Welcome to New York.',
         ];
+    }
+
+    protected function tearDown(): void
+    {
+        $this->restoreEnvironmentVariables();
     }
 }

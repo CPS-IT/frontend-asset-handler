@@ -27,6 +27,8 @@ use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Helper\FilesystemHelper;
 
+use function trim;
+
 /**
  * TargetPathBuilderTrait.
  *
@@ -41,7 +43,7 @@ trait TargetPathBuilderTrait
 
         // Target path must be configured, otherwise we fail early
         // since this misconfiguration makes calling code unprocessable
-        if (empty($targetPath)) {
+        if (null === $targetPath || '' === trim($targetPath)) {
             throw Exception\MissingConfigurationException::forKey('path');
         }
 

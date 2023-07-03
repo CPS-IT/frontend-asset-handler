@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\DependencyInjection\Cache;
 
 use CPSIT\FrontendAssetHandler\DependencyInjection;
+use CPSIT\FrontendAssetHandler\Exception;
 use Symfony\Component\Config;
 use Symfony\Component\DependencyInjection as SymfonyDI;
 use Symfony\Component\Filesystem;
@@ -32,6 +33,7 @@ use function assert;
 use function dirname;
 use function function_exists;
 use function implode;
+use function is_a;
 use function is_string;
 use function str_replace;
 use function ucwords;
@@ -144,9 +146,15 @@ final class ContainerCache
 
         require_once $this->cache->getPath();
 
+        /** @var class-string $className */
         $className = self::CONTAINER_NAMESPACE.'\\'.$this->containerClassName;
 
-        /* @phpstan-ignore-next-line */
+        // @codeCoverageIgnoreStart
+        if (!is_a($className, SymfonyDI\ContainerInterface::class, true)) {
+            throw Exception\UnsupportedClassException::create($className);
+        }
+        // @codeCoverageIgnoreEnd
+
         return new $className();
     }
 
