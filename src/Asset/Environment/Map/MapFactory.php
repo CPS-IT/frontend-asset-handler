@@ -34,7 +34,7 @@ use CPSIT\FrontendAssetHandler\Exception\UnsupportedClassException;
 use CPSIT\FrontendAssetHandler\Exception\UnsupportedTypeException;
 
 use function call_user_func;
-use function in_array;
+use function is_a;
 use function is_string;
 use function trim;
 
@@ -127,7 +127,7 @@ final class MapFactory
         if (!class_exists($className)) {
             throw UnsupportedClassException::create($className);
         }
-        if (!in_array(TransformerInterface::class, (array) class_implements($className), true)) {
+        if (!is_a($className, TransformerInterface::class, true)) {
             throw UnsupportedClassException::create($className);
         }
 

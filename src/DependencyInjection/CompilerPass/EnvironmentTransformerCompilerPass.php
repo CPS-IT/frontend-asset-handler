@@ -29,7 +29,7 @@ use RuntimeException;
 use Symfony\Component\DependencyInjection;
 
 use function call_user_func;
-use function in_array;
+use function is_a;
 
 /**
  * EnvironmentTransformerCompilerPass.
@@ -55,7 +55,7 @@ final class EnvironmentTransformerCompilerPass implements DependencyInjection\Co
                 throw new RuntimeException(sprintf('Unable to determine class name for service "%s".', $serviceId), 1644422571);
             }
             /** @var class-string $className */
-            if (!in_array(Asset\Environment\Transformer\TransformerInterface::class, (array) class_implements($className), true)) {
+            if (!is_a($className, Asset\Environment\Transformer\TransformerInterface::class, true)) {
                 throw Exception\UnsupportedClassException::create($className);
             }
 
