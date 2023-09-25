@@ -25,7 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Tests\Unit\Helper;
 
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Helper;
-use Ergebnis\Json\Normalizer;
+use Ergebnis\Json;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -91,7 +91,7 @@ final class FilesystemHelperTest extends TestCase
     {
         $filePath = dirname(__DIR__).'/Fixtures/JsonFiles/invalid-json.json';
 
-        $this->expectException(Normalizer\Exception\InvalidJsonEncodedException::class);
+        $this->expectException(Json\Exception\NotJson::class);
 
         Helper\FilesystemHelper::parseJsonFileContents($filePath);
     }

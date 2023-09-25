@@ -28,7 +28,6 @@ use CPSIT\FrontendAssetHandler\DependencyInjection;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Helper;
 use CPSIT\FrontendAssetHandler\Json;
-use Ergebnis\Json\Normalizer;
 use Ergebnis\Json\Printer;
 use Ergebnis\Json\SchemaValidator;
 use JsonException;
@@ -198,7 +197,7 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
 
         // Write configuration value
         if ($json) {
-            $jsonValue = Normalizer\Json::fromEncoded($newValue);
+            $jsonValue = \Ergebnis\Json\Json::fromString($newValue);
             $finalPath = $this->writeConfiguration($path, $jsonValue->decoded());
 
             $this->io->writeln([
@@ -313,7 +312,7 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
      */
     private function validationErrorToTableRow(SchemaValidator\ValidationError $error): array
     {
-        $path = $error->jsonPointer()->toString();
+        $path = $error->jsonPointer()->toJsonString();
         $decoratedPath = $this->decoratePath(preg_replace(self::PATH_PREFIX_PATTERN, '', $path) ?? $path);
 
         return [

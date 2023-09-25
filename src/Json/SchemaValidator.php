@@ -25,6 +25,8 @@ namespace CPSIT\FrontendAssetHandler\Json;
 
 use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Exception;
+use Ergebnis\Json;
+use Ergebnis\Json\Pointer;
 use Ergebnis\Json\SchemaValidator as ErgebnisSchemaValidator;
 use JsonException;
 use Symfony\Component\Filesystem;
@@ -55,9 +57,9 @@ final class SchemaValidator
      */
     public function validate(Config\Config $config): bool
     {
-        $json = ErgebnisSchemaValidator\Json::fromString(json_encode($config, JSON_THROW_ON_ERROR));
-        $schema = ErgebnisSchemaValidator\Json::fromFile($this->schemaFile);
-        $jsonPointer = ErgebnisSchemaValidator\JsonPointer::empty();
+        $json = Json\Json::fromString(json_encode($config, JSON_THROW_ON_ERROR));
+        $schema = Json\Json::fromFile($this->schemaFile);
+        $jsonPointer = Pointer\JsonPointer::document();
 
         $this->lastValidationErrors = $this->validator->validate($json, $schema, $jsonPointer);
 

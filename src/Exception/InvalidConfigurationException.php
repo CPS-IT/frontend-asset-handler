@@ -50,7 +50,7 @@ final class InvalidConfigurationException extends Exception
         $errorMessages = array_map(
             fn (SchemaValidator\ValidationError $error): string => sprintf(
                 '[%s]: %s',
-                $error->jsonPointer()->toString(),
+                $error->jsonPointer()->toJsonString(),
                 $error->message()->toString(),
             ),
             $errors,
