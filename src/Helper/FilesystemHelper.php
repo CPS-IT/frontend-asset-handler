@@ -25,7 +25,7 @@ namespace CPSIT\FrontendAssetHandler\Helper;
 
 use Composer\InstalledVersions;
 use CPSIT\FrontendAssetHandler\Exception;
-use Ergebnis\Json\Normalizer;
+use Ergebnis\Json;
 use OutOfBoundsException;
 use Phar;
 use Symfony\Component\Filesystem;
@@ -98,7 +98,7 @@ final class FilesystemHelper
         return Filesystem\Path::join(self::getWorkingDirectory(), $relativePath);
     }
 
-    public static function parseJsonFileContents(string $filePath): Normalizer\Json
+    public static function parseJsonFileContents(string $filePath): Json\Json
     {
         if (!file_exists($filePath)) {
             throw Exception\FilesystemFailureException::forMissingPath($filePath);
@@ -106,7 +106,7 @@ final class FilesystemHelper
 
         $encoded = (string) file_get_contents($filePath);
 
-        return Normalizer\Json::fromEncoded($encoded);
+        return Json\Json::fromString($encoded);
     }
 
     public static function createTemporaryFile(string $extension = '', bool $filenameOnly = false): string
