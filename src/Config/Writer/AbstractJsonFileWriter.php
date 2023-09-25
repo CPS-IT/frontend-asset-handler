@@ -26,6 +26,7 @@ namespace CPSIT\FrontendAssetHandler\Config\Writer;
 use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Helper;
+use Ergebnis\Json;
 use Ergebnis\Json\Normalizer;
 use JsonException;
 
@@ -45,7 +46,7 @@ abstract class AbstractJsonFileWriter implements ConfigWriterInterface
     }
 
     /**
-     * @return array{Normalizer\Json, Normalizer\Format\Format}
+     * @return array{Json\Json, Normalizer\Format\Format}
      *
      * @throws JsonException
      */
@@ -66,12 +67,12 @@ abstract class AbstractJsonFileWriter implements ConfigWriterInterface
         );
 
         return [
-            Normalizer\Json::fromEncoded(json_encode($mergedJson, JSON_THROW_ON_ERROR)),
+            Json\Json::fromString(json_encode($mergedJson, JSON_THROW_ON_ERROR)),
             Normalizer\Format\Format::fromJson($json),
         ];
     }
 
-    protected function doWrite(Normalizer\Json $json, string $filePath, Normalizer\Format\Format $format): bool
+    protected function doWrite(Json\Json $json, string $filePath, Normalizer\Format\Format $format): bool
     {
         $formatted = $this->formatter->format($json, $format);
 

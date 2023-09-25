@@ -100,7 +100,9 @@ services:
     synthetic: true
 
   # External services
+  Ergebnis\Json\Normalizer\Format\DefaultFormatter:
   Ergebnis\Json\Normalizer\Format\Formatter:
+    alias: 'Ergebnis\Json\Normalizer\Format\DefaultFormatter'
   Ergebnis\Json\Printer\Printer:
   Ergebnis\Json\Printer\PrinterInterface:
     alias: 'Ergebnis\Json\Printer\Printer'
