@@ -32,7 +32,7 @@ $config->setFinder($finder);
 $config->setRiskyAllowed(true);
 
 return $config->setRules([
-    '@PSR2' => true,
+    '@PER-CS' => true,
     '@Symfony' => true,
     'native_function_invocation' => true,
     'global_namespace_import' => ['import_classes' => true, 'import_functions' => true],

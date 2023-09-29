@@ -38,8 +38,7 @@ final class TrackableProgress
     public function __construct(
         private readonly Console\Output\ConsoleOutputInterface $output,
         private readonly string $text,
-    ) {
-    }
+    ) {}
 
     public function start(): void
     {

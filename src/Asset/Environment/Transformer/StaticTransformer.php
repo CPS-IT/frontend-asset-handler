@@ -37,8 +37,7 @@ final class StaticTransformer implements TransformerInterface
 {
     public function __construct(
         private readonly string $value,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array{value?: string} $config

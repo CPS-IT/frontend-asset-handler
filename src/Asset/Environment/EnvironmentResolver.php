@@ -39,8 +39,7 @@ class EnvironmentResolver
 
     public function __construct(
         protected readonly Map $map,
-    ) {
-    }
+    ) {}
 
     public function resolve(string $branch): string
     {
