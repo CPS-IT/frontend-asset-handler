@@ -70,7 +70,7 @@ final class HttpFileProvider implements ProviderInterface, ChattyInterface
 
         // Process download
         $url = $this->getAssetUrl($source);
-        $temporaryFile = Helper\FilesystemHelper::createTemporaryFile(pathinfo($url, PATHINFO_BASENAME));
+        $temporaryFile = Helper\FilesystemHelper::createTemporaryFile(Helper\FilesystemHelper::getFileExtension($url));
         $this->processDownload($url, $temporaryFile);
 
         // Verify downloaded file
