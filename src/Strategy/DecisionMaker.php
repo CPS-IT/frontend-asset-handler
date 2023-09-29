@@ -37,8 +37,7 @@ class DecisionMaker
 {
     public function __construct(
         protected Asset\Revision\RevisionProvider $revisionProvider,
-    ) {
-    }
+    ) {}
 
     public function decide(Asset\Definition\Source $source, Asset\Definition\Target $target): Strategy
     {

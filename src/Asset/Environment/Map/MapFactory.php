@@ -55,8 +55,7 @@ final class MapFactory
      */
     public function __construct(
         private readonly array $transformers,
-    ) {
-    }
+    ) {}
 
     public static function createDefault(string $version = null): Map
     {

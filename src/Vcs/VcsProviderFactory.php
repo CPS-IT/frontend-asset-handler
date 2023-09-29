@@ -42,8 +42,7 @@ final class VcsProviderFactory
      */
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $providers,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception\UnsupportedTypeException

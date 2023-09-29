@@ -36,8 +36,7 @@ final class ValueProcessor
      */
     public function __construct(
         private readonly iterable $placeholderProcessors,
-    ) {
-    }
+    ) {}
 
     /**
      * @param mixed[] $array

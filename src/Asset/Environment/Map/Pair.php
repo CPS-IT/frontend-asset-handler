@@ -36,8 +36,7 @@ final class Pair
     public function __construct(
         private readonly string $inputPattern,
         private readonly TransformerInterface $transformer,
-    ) {
-    }
+    ) {}
 
     public function transform(string $branch): ?string
     {

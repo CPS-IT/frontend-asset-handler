@@ -39,8 +39,7 @@ final class NonSharedServicePass implements DependencyInjection\Compiler\Compile
 {
     public function __construct(
         private readonly string $tagName,
-    ) {
-    }
+    ) {}
 
     public function process(DependencyInjection\ContainerBuilder $container): void
     {

@@ -37,8 +37,7 @@ final class Deployment
     public function __construct(
         private readonly Message\UriInterface $uri,
         private readonly Asset\Revision\Revision $revision,
-    ) {
-    }
+    ) {}
 
     public function getUri(): Message\UriInterface
     {
