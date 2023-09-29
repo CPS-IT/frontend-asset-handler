@@ -44,8 +44,7 @@ class Parser
     public function __construct(
         protected readonly Value\ValueProcessor $valueProcessor,
         protected readonly Json\SchemaValidator $validator,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception\InvalidConfigurationException

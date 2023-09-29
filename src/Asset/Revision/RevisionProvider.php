@@ -45,8 +45,7 @@ class RevisionProvider
     public function __construct(
         protected readonly ClientInterface $client,
         protected readonly Filesystem\Filesystem $filesystem,
-    ) {
-    }
+    ) {}
 
     public function getRevision(Asset\Definition\AssetDefinition $definition): ?Revision
     {

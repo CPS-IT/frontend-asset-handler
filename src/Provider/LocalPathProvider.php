@@ -45,8 +45,7 @@ final class LocalPathProvider implements ProviderInterface, ChattyInterface
 
     public function __construct(
         private readonly Filesystem\Filesystem $filesystem,
-    ) {
-    }
+    ) {}
 
     public static function getName(): string
     {
