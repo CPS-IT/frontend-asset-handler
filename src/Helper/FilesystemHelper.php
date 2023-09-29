@@ -32,7 +32,11 @@ use Symfony\Component\Filesystem;
 
 use function getcwd;
 use function ltrim;
+use function pathinfo;
 use function register_shutdown_function;
+use function str_ends_with;
+use function strtolower;
+use function substr;
 
 /**
  * FilesystemHelper.
@@ -131,6 +135,17 @@ final class FilesystemHelper
         }
 
         return $tempFile;
+    }
+
+    public static function getFileExtension(string $path): string
+    {
+        $normalizedPath = strtolower($path);
+
+        if (str_ends_with($normalizedPath, '.gz')) {
+            return pathinfo(substr($normalizedPath, 0, -3), PATHINFO_EXTENSION).'.gz';
+        }
+
+        return pathinfo($normalizedPath, PATHINFO_EXTENSION);
     }
 
     private static function getFilesystem(): Filesystem\Filesystem

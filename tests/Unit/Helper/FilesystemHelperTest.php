@@ -127,6 +127,13 @@ final class FilesystemHelperTest extends TestCase
         self::assertFileDoesNotExist($actual);
     }
 
+    #[Test]
+    #[DataProvider('getFileExtensionReturnsFileExtensionDataProvider')]
+    public function getFileExtensionReturnsFileExtension(string $path, string $expected): void
+    {
+        self::assertSame($expected, Helper\FilesystemHelper::getFileExtension($path));
+    }
+
     /**
      * @return Generator<string, array{string, string}>
      */
@@ -135,5 +142,15 @@ final class FilesystemHelperTest extends TestCase
         yield 'no extension' => ['', ''];
         yield 'extension without dot' => ['foo', 'foo'];
         yield 'extension with dot' => ['.foo', 'foo'];
+    }
+
+    /**
+     * @return Generator<string, array{string, string}>
+     */
+    public static function getFileExtensionReturnsFileExtensionDataProvider(): Generator
+    {
+        yield 'no extension' => ['/tmp/foo', ''];
+        yield 'simple extension' => ['/tmp/foo.bar', 'bar'];
+        yield 'gzipped extension' => ['/tmp/foo.bar.gz', 'bar.gz'];
     }
 }
