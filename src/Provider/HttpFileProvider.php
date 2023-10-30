@@ -163,7 +163,7 @@ final class HttpFileProvider implements ProviderInterface, ChattyInterface
             $this->progressBar->finish();
             $this->progressBar->clear();
             $this->progressBar = null;
-            // @codeCoverageIgnoreEnd
+        // @codeCoverageIgnoreEnd
         } else {
             $this->progressBar->setProgress($downloaded);
         }
