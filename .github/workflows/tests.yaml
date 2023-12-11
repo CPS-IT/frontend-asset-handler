@@ -17,10 +17,6 @@ jobs:
       matrix:
         php-version: ["8.1", "8.2", "8.3"]
         dependencies: ["locked", "highest", "lowest"]
-        # @todo Remove once PHP 8.3 is released as stable version
-        include:
-          - php-version: "8.3"
-            experimental: true
     steps:
       - uses: actions/checkout@v4
         with:
@@ -39,7 +35,6 @@ jobs:
         uses: ramsey/composer-install@v2
         with:
           dependency-versions: ${{ matrix.dependencies }}
-          composer-options: ${{ matrix.experimental && '--ignore-platform-req=php' }}
 
       # Run tests
       - name: Run tests
