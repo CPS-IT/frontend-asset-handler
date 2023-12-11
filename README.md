@@ -4,7 +4,7 @@
 
 # Frontend Asset Handler
 
-[![Coverage](https://codecov.io/gh/CPS-IT/frontend-asset-handler/branch/develop/graph/badge.svg?token=P4F5YYWAJX)](https://codecov.io/gh/CPS-IT/frontend-asset-handler)
+[![Coverage](https://codecov.io/gh/CPS-IT/frontend-asset-handler/branch/main/graph/badge.svg?token=P4F5YYWAJX)](https://codecov.io/gh/CPS-IT/frontend-asset-handler)
 [![Tests](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/tests.yaml/badge.svg)](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/tests.yaml)
 [![CGL](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/cgl.yaml/badge.svg)](https://github.com/CPS-IT/frontend-asset-handler/actions/workflows/cgl.yaml)
 [![Latest Stable Version](http://poser.pugx.org/cpsit/frontend-asset-handler/v)](https://packagist.org/packages/cpsit/frontend-asset-handler)
