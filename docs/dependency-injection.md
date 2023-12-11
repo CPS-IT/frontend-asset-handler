@@ -31,8 +31,9 @@ achieved by adding a `services` array to your [assets configuration file](config
 }
 ```
 
-:bulb: **Note:** Only `yaml` and `php` files are supported. Take a look at the
-[official Symfony documentation][1] to get an overview about service configuration.
+> [!NOTE]
+> Only `yaml` and `php` files are supported. Take a look at the
+> [official Symfony documentation][1] to get an overview about service configuration.
 
 ## Service container
 
@@ -50,9 +51,10 @@ $containerFactory = new DependencyInjection\ContainerFactory($configFile);
 $container = $containerFactory->get();
 ```
 
-:bulb: **Note:** You must specify the path to a valid [assets configuration file](config/index.md).
-Otherwise, a failsafe container will be created which can only be used for some low-level commands
-(see the following section).
+> [!WARNING]
+> You must specify the path to a valid [assets configuration file](config/index.md).
+> Otherwise, a failsafe container will be created which can only be used for some low-level commands
+> (see the following section).
 
 ### Failsafe container
 

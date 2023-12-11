@@ -56,7 +56,7 @@ $asset = $handler->handle($source, $target/*, $strategy */);
 echo 'Assets downloaded and extracted to ' . $asset->getProcessedTargetPath();
 ```
 
-:bulb: If you prefer configuration with a config file instead, you can load
+💡 If you prefer configuration with a config file instead, you can load
 and parse this file as follows:
 
 ```php

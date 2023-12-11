@@ -12,9 +12,9 @@
 [![PHP Version Require](http://poser.pugx.org/cpsit/frontend-asset-handler/require/php)](https://packagist.org/packages/cpsit/frontend-asset-handler)
 [![License](http://poser.pugx.org/cpsit/frontend-asset-handler/license)](LICENSE.md)
 
-:package:&nbsp;[Packagist](https://packagist.org/packages/cpsit/frontend-asset-handler) |
-:floppy_disk:&nbsp;[Repository](https://github.com/CPS-IT/frontend-asset-handler) |
-:bug:&nbsp;[Issue tracker](https://github.com/CPS-IT/frontend-asset-handler/issues)
+📦&nbsp;[Packagist](https://packagist.org/packages/cpsit/frontend-asset-handler) |
+💾&nbsp;[Repository](https://github.com/CPS-IT/frontend-asset-handler) |
+🐛&nbsp;[Issue tracker](https://github.com/CPS-IT/frontend-asset-handler/issues)
 
 </div>
 
@@ -22,7 +22,7 @@ A Composer library that downloads and extracts Frontend assets to a dedicated pa
 All Frontend assets are configured through an `assets.json` file and can be easily maintained by
 a dedicated CLI application.
 
-## :rocket: Features
+## 🚀 Features
 
 * Command-line application to fetch Frontend assets
 * Asset configuration via `assets.json` file
@@ -30,7 +30,7 @@ a dedicated CLI application.
 * Easy extensible by custom asset providers and processors
 * Designed for dependency injection
 
-## :fire: Getting started
+## 🔥 Getting started
 
 1. [Install](docs/installation.md) the library:
 
@@ -50,7 +50,7 @@ a dedicated CLI application.
    vendor/bin/frontend-assets fetch
    ```
 
-## :book: Documentation
+## 📖 Documentation
 
 * [Installation](docs/installation.md)
 * [Usage](docs/usage/index.md)
@@ -76,14 +76,14 @@ a dedicated CLI application.
 * [Dependency injection](docs/dependency-injection.md)
 * [Migration](docs/migration.md)
 
-## :technologist: Contributing
+## 🧑‍💻 Contributing
 
 Please have a look at [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-## :gem: Credits
+## 💎 Credits
 
 [Direct download icons created by Pixel perfect - Flaticon](https://www.flaticon.com/free-icons/direct-download)
 
-## :star: License
+## ⭐ License
 
 This project is licensed under [GNU General Public License 3.0 (or later)](LICENSE.md).

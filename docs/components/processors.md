@@ -13,7 +13,8 @@ It supports the following additional configuration:
 Base path within the fetched asset archive that should be extracted to the configured
 path. Only files within this path are extracted, all other files are ignored.
 
-> :bulb: You can set this to an empty value to extract all files.
+> [!TIP]
+> You can set this to an empty value to extract all files.
 
 * Required: **no**
 * Default: **`''`** _(= extract all files)_

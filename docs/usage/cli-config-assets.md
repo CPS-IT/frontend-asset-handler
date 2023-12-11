@@ -11,8 +11,9 @@ from the given configuration file.
 
 Define the path to the assets configuration file.
 
-> :warning: In previous versions, configuration could also be added to the `composer.json`
-> file. This is no longer possible. You need to define all settings in a separate file
+> [!NOTE]
+> In previous versions, configuration could also be added to the `composer.json` file.
+> This is no longer possible. You need to define all settings in a separate file
 > and pass it via this command option.
 
 * Required: **yes**
@@ -22,7 +23,8 @@ Define the path to the assets configuration file.
 
 Use this command option to unset configuration at the given path.
 
-> :warning: This option cannot be used in combination with the `--validate` option and the
+> [!NOTE]
+> This option cannot be used in combination with the `--validate` option and the
 > `newValue` argument.
 
 * Required: **no**
@@ -33,7 +35,8 @@ Use this command option to unset configuration at the given path.
 This option can be used to validate asset configuration provided by the given assets
 configuration file.
 
-> :warning: It cannot be used in combination with the `--unset` option and the `newValue`
+> [!NOTE]
+> This option cannot be used in combination with the `--unset` option and the `newValue`
 > argument.
 
 * Required: **no**
@@ -51,7 +54,8 @@ Treat the value passed with `newValue` argument as JSON.
 Run [value processors](../components/placeholder-processors.md) when reading or
 validating asset configuration.
 
-> :warning: This option has no effect with the `newValue` argument.
+> [!NOTE]
+> This option has no effect with the `newValue` argument.
 
 * Required: **no**
 * Default: **no**
@@ -69,7 +73,8 @@ file. Path segments should be combined with a slash (`/`), e.g. `0/source/versio
 Define the new value to be written at the given path in the configuration file. If
 you leave this argument out, the current value at the given path will be returned.
 
-> :warning: This argument cannot be used in combination with the `--unset` and
+> [!NOTE]
+> This argument cannot be used in combination with the `--unset` and
 > `--validate` options.
 
 * Required: **no**
