@@ -11,8 +11,9 @@ This command fetches Frontend assets for the given branch using the provided
 
 Define the path to the assets configuration file.
 
-> :warning: In previous versions, configuration could also be added to the `composer.json`
-> file. This is no longer possible. You need to define all settings in a separate file
+> [!NOTE]
+> In previous versions, configuration could also be added to the `composer.json` file.
+> This is no longer possible. You need to define all settings in a separate file
 > and pass it via this command option.
 
 * Required: **yes**
@@ -40,7 +41,8 @@ specific Frontend assets are available.
 The branch to be used to resolve the requested asset environment that should be known
 by the requested provider.
 
-> :bulb: If no branch is given, the currently checked out branch is used.
+> [!NOTE]
+> If no branch is given, the currently checked out branch is used.
 
 * Required: **no**
 * Default: **current branch** (see [branch determination logic](../config/environments.md#branch-determination-logic))

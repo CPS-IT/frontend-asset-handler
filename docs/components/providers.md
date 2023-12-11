@@ -15,7 +15,8 @@ With this Provider, local paths may be used as Frontend asset source. An additio
 command can be specified that is executed prior to validating the local path, e.g.
 to initialize a new build or archive a list of files and directories.
 
-> :bulb: The local path itself is configured by the [`url`](#url) configuration.
+> [!NOTE]
+> The local path itself is configured by the [`url`](#url) configuration.
 
 It supports the following additional configuration:
 
@@ -65,4 +66,5 @@ the following special placeholders:
 }
 ```
 
-> :warning: The resolved URL must be an existing path on the local filesystem.
+> [!WARNING]
+> The resolved URL must be an existing path on the local filesystem.
