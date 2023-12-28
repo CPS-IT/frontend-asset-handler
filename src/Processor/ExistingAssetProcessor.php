@@ -45,7 +45,8 @@ final class ExistingAssetProcessor implements ProcessorInterface, ChattyInterfac
     public function __construct(
         private readonly Asset\Revision\RevisionProvider $revisionProvider,
         private readonly Filesystem\Filesystem $filesystem,
-    ) {}
+    ) {
+    }
 
     public static function getName(): string
     {

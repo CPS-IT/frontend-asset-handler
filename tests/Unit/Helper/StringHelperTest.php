@@ -118,7 +118,8 @@ final class StringHelperTest extends TestCase
         $class = new class($value) implements Stringable {
             public function __construct(
                 private readonly string $value,
-            ) {}
+            ) {
+            }
 
             public function __toString()
             {

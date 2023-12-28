@@ -36,7 +36,8 @@ class Asset
     public function __construct(
         protected Definition\Source $source,
         protected ?Definition\Target $target = null,
-    ) {}
+    ) {
+    }
 
     public function getSource(): Definition\Source
     {

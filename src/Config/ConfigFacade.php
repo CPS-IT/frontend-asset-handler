@@ -43,7 +43,8 @@ final class ConfigFacade
     public function __construct(
         private readonly iterable $loaders,
         private readonly iterable $writers,
-    ) {}
+    ) {
+    }
 
     public function load(string $file): Config
     {

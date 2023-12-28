@@ -37,7 +37,8 @@ final class VersionTransformer implements TransformerInterface
 {
     public function __construct(
         private readonly string $version,
-    ) {}
+    ) {
+    }
 
     /**
      * @param array{version?: string} $config

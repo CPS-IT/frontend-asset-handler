@@ -72,7 +72,8 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
         private ?string $owner = null,
         private ?string $name = null,
         private ?string $environment = null,
-    ) {}
+    ) {
+    }
 
     public function withVcs(Asset\Definition\Vcs $vcs): static
     {

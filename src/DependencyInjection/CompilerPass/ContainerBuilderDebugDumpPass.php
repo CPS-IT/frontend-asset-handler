@@ -28,7 +28,9 @@ use Symfony\Component\DependencyInjection;
  */
 final class ContainerBuilderDebugDumpPass implements DependencyInjection\Compiler\CompilerPassInterface
 {
-    public function __construct(private readonly string $cachePath) {}
+    public function __construct(private readonly string $cachePath)
+    {
+    }
 
     public function process(DependencyInjection\ContainerBuilder $container): void
     {

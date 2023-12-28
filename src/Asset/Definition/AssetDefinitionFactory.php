@@ -40,7 +40,8 @@ final class AssetDefinitionFactory
 {
     public function __construct(
         private readonly Asset\Environment\Map\MapFactory $mapFactory,
-    ) {}
+    ) {
+    }
 
     /**
      * @param array{environments?: array<string, mixed>, source?: array<string, mixed>} $config

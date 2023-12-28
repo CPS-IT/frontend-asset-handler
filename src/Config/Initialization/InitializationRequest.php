@@ -51,7 +51,8 @@ final class InitializationRequest
         private string $configFile,
         private array $options = [],
         private readonly ?Console\Input\InputInterface $input = null,
-    ) {}
+    ) {
+    }
 
     /**
      * @throws Exception\MissingConfigurationException

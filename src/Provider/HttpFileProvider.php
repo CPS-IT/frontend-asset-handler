@@ -50,7 +50,8 @@ final class HttpFileProvider implements ProviderInterface, ChattyInterface
     public function __construct(
         private readonly ClientInterface $client,
         private readonly Asset\Revision\RevisionProvider $revisionProvider,
-    ) {}
+    ) {
+    }
 
     public static function getName(): string
     {

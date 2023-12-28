@@ -45,7 +45,8 @@ final class DefaultConfigurationAwareTraitTestClass
      */
     public function __construct(
         private readonly array $defaultConfiguration,
-    ) {}
+    ) {
+    }
 
     /**
      * @return array<string, mixed>

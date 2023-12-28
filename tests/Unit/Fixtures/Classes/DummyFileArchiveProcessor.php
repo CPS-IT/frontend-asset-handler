@@ -40,7 +40,8 @@ final class DummyFileArchiveProcessor implements Processor\ProcessorInterface
 
     public function __construct(
         private readonly Processor\FileArchiveProcessor $childProcessor,
-    ) {}
+    ) {
+    }
 
     public function processAsset(Asset\Asset $asset): string
     {

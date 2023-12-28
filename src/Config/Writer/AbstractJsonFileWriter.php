@@ -42,7 +42,8 @@ abstract class AbstractJsonFileWriter implements ConfigWriterInterface
 {
     public function __construct(
         protected readonly Normalizer\Format\Formatter $formatter,
-    ) {}
+    ) {
+    }
 
     /**
      * @return array{Json\Json, Normalizer\Format\Format}

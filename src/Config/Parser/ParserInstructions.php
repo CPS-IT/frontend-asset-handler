@@ -46,7 +46,8 @@ class ParserInstructions
 
     public function __construct(
         protected Config\Config $config,
-    ) {}
+    ) {
+    }
 
     public function getConfig(): Config\Config
     {

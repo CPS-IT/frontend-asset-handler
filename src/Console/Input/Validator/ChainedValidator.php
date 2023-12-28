@@ -38,7 +38,8 @@ final class ChainedValidator implements ValidatorInterface
      */
     public function __construct(
         private readonly array $validators,
-    ) {}
+    ) {
+    }
 
     public function validate(mixed $value): mixed
     {
