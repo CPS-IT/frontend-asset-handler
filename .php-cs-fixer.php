@@ -21,21 +21,14 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-$finder = \PhpCsFixer\Finder::create()
-    ->ignoreVCSIgnored(true)
+$config = new \PhpCsFixer\Config();
+$config->getFinder()
     ->in(__DIR__)
-    ->append([__DIR__.'/bin/frontend-assets'])
+    ->name(['*.php', 'frontend-assets'])
+    ->ignoreVCSIgnored(true)
 ;
 
-$config = new \PhpCsFixer\Config();
-$config->setFinder($finder);
-$config->setRiskyAllowed(true);
+$ruleset = new \CPSIT\PhpCsFixerConfig\Rule\DefaultRuleset();
+$ruleset->apply($config);
 
-return $config->setRules([
-    '@PER-CS' => true,
-    '@Symfony' => true,
-    'native_function_invocation' => true,
-    'global_namespace_import' => ['import_classes' => true, 'import_functions' => true],
-    'no_superfluous_phpdoc_tags' => ['allow_mixed' => true],
-    'ordered_imports' => ['imports_order' => ['const', 'class', 'function']],
-]);
+return $config;
