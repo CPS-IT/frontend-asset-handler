@@ -40,7 +40,7 @@ final class UnsupportedClassException extends Exception
     {
         return new self(
             sprintf('The given class "%s" is either not available or not supported.', $className),
-            1623911858
+            1623911858,
         );
     }
 }

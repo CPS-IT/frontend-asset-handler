@@ -88,7 +88,7 @@ final class FetchAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCase
                 $commandTester = new Console\Tester\CommandTester($command);
 
                 $commandTester->execute([]);
-            }
+            },
         );
     }
 

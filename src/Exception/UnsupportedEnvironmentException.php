@@ -50,7 +50,7 @@ final class UnsupportedEnvironmentException extends RuntimeException
     {
         return new self(
             sprintf('The following environment(s) are misconfigured: "%s"', implode('", "', $environments)),
-            1630773354
+            1630773354,
         );
     }
 }

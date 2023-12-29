@@ -93,7 +93,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         $this->initializeCommandTester(dirname(__DIR__).'/Fixtures/JsonFiles/placeholder-assets.json');
 
         $this->expectExceptionObject(
-            new UnexpectedValueException('The environment variable "SOURCE_TYPE" is not available.', 1628147471)
+            new UnexpectedValueException('The environment variable "SOURCE_TYPE" is not available.', 1628147471),
         );
 
         $this->commandTester->execute([
@@ -117,7 +117,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         self::assertSame(0, $exitCode);
         self::assertMatchesRegularExpression(
             '/Configuration at \S+ was successfully unset\./',
-            $this->commandTester->getDisplay()
+            $this->commandTester->getDisplay(),
         );
         self::assertNotNull($this->configFile);
         self::assertJsonStringEqualsJsonFile($this->configFile, json_encode($expected, JSON_THROW_ON_ERROR));
@@ -129,7 +129,7 @@ final class ConfigAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCas
         $this->expectException(Exception\InvalidConfigurationException::class);
         $this->expectExceptionCode(1643113965);
         $this->expectExceptionMessage(
-            'The configuration is invalid: '.PHP_EOL.'  * [/frontend-assets/0/source/url]: The property url is required'
+            'The configuration is invalid: '.PHP_EOL.'  * [/frontend-assets/0/source/url]: The property url is required',
         );
 
         $this->commandTester->execute([

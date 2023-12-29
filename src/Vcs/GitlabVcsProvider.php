@@ -200,7 +200,7 @@ final class GitlabVcsProvider implements DeployableVcsProviderInterface
         $endpoint = Helper\StringHelper::interpolate($endpoint, $parameters);
 
         $requestUri = $this->baseUrl->withPath(
-            rtrim($this->baseUrl->getPath(), '/').'/'.ltrim($endpoint, '/')
+            rtrim($this->baseUrl->getPath(), '/').'/'.ltrim($endpoint, '/'),
         );
 
         if ([] !== $additionalQueryParams) {

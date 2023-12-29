@@ -50,7 +50,7 @@ final class VcsProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
                 'gitlab' => fn () => $this->container->get(Vcs\GitlabVcsProvider::class),
                 // Dummy providers
                 'dummy' => fn () => new Tests\Unit\Fixtures\Classes\DummyVcsProvider(),
-            ])
+            ]),
         );
     }
 

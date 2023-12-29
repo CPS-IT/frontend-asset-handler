@@ -100,7 +100,7 @@ final class ExternalJsonFileWriterTest extends ContainerAwareTestCase
         $this->expectException(UnprocessableConfigFileException::class);
         $this->expectExceptionCode(1643103076);
         $this->expectExceptionMessage(
-            sprintf('The config file "%s" cannot be processed.', $originalFile)
+            sprintf('The config file "%s" cannot be processed.', $originalFile),
         );
 
         $this->subject->write($config);

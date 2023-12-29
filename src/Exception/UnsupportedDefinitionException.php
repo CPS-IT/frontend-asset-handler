@@ -38,7 +38,7 @@ final class UnsupportedDefinitionException extends Exception
     {
         return new self(
             sprintf('The given asset definition "%s" is not supported.', $definition::class),
-            1624636359
+            1624636359,
         );
     }
 }

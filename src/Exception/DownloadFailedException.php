@@ -39,7 +39,7 @@ final class DownloadFailedException extends RuntimeException
         return new self(
             sprintf('An error occurred while downloading "%s" to "%s".', $url, $targetFile),
             1623862554,
-            $previous
+            $previous,
         );
     }
 
@@ -48,7 +48,7 @@ final class DownloadFailedException extends RuntimeException
         return new self(
             sprintf('You are not authorized to download "%s" (Error 401).', $url),
             1624037646,
-            $previous
+            $previous,
         );
     }
 
@@ -57,7 +57,7 @@ final class DownloadFailedException extends RuntimeException
         return new self(
             sprintf('The requested URL "%s" is not available (Error 404).', $url),
             1624037782,
-            $previous
+            $previous,
         );
     }
 
@@ -66,7 +66,7 @@ final class DownloadFailedException extends RuntimeException
         return new self(
             sprintf('Download verification failed for target file "%s" from source "%s".', $targetFile, $url),
             1625218841,
-            $previous
+            $previous,
         );
     }
 }

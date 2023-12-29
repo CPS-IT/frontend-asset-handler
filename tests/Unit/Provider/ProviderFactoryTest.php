@@ -53,7 +53,7 @@ final class ProviderFactoryTest extends Tests\Unit\ContainerAwareTestCase
                 'http' => fn () => $this->container->get(Provider\HttpFileProvider::class),
                 // Dummy providers
                 'dummy' => fn () => new Tests\Unit\Fixtures\Classes\DummyProvider(),
-            ])
+            ]),
         );
         $this->subject->setOutput($this->output);
     }

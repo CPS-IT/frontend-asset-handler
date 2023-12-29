@@ -58,7 +58,7 @@ final class InvalidConfigurationException extends Exception
 
         return new self(
             sprintf('The configuration is invalid: %s%s', $separator, implode($separator, $errorMessages)),
-            1643113965
+            1643113965,
         );
     }
 }

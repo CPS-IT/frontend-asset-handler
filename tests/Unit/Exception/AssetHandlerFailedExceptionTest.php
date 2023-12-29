@@ -51,7 +51,7 @@ final class AssetHandlerFailedExceptionTest extends TestCase
 
         self::assertSame(
             sprintf('Processing of asset from source "%s" to target "%s" failed.', $source, $target),
-            $subject->getMessage()
+            $subject->getMessage(),
         );
         self::assertSame(1623861520, $subject->getCode());
     }

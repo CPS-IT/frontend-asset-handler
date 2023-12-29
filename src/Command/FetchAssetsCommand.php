@@ -62,7 +62,7 @@ final class FetchAssetsCommand extends BaseAssetsCommand
     protected function configure(): void
     {
         $this->setDescription(
-            'Downloads and extracts Frontend assets from a defined source to a dedicated path in the current project.'
+            'Downloads and extracts Frontend assets from a defined source to a dedicated path in the current project.',
         );
 
         $this->addArgument(
@@ -144,11 +144,11 @@ final class FetchAssetsCommand extends BaseAssetsCommand
                             '<comment>source</comment>' => $source->getConfig(),
                             '<comment>target</comment>' => $target->getConfig(),
                         ],
-                        JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR
+                        JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
                     ),
                     '',
                 ],
-                Console\Output\OutputInterface::VERBOSITY_VERBOSE
+                Console\Output\OutputInterface::VERBOSITY_VERBOSE,
             );
 
             // Perform asset handling
@@ -200,8 +200,8 @@ final class FetchAssetsCommand extends BaseAssetsCommand
             $this->io->warning(
                 sprintf(
                     'Assets%s are already downloaded. Use -f to re-download them.',
-                    null !== $asset->getRevision() ? ' of revision '.$asset->getRevision()->getShort() : ''
-                )
+                    null !== $asset->getRevision() ? ' of revision '.$asset->getRevision()->getShort() : '',
+                ),
             );
 
             return true;

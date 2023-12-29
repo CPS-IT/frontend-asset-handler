@@ -38,7 +38,7 @@ final class AssetHandlerFailedException extends RuntimeException
     {
         return new self(
             sprintf('Processing of asset from source "%s" to target "%s" failed.', $asset->getSource(), $asset->getTarget()),
-            1623861520
+            1623861520,
         );
     }
 }

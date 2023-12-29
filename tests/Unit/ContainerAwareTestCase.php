@@ -44,7 +44,7 @@ abstract class ContainerAwareTestCase extends TestCase
 
     protected function createContainer(
         ?string $configFile = __DIR__.'/Fixtures/JsonFiles/assets.json',
-        bool $rebuild = false
+        bool $rebuild = false,
     ): SymfonyDI\ContainerInterface {
         $containerFactory = new DependencyInjection\ContainerFactory($configFile, true, true);
 

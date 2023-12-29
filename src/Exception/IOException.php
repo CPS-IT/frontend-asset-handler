@@ -40,7 +40,7 @@ final class IOException extends RuntimeException
     {
         return new self(
             sprintf('The output "%s" is not supported.', $output::class),
-            1661872012
+            1661872012,
         );
     }
 

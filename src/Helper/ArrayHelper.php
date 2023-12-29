@@ -62,11 +62,9 @@ final class ArrayHelper
     /**
      * @param array<mixed> $array
      *
-     * @return mixed
-     *
      * @throws Exception\MissingConfigurationException
      */
-    public static function getArrayValueByPath(array $array, string $path)
+    public static function getArrayValueByPath(array $array, string $path): mixed
     {
         $value = $array;
 

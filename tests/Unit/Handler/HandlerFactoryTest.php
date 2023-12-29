@@ -53,7 +53,7 @@ final class HandlerFactoryTest extends Tests\Unit\ContainerAwareTestCase
                 'default' => fn () => $this->container->get(Handler\AssetHandler::class),
                 // Dummy handlers
                 'dummy' => fn () => new Tests\Unit\Fixtures\Classes\DummyHandler(),
-            ])
+            ]),
         );
         $this->subject->setOutput($this->output);
     }

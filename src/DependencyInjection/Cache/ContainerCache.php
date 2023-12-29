@@ -110,7 +110,7 @@ final class ContainerCache
             $containerXmlPath = dirname($this->cache->getPath()).'/'.$containerXmlFilename.'.xml';
 
             $containerBuilder->addCompilerPass(
-                new DependencyInjection\CompilerPass\ContainerBuilderDebugDumpPass($containerXmlPath)
+                new DependencyInjection\CompilerPass\ContainerBuilderDebugDumpPass($containerXmlPath),
             );
         }
 

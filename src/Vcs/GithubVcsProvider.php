@@ -121,9 +121,9 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
                                 ->selectField('commitOid')
                                 ->selectField(
                                     (new QueryBuilder\QueryBuilder('latestStatus'))
-                                        ->selectField('state')
-                                )
-                        )
+                                        ->selectField('state'),
+                                ),
+                        ),
                 ),
             );
 
@@ -154,7 +154,7 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
                 $this->createQueryBuilder()->selectField(
                     (new QueryBuilder\QueryBuilder('object'))
                         ->setArgument('oid', $revision->get())
-                        ->selectField('id')
+                        ->selectField('id'),
                 ),
             );
 
@@ -183,9 +183,9 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
                             ->selectField(
                                 (new QueryBuilder\QueryBuilder('latestStatus'))
                                     ->selectField('logUrl')
-                                    ->selectField('state')
-                            )
-                    )
+                                    ->selectField('state'),
+                            ),
+                    ),
             ),
         );
 
