@@ -38,7 +38,7 @@
 		"webmozart/assert": "^1.10"
 	},
 	"require-dev": {
-		"armin/editorconfig-cli": "^1.5",
+		"armin/editorconfig-cli": "^1.6 || ^2.0",
 		"cpsit/php-cs-fixer-config": "^1.1",
 		"ergebnis/composer-normalize": "^2.18",
 		"gmostafa/php-graphql-client": "^1.13",
