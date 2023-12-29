@@ -105,7 +105,7 @@ final class InspectAssetsCommandTest extends Tests\Unit\CommandTesterAwareTestCa
                 $commandTester = new Console\Tester\CommandTester($command);
 
                 $commandTester->execute([]);
-            }
+            },
         );
     }
 

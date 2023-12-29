@@ -237,7 +237,7 @@ final class SourceConfigStep extends BaseStep implements InteractiveStepInterfac
 
     private function requestAdditionalVariablesForHttpFileProvider(
         Console\Input\InputInterface $input,
-        Config\Initialization\InitializationRequest $request
+        Config\Initialization\InitializationRequest $request,
     ): void {
         $this->output->writeln([
             'You may specify a stable asset version used for main/master branches.',

@@ -52,7 +52,7 @@ final class ClearCacheCommand extends Console\Command\Command
     {
         $output->writeln(
             sprintf('Container path: <comment>%s</comment>', $this->cache->getPath()),
-            Console\Output\OutputInterface::VERBOSITY_VERBOSE
+            Console\Output\OutputInterface::VERBOSITY_VERBOSE,
         );
 
         $this->cache->flushAll();

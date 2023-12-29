@@ -37,7 +37,7 @@ final class UnprocessableConfigFileException extends RuntimeException
     {
         return new self(
             sprintf('The config file "%s" cannot be processed.', $filePath),
-            1643103076
+            1643103076,
         );
     }
 }

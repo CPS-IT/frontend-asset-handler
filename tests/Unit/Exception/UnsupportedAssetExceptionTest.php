@@ -51,7 +51,7 @@ final class UnsupportedAssetExceptionTest extends TestCase
 
         self::assertSame(
             sprintf('The asset with source "%s" and target "%s" is not supported.', $source, $target),
-            $subject->getMessage()
+            $subject->getMessage(),
         );
         self::assertSame(1623922009, $subject->getCode());
     }

@@ -57,7 +57,7 @@ final class ExternalJsonFileLoaderTest extends TestCase
         $this->expectException(UnprocessableConfigFileException::class);
         $this->expectExceptionCode(1643103076);
         $this->expectExceptionMessage(
-            sprintf('The config file "%s" cannot be processed.', $filePath)
+            sprintf('The config file "%s" cannot be processed.', $filePath),
         );
 
         $this->subject->load($filePath);

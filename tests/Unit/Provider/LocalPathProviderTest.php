@@ -173,7 +173,7 @@ final class LocalPathProviderTest extends ContainerAwareTestCase
         self::assertFileExists($archive, sprintf('Archive "%s" does not exist.', $archive));
         self::assertFileExists(
             'phar://'.$archive.'/'.$path,
-            sprintf('Path "%s" does not exist in archive "%s".', $path, $archive)
+            sprintf('Path "%s" does not exist in archive "%s".', $path, $archive),
         );
     }
 }

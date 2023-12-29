@@ -58,7 +58,7 @@ final class VcsHelperTest extends TestCase
     public function getCurrentBranchReturnsNullIfBranchCannotBeDetermined(): void
     {
         $this->executeInDirectory(
-            static fn () => self::assertNull(Helper\VcsHelper::getCurrentBranch())
+            static fn () => self::assertNull(Helper\VcsHelper::getCurrentBranch()),
         );
     }
 
@@ -82,7 +82,7 @@ final class VcsHelperTest extends TestCase
                 foreach (array_keys($variables) as $name) {
                     $this->unsetEnvironmentVariable($name);
                 }
-            }
+            },
         );
     }
 
@@ -110,7 +110,7 @@ final class VcsHelperTest extends TestCase
                 foreach (array_keys($variables) as $name) {
                     $this->unsetEnvironmentVariable($name);
                 }
-            }
+            },
         );
     }
 
@@ -126,7 +126,7 @@ final class VcsHelperTest extends TestCase
                 $newBranchProcess->run();
 
                 self::assertSame('test', Helper\VcsHelper::getCurrentBranch());
-            }
+            },
         );
     }
 

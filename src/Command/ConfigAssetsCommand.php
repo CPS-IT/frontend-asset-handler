@@ -147,7 +147,7 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
             $finalPath = $this->writeConfiguration($path, null);
 
             $this->io->success(
-                sprintf('Configuration at %s was successfully unset.', $this->decoratePath($finalPath))
+                sprintf('Configuration at %s was successfully unset.', $this->decoratePath($finalPath)),
             );
 
             return self::SUCCESSFUL;
@@ -167,7 +167,7 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
                 $this->io->error('Your asset configuration is invalid.');
                 $this->io->table(
                     ['Config path', 'Error'],
-                    array_map($this->validationErrorToTableRow(...), $validationResult->errors())
+                    array_map($this->validationErrorToTableRow(...), $validationResult->errors()),
                 );
 
                 return self::ERROR_INVALID_CONFIG;
@@ -185,7 +185,7 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
             $this->io->writeln([
                 sprintf(
                     'Current configuration value of asset definition <comment>%s</comment>:',
-                    $this->decoratePath($finalPath)
+                    $this->decoratePath($finalPath),
                 ),
                 '',
                 $this->printer->print(json_encode($value, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)),
@@ -203,7 +203,7 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
             $this->io->writeln([
                 sprintf(
                     '<info>Configuration at <comment>%s</comment> was successfully written:</info>',
-                    $this->decoratePath($finalPath)
+                    $this->decoratePath($finalPath),
                 ),
                 '',
                 $this->printer->print($jsonValue->encoded()),
@@ -213,7 +213,7 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
             $finalPath = $this->writeConfiguration($path, $newValue);
 
             $this->io->success(
-                sprintf('Configuration at %s was successfully set to "%s".', $this->decoratePath($finalPath), $newValue)
+                sprintf('Configuration at %s was successfully set to "%s".', $this->decoratePath($finalPath), $newValue),
             );
         }
 

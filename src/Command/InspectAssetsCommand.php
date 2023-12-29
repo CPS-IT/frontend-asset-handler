@@ -69,7 +69,7 @@ final class InspectAssetsCommand extends BaseAssetsCommand
     protected function configure(): void
     {
         $this->setDescription(
-            'Inspects frontend assets for the requested branch, including active deployments'
+            'Inspects frontend assets for the requested branch, including active deployments',
         );
 
         $this->setHelp(implode(PHP_EOL, [
@@ -90,7 +90,7 @@ final class InspectAssetsCommand extends BaseAssetsCommand
             'wait-for-deployments',
             'w',
             Console\Input\InputOption::VALUE_NONE,
-            'Waits until active deployments for the requested branch are finished'
+            'Waits until active deployments for the requested branch are finished',
         );
     }
 
@@ -138,11 +138,11 @@ final class InspectAssetsCommand extends BaseAssetsCommand
                             '<comment>target</comment>' => $target->getConfig(),
                             '<comment>vcs</comment>' => $vcs?->getConfig(),
                         ],
-                        JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR
+                        JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
                     ),
                     '',
                 ],
-                Console\Output\OutputInterface::VERBOSITY_VERBOSE
+                Console\Output\OutputInterface::VERBOSITY_VERBOSE,
             );
 
             $this->describeAsset($source, $target, $vcs);

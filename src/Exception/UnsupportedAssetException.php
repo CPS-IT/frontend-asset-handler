@@ -38,7 +38,7 @@ final class UnsupportedAssetException extends RuntimeException
     {
         return new self(
             sprintf('The asset with source "%s" and target "%s" is not supported.', $asset->getSource(), $asset->getTarget()),
-            1623922009
+            1623922009,
         );
     }
 }

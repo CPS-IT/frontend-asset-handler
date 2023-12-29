@@ -84,7 +84,7 @@ final class AssetDefinitionFactory
     {
         $environmentResolver = $this->buildEnvironmentResolver(
             $config['environments'] ?? [],
-            $config['source']['version'] ?? null
+            $config['source']['version'] ?? null,
         );
 
         return $environmentResolver->resolve($branch);
