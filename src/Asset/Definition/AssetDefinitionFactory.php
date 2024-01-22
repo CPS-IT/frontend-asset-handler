@@ -45,26 +45,26 @@ final class AssetDefinitionFactory
     /**
      * @param array{environments?: array<string, mixed>, source?: array<string, mixed>} $config
      */
-    public function buildSource(array $config, string $branch): Asset\Definition\Source
+    public function buildSource(array $config, string $branch): Source
     {
         $sourceConfig = $config['source'] ?? [];
         $sourceConfig['environment'] = $this->resolveEnvironment($config, $branch);
 
-        return new Asset\Definition\Source($sourceConfig);
+        return new Source($sourceConfig);
     }
 
     /**
      * @param array{target?: array<string, mixed>} $config
      */
-    public function buildTarget(array $config): Asset\Definition\Target
+    public function buildTarget(array $config): Target
     {
-        return new Asset\Definition\Target($config['target'] ?? []);
+        return new Target($config['target'] ?? []);
     }
 
     /**
      * @param array{environments?: array<string, mixed>, source?: array<string, mixed>, vcs?: array<string, mixed>} $config
      */
-    public function buildVcs(array $config, string $branch): ?Asset\Definition\Vcs
+    public function buildVcs(array $config, string $branch): ?Vcs
     {
         $vcsConfig = $config['vcs'] ?? null;
 
@@ -74,7 +74,7 @@ final class AssetDefinitionFactory
 
         $vcsConfig['environment'] = $this->resolveEnvironment($config, $branch);
 
-        return new Asset\Definition\Vcs($vcsConfig);
+        return new Vcs($vcsConfig);
     }
 
     /**

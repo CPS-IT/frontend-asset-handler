@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Console\Output;
 
-use CPSIT\FrontendAssetHandler\Console;
 use CPSIT\FrontendAssetHandler\Exception;
 use Symfony\Component\Console as SymfonyConsole;
 
@@ -44,13 +43,13 @@ final class TrackableOutput extends SymfonyConsole\Output\ConsoleOutput
         parent::__construct();
     }
 
-    public function startProgress(string $text): Console\Output\Progress\TrackableProgress
+    public function startProgress(string $text): Progress\TrackableProgress
     {
         if (!($this->output instanceof SymfonyConsole\Output\ConsoleOutputInterface)) {
             throw Exception\IOException::forUnsupportedOutput($this->output);
         }
 
-        $progress = new Console\Output\Progress\TrackableProgress($this->output, rtrim($text).' ');
+        $progress = new Progress\TrackableProgress($this->output, rtrim($text).' ');
         $progress->start();
 
         return $progress;
