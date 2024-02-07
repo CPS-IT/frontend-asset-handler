@@ -95,7 +95,7 @@ final class AssetDefinitionFactory
      *
      * @throws Exception\MissingConfigurationException
      */
-    private function buildEnvironmentResolver(array $configuration, string $version = null): Asset\Environment\EnvironmentResolver
+    private function buildEnvironmentResolver(array $configuration, ?string $version = null): Asset\Environment\EnvironmentResolver
     {
         $mapConfig = $configuration['map'] ?? [];
         $merge = $configuration['merge'] ?? false;

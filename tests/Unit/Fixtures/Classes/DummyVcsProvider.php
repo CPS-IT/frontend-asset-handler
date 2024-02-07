@@ -58,7 +58,7 @@ final class DummyVcsProvider implements Vcs\DeployableVcsProviderInterface
         return 'https://example.com/assets.git';
     }
 
-    public function getLatestRevision(string $environment = null): ?Asset\Revision\Revision
+    public function getLatestRevision(?string $environment = null): ?Asset\Revision\Revision
     {
         return null;
     }

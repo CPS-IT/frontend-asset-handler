@@ -62,7 +62,7 @@ final class GitlabVcsProvider implements DeployableVcsProviderInterface
 
     public function __construct(
         private readonly ClientInterface $client,
-        string $baseUrl = null,
+        ?string $baseUrl = null,
         private ?string $accessToken = null,
         private ?int $projectId = null,
         private ?string $environment = null,
@@ -104,7 +104,7 @@ final class GitlabVcsProvider implements DeployableVcsProviderInterface
         );
     }
 
-    public function getLatestRevision(string $environment = null): ?Asset\Revision\Revision
+    public function getLatestRevision(?string $environment = null): ?Asset\Revision\Revision
     {
         try {
             $response = $this->sendRequest(

@@ -48,8 +48,8 @@ final class ContainerFactory
     private readonly Config\Parser\ServicesParser $servicesParser;
 
     public function __construct(
-        string $configFile = null,
-        bool $debug = null,
+        ?string $configFile = null,
+        ?bool $debug = null,
         private readonly bool $includeTestSources = false,
     ) {
         $this->configFile = null !== $configFile && '' !== trim($configFile) ? Helper\FilesystemHelper::resolveRelativePath($configFile) : null;

@@ -33,7 +33,7 @@ use Symfony\Component\Filesystem;
  */
 trait FunctionExecutorTrait
 {
-    private function executeInDirectory(callable $function, string $directory = null, bool $cleanUp = true): void
+    private function executeInDirectory(callable $function, ?string $directory = null, bool $cleanUp = true): void
     {
         $filesystem = new Filesystem\Filesystem();
         $cwd = getcwd();

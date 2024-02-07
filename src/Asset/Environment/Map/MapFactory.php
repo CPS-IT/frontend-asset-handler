@@ -57,7 +57,7 @@ final class MapFactory
         private readonly array $transformers,
     ) {}
 
-    public static function createDefault(string $version = null): Map
+    public static function createDefault(?string $version = null): Map
     {
         $stableTransformer = self::createStableTransformer($version);
         $latestTransformer = new StaticTransformer(Environment::Latest->value);
@@ -84,7 +84,7 @@ final class MapFactory
     /**
      * @param array<string, array{transformer?: string, options?: array<string, mixed>}|string> $config
      */
-    public function createFromArray(array $config, string $version = null): Map
+    public function createFromArray(array $config, ?string $version = null): Map
     {
         $pairs = [];
 
@@ -133,7 +133,7 @@ final class MapFactory
         return call_user_func([$className, 'fromArray'], $options);
     }
 
-    private static function createStableTransformer(string $version = null): VersionTransformer|StaticTransformer
+    private static function createStableTransformer(?string $version = null): VersionTransformer|StaticTransformer
     {
         if (null !== $version && '' !== trim($version)) {
             return new VersionTransformer($version);

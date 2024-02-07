@@ -37,7 +37,7 @@ interface HandlerInterface
     public function handle(
         Asset\Definition\Source $source,
         Asset\Definition\Target $target,
-        Strategy\Strategy $strategy = null,
+        ?Strategy\Strategy $strategy = null,
     ): Asset\Asset;
 
     public static function getName(): string;

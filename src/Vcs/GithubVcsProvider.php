@@ -107,7 +107,7 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
         );
     }
 
-    public function getLatestRevision(string $environment = null): ?Asset\Revision\Revision
+    public function getLatestRevision(?string $environment = null): ?Asset\Revision\Revision
     {
         try {
             $results = $this->sendRequest(
