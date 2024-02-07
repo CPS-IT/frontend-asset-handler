@@ -71,8 +71,8 @@ abstract class BaseStep implements StepInterface, ChattyInterface
     protected function createQuestion(
         string $label,
         mixed $default = null,
-        string $alternative = null,
-        string|array $validator = null,
+        ?string $alternative = null,
+        string|array|null $validator = null,
     ): SymfonyConsole\Question\Question {
         $label = $this->decorateQuestionLabel($label, $default, $alternative);
         $question = new SymfonyConsole\Question\Question($label, $default);
@@ -97,7 +97,7 @@ abstract class BaseStep implements StepInterface, ChattyInterface
         return new SymfonyConsole\Question\ChoiceQuestion($label, $choices, $default);
     }
 
-    protected function decorateQuestionLabel(string $label, mixed $default, string $alternative = null): string
+    protected function decorateQuestionLabel(string $label, mixed $default, ?string $alternative = null): string
     {
         $label = sprintf('▶ <info>%s</info>', $label);
 
@@ -128,7 +128,7 @@ abstract class BaseStep implements StepInterface, ChattyInterface
         string $label,
         array &$additionalVariables,
         mixed $default = null,
-        string|array $validator = null,
+        string|array|null $validator = null,
     ): void {
         if (!is_string($string)) {
             return;
@@ -163,7 +163,7 @@ abstract class BaseStep implements StepInterface, ChattyInterface
         string $additionalVariable,
         array &$additionalVariables,
         mixed $default = null,
-        string|array $validator = null,
+        string|array|null $validator = null,
     ): void {
         $additionalValue = $this->questionHelper->ask(
             $this->getInput($request),

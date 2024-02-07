@@ -44,7 +44,7 @@ trait ClientMockTrait
      */
     protected array $requestContainer = [];
 
-    protected function getPreparedClient(callable $middleware = null): Client
+    protected function getPreparedClient(?callable $middleware = null): Client
     {
         $this->mockHandler = new Handler\MockHandler();
         $this->requestContainer = [];

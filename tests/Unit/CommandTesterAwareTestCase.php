@@ -50,7 +50,7 @@ abstract class CommandTesterAwareTestCase extends ContainerAwareTestCase
     /**
      * @param array<string, object> $additionalServices
      */
-    protected function initializeCommandTester(string $configFile = null, array $additionalServices = []): void
+    protected function initializeCommandTester(?string $configFile = null, array $additionalServices = []): void
     {
         $this->configFile = $configFile;
         $this->configFileBackup = null !== $configFile ? ((string) file_get_contents($configFile)) : null;

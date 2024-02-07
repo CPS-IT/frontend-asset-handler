@@ -48,7 +48,7 @@ final class VcsProviderFactory
      * @throws Exception\UnsupportedTypeException
      * @throws Exception\UnsupportedClassException
      */
-    public function get(string $type, Asset\Definition\Vcs $vcs = null): VcsProviderInterface
+    public function get(string $type, ?Asset\Definition\Vcs $vcs = null): VcsProviderInterface
     {
         if (!$this->has($type)) {
             throw Exception\UnsupportedTypeException::create($type);

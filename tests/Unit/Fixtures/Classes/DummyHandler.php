@@ -58,7 +58,7 @@ final class DummyHandler implements Handler\HandlerInterface, ChattyInterface
     public function handle(
         Asset\Definition\Source $source,
         Asset\Definition\Target $target,
-        Strategy\Strategy $strategy = null,
+        ?Strategy\Strategy $strategy = null,
     ): Asset\Asset {
         $this->lastStrategy = $strategy;
 

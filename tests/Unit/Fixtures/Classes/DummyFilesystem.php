@@ -63,7 +63,7 @@ final class DummyFilesystem extends Filesystem\Filesystem
      *
      * @throws Exception
      */
-    public function mirror(string $originDir, string $targetDir, Traversable $iterator = null, array $options = []): void
+    public function mirror(string $originDir, string $targetDir, ?Traversable $iterator = null, array $options = []): void
     {
         if ($this->shouldThrowException('mirror')) {
             throw new Exception('Dummy exception from Filesystem', 1628093996);

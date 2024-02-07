@@ -34,7 +34,7 @@ use Throwable;
  */
 final class DownloadFailedException extends RuntimeException
 {
-    public static function create(string $url, string $targetFile, Throwable $previous = null): self
+    public static function create(string $url, string $targetFile, ?Throwable $previous = null): self
     {
         return new self(
             sprintf('An error occurred while downloading "%s" to "%s".', $url, $targetFile),
@@ -43,7 +43,7 @@ final class DownloadFailedException extends RuntimeException
         );
     }
 
-    public static function forUnauthorizedRequest(string $url, Throwable $previous = null): self
+    public static function forUnauthorizedRequest(string $url, ?Throwable $previous = null): self
     {
         return new self(
             sprintf('You are not authorized to download "%s" (Error 401).', $url),
@@ -52,7 +52,7 @@ final class DownloadFailedException extends RuntimeException
         );
     }
 
-    public static function forUnavailableTarget(string $url, Throwable $previous = null): self
+    public static function forUnavailableTarget(string $url, ?Throwable $previous = null): self
     {
         return new self(
             sprintf('The requested URL "%s" is not available (Error 404).', $url),
@@ -61,7 +61,7 @@ final class DownloadFailedException extends RuntimeException
         );
     }
 
-    public static function forFailedVerification(string $url, string $targetFile, Throwable $previous = null): self
+    public static function forFailedVerification(string $url, string $targetFile, ?Throwable $previous = null): self
     {
         return new self(
             sprintf('Download verification failed for target file "%s" from source "%s".', $targetFile, $url),

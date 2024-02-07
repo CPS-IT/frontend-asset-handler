@@ -60,7 +60,7 @@ final class AssetHandler implements HandlerInterface, ChattyInterface
     public function handle(
         Asset\Definition\Source $source,
         Asset\Definition\Target $target,
-        Strategy\Strategy $strategy = null,
+        ?Strategy\Strategy $strategy = null,
     ): Asset\ExistingAsset|Asset\ProcessedAsset {
         // We use the decision maker to decide which strategy to use to
         // handle the given asset. If a strategy is already passed to the

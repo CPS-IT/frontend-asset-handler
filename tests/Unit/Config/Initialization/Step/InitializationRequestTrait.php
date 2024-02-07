@@ -40,7 +40,7 @@ trait InitializationRequestTrait
 {
     private function createRequest(
         Config\Initialization\Step\InteractiveStepInterface $subject,
-        string $configFile = null,
+        ?string $configFile = null,
         int $definitionId = 0,
     ): Config\Initialization\InitializationRequest {
         $definition = $subject->getInputOptions();

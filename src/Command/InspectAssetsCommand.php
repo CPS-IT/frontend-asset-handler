@@ -170,7 +170,7 @@ final class InspectAssetsCommand extends BaseAssetsCommand
     private function describeAsset(
         Asset\Definition\Source $source,
         Asset\Definition\Target $target,
-        Asset\Definition\Vcs $vcs = null,
+        ?Asset\Definition\Vcs $vcs = null,
     ): void {
         $definitionList = [
             ['Asset environment' => $source->getEnvironment()],

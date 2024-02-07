@@ -36,12 +36,12 @@ use function sprintf;
  */
 final class FilesystemFailureException extends RuntimeException
 {
-    public static function forFileCreation(string $file, Throwable $previous = null): self
+    public static function forFileCreation(string $file, ?Throwable $previous = null): self
     {
         return new self(sprintf('Unable to create file "%s".', $file), 1623913131, $previous);
     }
 
-    public static function forArchiveExtraction(string $file, Throwable $previous = null): self
+    public static function forArchiveExtraction(string $file, ?Throwable $previous = null): self
     {
         return new self(sprintf('Failed to extract archive "%s".', $file), 1624040854, $previous);
     }

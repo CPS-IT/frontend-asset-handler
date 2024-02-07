@@ -58,8 +58,8 @@ final class ContainerCache
     public function __construct(
         private readonly ?string $configFile = null,
         private readonly bool $includeTestSources = false,
-        bool $debug = null,
-        string $cacheDir = null,
+        ?bool $debug = null,
+        ?string $cacheDir = null,
     ) {
         $this->debug = $debug ?? $this->isDebugEnabled();
         $this->cacheDir = $cacheDir ?? $this->getDefaultCacheDirectory();

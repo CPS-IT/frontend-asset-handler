@@ -37,7 +37,7 @@ interface VcsProviderInterface
 
     public function getSourceUrl(): string;
 
-    public function getLatestRevision(string $environment = null): ?Asset\Revision\Revision;
+    public function getLatestRevision(?string $environment = null): ?Asset\Revision\Revision;
 
     public function hasRevision(Asset\Revision\Revision $revision): bool;
 

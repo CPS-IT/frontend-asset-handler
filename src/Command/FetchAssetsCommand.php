@@ -176,7 +176,7 @@ final class FetchAssetsCommand extends BaseAssetsCommand
         Handler\HandlerInterface $handler,
         Asset\Definition\Source $source,
         Asset\Definition\Target $target,
-        Strategy\Strategy $strategy = null,
+        ?Strategy\Strategy $strategy = null,
         bool $failsafe = false,
     ): bool {
         try {
