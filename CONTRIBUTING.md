@@ -52,6 +52,14 @@ composer sca
 composer sca:php
 ```
 
+## Validate configuration schema
+
+```bash
+composer validate-schema
+```
+
+💡 You need a local Docker installation for this command.
+
 ## Run tests
 
 ```bash

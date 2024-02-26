@@ -109,6 +109,7 @@
 			"phpstan analyse -c phpstan.neon"
 		],
 		"test": "@test:coverage --no-coverage",
-		"test:coverage": "phpunit -c phpunit.xml"
+		"test:coverage": "phpunit -c phpunit.xml",
+		"validate-schema": "docker run --rm -v \"$(pwd)\":/code swaggest/json-cli json-cli validate-schema resources/configuration.schema.json"
 	}
 }

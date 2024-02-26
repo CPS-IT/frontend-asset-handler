@@ -58,3 +58,7 @@ jobs:
       # Migration
       - name: Rector migration
         run: composer migration:rector -- --dry-run
+
+      # Schema
+      - name: Validate configuration schema
+        run: composer validate-schema
