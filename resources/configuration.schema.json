@@ -22,6 +22,7 @@
 			"description": "A list of additional service configurations, can be relative to the current working directory."
 		}
 	},
+	"additionalProperties": false,
 	"definitions": {
 		"asset-definition": {
 			"type": "object",
