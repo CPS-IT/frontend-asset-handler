@@ -29,6 +29,7 @@ composer lint
 # Specific linters
 composer lint:composer
 composer lint:editorconfig
+composer lint:json
 composer lint:php
 
 # Fix all CGL issues
@@ -37,6 +38,7 @@ composer fix
 # Fix specific CGL issues
 composer fix:composer
 composer fix:editorconfig
+composer fix:json
 composer fix:php
 ```
 

@@ -46,6 +46,8 @@ jobs:
         run: composer lint:composer
       - name: Lint Editorconfig
         run: composer lint:editorconfig
+      - name: Lint JSON
+        run: composer lint:json
       - name: Lint PHP
         run: composer lint:php -- --format=checkstyle | cs2pr
 

@@ -50,7 +50,8 @@
 		"phpstan/phpstan-symfony": "^1.1",
 		"phpstan/phpstan-webmozart-assert": "^1.2",
 		"phpunit/phpunit": "^10.1 || ^11.0",
-		"rector/rector": "^1.0.0"
+		"rector/rector": "^1.0.0",
+		"seld/jsonlint": "^1.10"
 	},
 	"suggest": {
 		"gmostafa/php-graphql-client": "Used to perform GraphQL requests within GithubVcsProvider (^1.13)"
@@ -79,18 +80,22 @@
 		"fix": [
 			"@fix:composer",
 			"@fix:editorconfig",
+			"@fix:json",
 			"@fix:php"
 		],
 		"fix:composer": "@composer normalize",
 		"fix:editorconfig": "@lint:editorconfig --fix",
+		"fix:json": "@lint:json",
 		"fix:php": "php-cs-fixer fix",
 		"lint": [
 			"@lint:composer",
 			"@lint:editorconfig",
+			"@lint:json",
 			"@lint:php"
 		],
 		"lint:composer": "@fix:composer --dry-run",
 		"lint:editorconfig": "ec",
+		"lint:json": "jsonlint resources/configuration.schema.json",
 		"lint:php": "@fix:php --dry-run",
 		"migration": [
 			"@migration:rector"
