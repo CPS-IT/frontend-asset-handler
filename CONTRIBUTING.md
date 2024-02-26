@@ -29,6 +29,7 @@ composer lint
 # Specific linters
 composer lint:composer
 composer lint:editorconfig
+composer lint:json
 composer lint:php
 
 # Fix all CGL issues
@@ -37,6 +38,7 @@ composer fix
 # Fix specific CGL issues
 composer fix:composer
 composer fix:editorconfig
+composer fix:json
 composer fix:php
 ```
 
@@ -49,6 +51,14 @@ composer sca
 # Specific static code analyzers
 composer sca:php
 ```
+
+## Validate configuration schema
+
+```bash
+composer validate-schema
+```
+
+💡 You need a local Docker installation for this command.
 
 ## Run tests
 

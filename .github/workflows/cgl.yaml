@@ -46,6 +46,8 @@ jobs:
         run: composer lint:composer
       - name: Lint Editorconfig
         run: composer lint:editorconfig
+      - name: Lint JSON
+        run: composer lint:json
       - name: Lint PHP
         run: composer lint:php -- --format=checkstyle | cs2pr
 
@@ -56,3 +58,7 @@ jobs:
       # Migration
       - name: Rector migration
         run: composer migration:rector -- --dry-run
+
+      # Schema
+      - name: Validate configuration schema
+        run: composer validate-schema
