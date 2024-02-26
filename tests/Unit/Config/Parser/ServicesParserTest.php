@@ -51,9 +51,8 @@ final class ServicesParserTest extends TestCase
     public function parseDoesNothingIfNoServicesAreConfiguredInGivenConfig(): void
     {
         $config = new Config\Config([], 'foo');
-        $expected = new Config\Config(['services' => []], 'foo');
 
-        self::assertEquals($expected, $this->subject->parse($config));
+        self::assertEquals([], $this->subject->parse($config));
     }
 
     #[Test]
@@ -105,7 +104,7 @@ final class ServicesParserTest extends TestCase
     {
         $config = new Config\Config(['services' => [$filePath]], 'foo');
 
-        self::assertEquals($config, $this->subject->parse($config));
+        self::assertEquals([$filePath], $this->subject->parse($config));
     }
 
     /**
