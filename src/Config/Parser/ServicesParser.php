@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Config\Parser;
 
-use Closure;
 use CPSIT\FrontendAssetHandler\Config;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Helper;
@@ -43,21 +42,24 @@ use function is_callable;
  */
 final class ServicesParser
 {
-    public function parse(Config\Config $config): Config\Config
+    /**
+     * @return list<string>
+     */
+    public function parse(Config\Config $config): array
     {
-        $newConfig = new Config\Config(['services' => []], $config->getFilePath());
+        $services = [];
 
         if ([] === ($config['services'] ?? [])) {
-            return $newConfig;
+            return [];
         }
 
         foreach ($config['services'] as $service) {
             $filePath = Helper\FilesystemHelper::resolveRelativePath($service);
             $this->validateService($filePath);
-            $newConfig['services'][] = $filePath;
+            $services[] = $filePath;
         }
 
-        return $newConfig;
+        return $services;
     }
 
     private function validateService(string $filePath): void
@@ -84,7 +86,7 @@ final class ServicesParser
             throw Exception\UnprocessableConfigFileException::create($filePath);
         }
 
-        $reflection = new ReflectionFunction(Closure::fromCallable($callable));
+        $reflection = new ReflectionFunction($callable(...));
         $parameters = $reflection->getParameters();
 
         if ([] === $parameters) {

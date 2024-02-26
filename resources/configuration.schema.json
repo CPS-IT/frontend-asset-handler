@@ -15,6 +15,11 @@
 			"items": {
 				"$ref": "#/definitions/asset-definition"
 			}
+		},
+		"services": {
+			"type": "array",
+			"title": "Service configurations",
+			"description": "A list of additional service configurations, can be relative to the current working directory."
 		}
 	},
 	"definitions": {

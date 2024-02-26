@@ -90,7 +90,7 @@ final class ContainerFactory
         // Include external service configuration (skipped when creating failsafe container)
         if (null !== $this->configFile) {
             $config = $this->configLoader->load($this->configFile);
-            $services = $this->servicesParser->parse($config)['services'];
+            $services = $this->servicesParser->parse($config);
             $configFiles = array_merge($configFiles, $services);
         }
 
