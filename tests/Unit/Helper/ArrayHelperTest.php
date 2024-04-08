@@ -40,7 +40,7 @@ final class ArrayHelperTest extends TestCase
 {
     /**
      * @param array<int, array<string, string>> $array
-     * @param string[]                          $keys
+     * @param list<string>                      $keys
      * @param array<int, array<string, string>> $expected
      */
     #[Test]
@@ -102,7 +102,7 @@ final class ArrayHelperTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array<int, array<int, array<string, string>|string>>>
+     * @return Generator<string, array{array<int, array<string, string>>, list<string>, array<int, array<string, string>>}>
      */
     public static function filterSubArraysByKeysFiltersEachSubArrayByGivenKeysDataProvider(): Generator
     {
