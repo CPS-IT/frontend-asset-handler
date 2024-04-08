@@ -41,7 +41,7 @@ final class ArrayHelper
 {
     /**
      * @param array<int, array<string, mixed>> $array
-     * @param string[]                         $keys
+     * @param list<string>                     $keys
      *
      * @return array<int, array<string, mixed>>
      */
@@ -51,12 +51,18 @@ final class ArrayHelper
             return $array;
         }
 
+        $filteredArray = [];
         $keyArray = array_flip($keys);
+
         foreach ($array as $index => $subArray) {
-            $array[$index] = array_intersect_key($subArray, $keyArray);
+            $filteredSubArray = array_intersect_key($subArray, $keyArray);
+
+            if ([] !== $filteredSubArray) {
+                $filteredArray[$index] = $filteredSubArray;
+            }
         }
 
-        return array_filter($array);
+        return $filteredArray;
     }
 
     /**
