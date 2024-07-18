@@ -77,7 +77,7 @@ final class Application extends Console\Application
         return $inputDefinition;
     }
 
-    public function doRun(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
+    public function doRun(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
     {
         $this->input = $input;
 
@@ -87,7 +87,7 @@ final class Application extends Console\Application
     protected function doRunCommand(
         Console\Command\Command $command,
         Console\Input\InputInterface $input,
-        Console\Output\OutputInterface $output,
+        Console\Output\OutputInterface $output
     ): int {
         // Show introduction header for all asset commands
         if ($command instanceof Command\BaseAssetsCommand || $command instanceof Command\InitConfigCommand) {
