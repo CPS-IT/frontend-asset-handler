@@ -42,7 +42,7 @@ final class OutputAwareTraitTest extends TestCase
     public function setOutputSetsOutputCorrectly(): void
     {
         $output = new NullOutput();
-        $subject = new class() {
+        $subject = new class {
             use OutputAwareTrait;
 
             public function getOutput(): OutputInterface

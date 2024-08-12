@@ -148,7 +148,7 @@ final class HttpFileProviderTest extends ContainerAwareTestCase
     #[Test]
     public function fetchAssetThrowsExceptionIfGuzzleExceptionOccurs(): void
     {
-        $exception = new class() extends Exception implements GuzzleException {};
+        $exception = new class extends Exception implements GuzzleException {};
         $this->mockHandler->append($exception);
 
         $this->expectException(DownloadFailedException::class);
