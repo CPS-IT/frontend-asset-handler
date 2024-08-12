@@ -41,6 +41,7 @@
 		"armin/editorconfig-cli": "^1.6 || ^2.0",
 		"cpsit/php-cs-fixer-config": "^1.1",
 		"ergebnis/composer-normalize": "^2.18",
+		"friendsofphp/php-cs-fixer": "^3.57",
 		"gmostafa/php-graphql-client": "^1.13",
 		"phpstan/extension-installer": "^1.2",
 		"phpstan/phpstan": "^1.2",
