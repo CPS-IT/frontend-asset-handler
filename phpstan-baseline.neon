@@ -26,11 +26,6 @@ parameters:
 			path: src/Command/InspectAssetsCommand.php
 
 		-
-			message: "#^Strict comparison using \\!\\=\\= between array\\{\\} and non\\-empty\\-array\\<string, mixed\\> will always evaluate to true\\.$#"
-			count: 1
-			path: src/Helper/ArrayHelper.php
-
-		-
 			message: "#^Result of && is always false\\.$#"
 			count: 1
 			path: src/Processor/FileArchiveProcessor.php
