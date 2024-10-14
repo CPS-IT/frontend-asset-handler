@@ -14,7 +14,7 @@
 			"matchPackageNames": [
 				"ergebnis/json**"
 			],
-			"groupName": "ergebnis/json"
+			"groupName": "ergebnis/json packages"
 		}
 	]
 }
