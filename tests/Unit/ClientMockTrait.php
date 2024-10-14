@@ -50,6 +50,7 @@ trait ClientMockTrait
         $this->requestContainer = [];
 
         $handlerStack = HandlerStack::create($this->mockHandler);
+        /* @phpstan-ignore assign.propertyType */
         $history = Middleware::history($this->requestContainer);
         $handlerStack->push($history);
 
