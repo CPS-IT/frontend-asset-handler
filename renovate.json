@@ -8,5 +8,13 @@
 	],
 	"constraints": {
 		"php": "8.1.*"
-	}
+	},
+	"packageRules": [
+		{
+			"matchPackageNames": [
+				"ergebnis/json**"
+			],
+			"groupName": "ergebnis/json"
+		}
+	]
 }
