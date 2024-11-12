@@ -77,7 +77,7 @@ final class Application extends Console\Application
         return $inputDefinition;
     }
 
-    public function doRun(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
+    public function doRun(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
     {
         $this->input = $input;
 
