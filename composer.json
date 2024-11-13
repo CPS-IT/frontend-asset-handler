@@ -64,7 +64,7 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"CPSIT\\FrontendAssetHandler\\Tests\\": "tests/"
+			"CPSIT\\FrontendAssetHandler\\Tests\\": "tests/src/"
 		}
 	},
 	"bin": [
@@ -106,7 +106,7 @@
 			"@sca:php"
 		],
 		"sca:php": [
-			"@php tests/Build/service-container.php",
+			"@php tests/build/service-container.php",
 			"phpstan analyse -c phpstan.neon"
 		],
 		"test": "@test:coverage --no-coverage",
