@@ -7,13 +7,13 @@ services:
   CPSIT\FrontendAssetHandler\Command\InitConfigCommand:
     arguments:
       $initSteps:
-        - '@CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyStep'
-        - '@CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyInteractiveStep'
+        - '@CPSIT\FrontendAssetHandler\Tests\Fixtures\Classes\DummyStep'
+        - '@CPSIT\FrontendAssetHandler\Tests\Fixtures\Classes\DummyInteractiveStep'
 
-  CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyDecisionMaker:
-  CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyHandler:
-  CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyInteractiveStep:
-  CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyProvider:
-  CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyProcessor:
-  CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyRevisionProvider:
-  CPSIT\FrontendAssetHandler\Tests\Unit\Fixtures\Classes\DummyStep:
+  CPSIT\FrontendAssetHandler\Tests\Fixtures\Classes\DummyDecisionMaker:
+  CPSIT\FrontendAssetHandler\Tests\Fixtures\Classes\DummyHandler:
+  CPSIT\FrontendAssetHandler\Tests\Fixtures\Classes\DummyInteractiveStep:
+  CPSIT\FrontendAssetHandler\Tests\Fixtures\Classes\DummyProvider:
+  CPSIT\FrontendAssetHandler\Tests\Fixtures\Classes\DummyProcessor:
+  CPSIT\FrontendAssetHandler\Tests\Fixtures\Classes\DummyRevisionProvider:
+  CPSIT\FrontendAssetHandler\Tests\Fixtures\Classes\DummyStep:

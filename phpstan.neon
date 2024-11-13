@@ -8,9 +8,9 @@ parameters:
 		- src
 		- tests
 	symfony:
-		consoleApplicationLoader: tests/Build/console-application.php
+		consoleApplicationLoader: tests/build/console-application.php
 		containerXmlPath: var/cache/container_test.xml
 	stubFiles:
-		- tests/Build/Stubs/GraphQL/QueryBuilder.stub
+		- tests/build/stubs/GraphQL/QueryBuilder.stub
 	scanFiles:
 		- var/cache/container_test.php
