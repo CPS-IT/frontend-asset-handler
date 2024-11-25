@@ -286,7 +286,7 @@ final class ConfigAssetsCommand extends BaseAssetsCommand
      */
     private function buildAndValidatePath(array $assetDefinitions, string $path): string
     {
-        $pathSegments = str_getcsv($path, '/');
+        $pathSegments = str_getcsv($path, '/', escape: '\\');
         $strictPath = is_numeric($pathSegments[0]);
 
         if (!$strictPath) {
