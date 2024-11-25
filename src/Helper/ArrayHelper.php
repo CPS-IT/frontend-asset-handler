@@ -98,7 +98,7 @@ final class ArrayHelper
         $node = &$array;
 
         // Assure required structure in array
-        foreach (str_getcsv($path, '/') as $segment) {
+        foreach (str_getcsv($path, '/', escape: '\\') as $segment) {
             if (!isset($node[$segment])) {
                 $node[$segment] = [];
             }
