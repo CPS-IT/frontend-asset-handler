@@ -24,7 +24,7 @@
 		"ergebnis/json-schema-validator": "^4.0",
 		"guzzlehttp/guzzle": "^7.0",
 		"guzzlehttp/psr7": ">= 1.8 < 3.0",
-		"justinrainbow/json-schema": "^6.0",
+		"justinrainbow/json-schema": "^5.2 || ^6.0",
 		"ondram/ci-detector": "^4.1",
 		"psr/http-client": "^1.0",
 		"psr/http-message": "^1.0 || ^2.0",
