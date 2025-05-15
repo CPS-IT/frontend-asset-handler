@@ -25,5 +25,5 @@ use CPSIT\FrontendAssetHandler\DependencyInjection\ContainerFactory;
 
 require_once \dirname(__DIR__, 2).'/vendor/autoload.php';
 
-/* @phpstan-ignore method.internalClass, new.internalClass */
+/* @phpstan-ignore method.internalClass, method.internalClass, new.internalClass */
 return (new ContainerFactory(debug: true, includeTestSources: true))->get();
