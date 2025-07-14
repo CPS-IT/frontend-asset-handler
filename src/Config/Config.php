@@ -33,7 +33,7 @@ use JsonSerializable;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  *
- * @extends \ArrayObject<string, mixed>
+ * @extends ArrayObject<string, mixed>
  */
 final class Config extends ArrayObject implements JsonSerializable
 {
