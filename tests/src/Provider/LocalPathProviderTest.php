@@ -32,6 +32,7 @@ use CPSIT\FrontendAssetHandler\Provider\LocalPathProvider;
 use CPSIT\FrontendAssetHandler\Tests\BufferedConsoleOutput;
 use CPSIT\FrontendAssetHandler\Tests\ContainerAwareTestCase;
 use Exception;
+use PHPUnit\Framework;
 use Symfony\Component\Filesystem\Filesystem;
 
 use function realpath;
@@ -63,9 +64,7 @@ final class LocalPathProviderTest extends ContainerAwareTestCase
         $this->subject->setOutput($this->output);
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function fetchAssetRunsConfiguredCommandToGenerateAssetSourceFile(): void
     {
         $actual = $this->subject->fetchAsset($this->source);
@@ -78,9 +77,7 @@ final class LocalPathProviderTest extends ContainerAwareTestCase
         self::assertArchiveHasChild('AssetFiles/revision.txt', $actual->getTempFile());
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function fetchAssetThrowsExceptionIfConfiguredCommandCannotBeExecutedSuccessfully(): void
     {
         $this->source['command'] = 'foo baz';
@@ -96,9 +93,7 @@ final class LocalPathProviderTest extends ContainerAwareTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function fetchAssetThrowsExceptionIfSourceFileDoesNotExist(): void
     {
         unset($this->source['command']);
@@ -110,9 +105,7 @@ final class LocalPathProviderTest extends ContainerAwareTestCase
         $this->subject->fetchAsset($this->source);
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function fetchAssetReturnsTemporaryAsset(): void
     {
         $actual = $this->subject->fetchAsset($this->source);
@@ -121,9 +114,7 @@ final class LocalPathProviderTest extends ContainerAwareTestCase
         self::assertFileExists($actual->getTempFile());
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function getAssetUrlThrowsExceptionIfSourceUrlIsNotConfigured(): void
     {
         unset($this->source['url']);
@@ -133,9 +124,7 @@ final class LocalPathProviderTest extends ContainerAwareTestCase
         $this->subject->getAssetUrl($this->source);
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function getAssetUrlProperlyResolvesRootPathInAssetUrl(): void
     {
         $this->source['url'] = '{cwd}/foo.tar.gz';
@@ -145,9 +134,7 @@ final class LocalPathProviderTest extends ContainerAwareTestCase
         self::assertSame($expected, $this->subject->getAssetUrl($this->source));
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function getAssetUrlProperlyResolvesTemporaryFilenameInAssetUrl(): void
     {
         $expected = realpath(sys_get_temp_dir());
@@ -156,9 +143,7 @@ final class LocalPathProviderTest extends ContainerAwareTestCase
         self::assertStringStartsWith($expected, $this->subject->getAssetUrl($this->source));
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function getAssetUrlCanHandleRelativePaths(): void
     {
         $this->source['url'] = 'foo.tar.gz';
