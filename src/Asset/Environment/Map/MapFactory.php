@@ -59,20 +59,22 @@ final readonly class MapFactory
 
     public static function createDefault(?string $version = null): Map
     {
-        $stableTransformer = self::createStableTransformer($version);
+        $slugTransformer = new SlugTransformer('{slug}');
         $latestTransformer = new StaticTransformer(Environment::Latest->value);
         $passthroughTransformer = new PassthroughTransformer();
+
+        if (null !== $version && '' !== trim($version)) {
+            $stableTransformer = new VersionTransformer($version);
+        } else {
+            $stableTransformer = $slugTransformer;
+        }
 
         return new Map([
             new Pair('main', $stableTransformer),
             new Pair('master', $stableTransformer),
-            new Pair('develop', $latestTransformer),
-            new Pair('release/*', $latestTransformer),
-            new Pair('feature/*', new SlugTransformer('fe-{slug}')),
-            new Pair('preview', $passthroughTransformer),
-            new Pair('integration', $passthroughTransformer),
             new Pair('renovate/*', $latestTransformer),
             new Pair(self::REGEX_PATTERN_VERSION, $passthroughTransformer),
+            new Pair('*', $slugTransformer),
         ]);
     }
 
@@ -131,14 +133,5 @@ final readonly class MapFactory
         }
 
         return call_user_func([$className, 'fromArray'], $options);
-    }
-
-    private static function createStableTransformer(?string $version = null): VersionTransformer|StaticTransformer
-    {
-        if (null !== $version && '' !== trim($version)) {
-            return new VersionTransformer($version);
-        }
-
-        return new StaticTransformer(Environment::Stable->value);
     }
 }

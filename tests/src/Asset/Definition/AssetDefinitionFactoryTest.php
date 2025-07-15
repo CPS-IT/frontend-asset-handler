@@ -27,7 +27,6 @@ use CPSIT\FrontendAssetHandler\Asset\Definition\AssetDefinitionFactory;
 use CPSIT\FrontendAssetHandler\Asset\Definition\Source;
 use CPSIT\FrontendAssetHandler\Asset\Definition\Target;
 use CPSIT\FrontendAssetHandler\Asset\Definition\Vcs;
-use CPSIT\FrontendAssetHandler\Asset\Environment\Environment;
 use CPSIT\FrontendAssetHandler\Asset\Environment\Map\MapFactory;
 use CPSIT\FrontendAssetHandler\Tests\ContainerAwareTestCase;
 use CPSIT\FrontendAssetHandler\Vcs\GitlabVcsProvider;
@@ -101,7 +100,7 @@ final class AssetDefinitionFactoryTest extends ContainerAwareTestCase
             return $source;
         };
 
-        yield 'no config' => [[], $buildSource(Environment::Stable->value)];
+        yield 'no config' => [[], $buildSource('main')];
         yield 'custom map' => [
             [
                 'environments' => [
@@ -121,7 +120,7 @@ final class AssetDefinitionFactoryTest extends ContainerAwareTestCase
                     'merge' => true,
                 ],
             ],
-            $buildSource(Environment::Stable->value),
+            $buildSource('main'),
         ];
         yield 'version' => [
             [
@@ -168,7 +167,7 @@ final class AssetDefinitionFactoryTest extends ContainerAwareTestCase
                     'merge' => true,
                 ],
             ],
-            $buildVcs(Environment::Stable->value),
+            $buildVcs('main'),
         ];
         yield 'version' => [
             [

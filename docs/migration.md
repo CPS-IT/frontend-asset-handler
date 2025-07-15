@@ -2,6 +2,10 @@
 
 ## 4.x → 5.0.0
 
+* Default environment map has changed.
+  - All branches except `renovate/*` now use or fall back to their slug representation.
+  - See [Configuration](config/environments.md#environment-resolving) for a
+    detailed overview.
 * Minimum PHP version is now 8.2.
   - Upgrade your code base to PHP 8.2.
 

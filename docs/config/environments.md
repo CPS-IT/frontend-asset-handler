@@ -65,15 +65,11 @@ resolves to the following mapping table:
 
 | Branch                             | Environment                      | Fallback |
 |------------------------------------|----------------------------------|----------|
-| `main`                             | [`{version}`](source.md#version) | `stable` |
-| `master`                           | [`{version}`](source.md#version) | `stable` |
-| `develop`                          | `latest`                         | –        |
-| `release/*`                        | `latest`                         | –        |
-| `feature/*`                        | `fe-{slug}`                      | –        |
-| `preview`                          | `preview`                        | –        |
-| `integration`                      | `integration`                    | –        |
+| `main`                             | [`{version}`](source.md#version) | `{slug}` |
+| `master`                           | [`{version}`](source.md#version) | `{slug}` |
 | `renovate/*`                       | `latest`                         | –        |
 | `/^v?\d+\.\d+\.\d+$/`<sup>1)</sup> | `{branch}`<sup>1)</sup>          | –        |
+| `*` (= everything else)            | `{slug}`                         | –        |
 
 _<sup>1)</sup> If a specific version number is given, then exactly this version number is
 also requested as the asset environment. In this case, no mapping takes place._
