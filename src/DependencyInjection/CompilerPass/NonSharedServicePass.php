@@ -35,10 +35,10 @@ use Symfony\Component\DependencyInjection;
  *
  * @codeCoverageIgnore
  */
-final class NonSharedServicePass implements DependencyInjection\Compiler\CompilerPassInterface
+final readonly class NonSharedServicePass implements DependencyInjection\Compiler\CompilerPassInterface
 {
     public function __construct(
-        private readonly string $tagName,
+        private string $tagName,
     ) {}
 
     public function process(DependencyInjection\ContainerBuilder $container): void

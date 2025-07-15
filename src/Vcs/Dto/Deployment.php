@@ -32,11 +32,11 @@ use Psr\Http\Message;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class Deployment
+final readonly class Deployment
 {
     public function __construct(
-        private readonly Message\UriInterface $uri,
-        private readonly Asset\Revision\Revision $revision,
+        private Message\UriInterface $uri,
+        private Asset\Revision\Revision $revision,
     ) {}
 
     public function getUri(): Message\UriInterface

@@ -46,7 +46,7 @@ use function trim;
  *
  * @api
  */
-final class MapFactory
+final readonly class MapFactory
 {
     private const REGEX_PATTERN_VERSION = '/^v?\\d+\\.\\d+\\.\\d+$/';
 
@@ -54,7 +54,7 @@ final class MapFactory
      * @param array<string, class-string<TransformerInterface>> $transformers
      */
     public function __construct(
-        private readonly array $transformers,
+        private array $transformers,
     ) {}
 
     public static function createDefault(?string $version = null): Map

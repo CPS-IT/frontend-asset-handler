@@ -29,13 +29,13 @@ namespace CPSIT\FrontendAssetHandler\Value;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class ValueProcessor
+final readonly class ValueProcessor
 {
     /**
      * @param iterable<Placeholder\PlaceholderProcessorInterface> $placeholderProcessors
      */
     public function __construct(
-        private readonly iterable $placeholderProcessors,
+        private iterable $placeholderProcessors,
     ) {}
 
     /**

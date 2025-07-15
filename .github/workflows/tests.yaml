@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ["8.1", "8.2", "8.3", "8.4"]
+        php-version: ["8.2", "8.3", "8.4"]
         dependencies: ["locked", "highest", "lowest"]
     steps:
       - uses: actions/checkout@v4
@@ -120,13 +120,12 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.2
           tools: composer:v2, phive
 
       # Compile PHAR
       - name: Install box
-        # @todo Switch back to latest release of humbug/box once support for PHP 8.1 is dropped
-        run: phive install --trust-gpg-keys 2DF45277AEF09A2F humbug/box@4.5.1
+        run: phive install --trust-gpg-keys 2DF45277AEF09A2F humbug/box
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v3
         with:

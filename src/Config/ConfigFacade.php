@@ -34,15 +34,15 @@ use CPSIT\FrontendAssetHandler\Helper;
  *
  * @api
  */
-final class ConfigFacade
+final readonly class ConfigFacade
 {
     /**
      * @param iterable<Loader\ConfigLoaderInterface> $loaders
      * @param iterable<Writer\ConfigWriterInterface> $writers
      */
     public function __construct(
-        private readonly iterable $loaders,
-        private readonly iterable $writers,
+        private iterable $loaders,
+        private iterable $writers,
     ) {}
 
     public function load(string $file): Config

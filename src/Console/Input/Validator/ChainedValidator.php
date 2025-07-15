@@ -31,13 +31,13 @@ namespace CPSIT\FrontendAssetHandler\Console\Input\Validator;
  *
  * @internal
  */
-final class ChainedValidator implements ValidatorInterface
+final readonly class ChainedValidator implements ValidatorInterface
 {
     /**
      * @param non-empty-list<ValidatorInterface> $validators
      */
     public function __construct(
-        private readonly array $validators,
+        private array $validators,
     ) {}
 
     public function validate(mixed $value): mixed
