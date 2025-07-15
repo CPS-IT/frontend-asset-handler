@@ -33,10 +33,10 @@ use function is_string;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class VersionTransformer implements TransformerInterface
+final readonly class VersionTransformer implements TransformerInterface
 {
     public function __construct(
-        private readonly string $version,
+        private string $version,
     ) {}
 
     /**

@@ -31,11 +31,11 @@ use CPSIT\FrontendAssetHandler\Asset\Environment\Transformer\TransformerInterfac
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class Pair
+final readonly class Pair
 {
     public function __construct(
-        private readonly string $inputPattern,
-        private readonly TransformerInterface $transformer,
+        private string $inputPattern,
+        private TransformerInterface $transformer,
     ) {}
 
     public function transform(string $branch): ?string

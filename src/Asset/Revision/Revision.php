@@ -34,12 +34,12 @@ use function strlen;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class Revision implements Stringable
+final readonly class Revision implements Stringable
 {
     private const SHORT_LENGTH = 7;
 
     public function __construct(
-        private readonly string $revision,
+        private string $revision,
     ) {
         $this->validate();
     }

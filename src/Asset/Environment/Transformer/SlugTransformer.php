@@ -32,10 +32,10 @@ use CPSIT\FrontendAssetHandler\Helper;
  * @author Elias Häußler <e.haeussler@familie-redlich.de>
  * @license GPL-3.0-or-later
  */
-final class SlugTransformer implements TransformerInterface
+final readonly class SlugTransformer implements TransformerInterface
 {
     public function __construct(
-        private readonly string $pattern = '{slug}',
+        private string $pattern = '{slug}',
     ) {
         $this->validatePattern();
     }

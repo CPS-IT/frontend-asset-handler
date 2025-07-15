@@ -35,13 +35,13 @@ use Symfony\Component\DependencyInjection;
  *
  * @api
  */
-final class VcsProviderFactory
+final readonly class VcsProviderFactory
 {
     /**
      * @param DependencyInjection\ServiceLocator<VcsProviderInterface> $providers
      */
     public function __construct(
-        private readonly DependencyInjection\ServiceLocator $providers,
+        private DependencyInjection\ServiceLocator $providers,
     ) {}
 
     /**

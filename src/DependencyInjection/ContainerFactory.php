@@ -40,17 +40,17 @@ use function trim;
  *
  * @internal
  */
-final class ContainerFactory
+final readonly class ContainerFactory
 {
-    private readonly ?string $configFile;
-    private readonly Cache\ContainerCache $cache;
-    private readonly Config\Loader\ConfigLoaderInterface $configLoader;
-    private readonly Config\Parser\ServicesParser $servicesParser;
+    private ?string $configFile;
+    private Cache\ContainerCache $cache;
+    private Config\Loader\ConfigLoaderInterface $configLoader;
+    private Config\Parser\ServicesParser $servicesParser;
 
     public function __construct(
         ?string $configFile = null,
         ?bool $debug = null,
-        private readonly bool $includeTestSources = false,
+        private bool $includeTestSources = false,
     ) {
         $this->configFile = null !== $configFile && '' !== trim($configFile) ? Helper\FilesystemHelper::resolveRelativePath($configFile) : null;
         $this->cache = new Cache\ContainerCache($this->configFile, $this->includeTestSources, $debug);

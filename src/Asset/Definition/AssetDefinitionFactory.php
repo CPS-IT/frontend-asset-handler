@@ -36,10 +36,10 @@ use function is_array;
  *
  * @api
  */
-final class AssetDefinitionFactory
+final readonly class AssetDefinitionFactory
 {
     public function __construct(
-        private readonly Asset\Environment\Map\MapFactory $mapFactory,
+        private Asset\Environment\Map\MapFactory $mapFactory,
     ) {}
 
     /**

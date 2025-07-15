@@ -1,5 +1,10 @@
 # Migration
 
+## 4.x → 5.0.0
+
+* Minimum PHP version is now 8.2.
+  - Upgrade your code base to PHP 8.2.
+
 ## 0.4.x → 1.0.0
 
 * Package is now publicly available.

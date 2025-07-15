@@ -27,6 +27,7 @@ use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\ChattyInterface;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Traits;
+use FilesystemIterator;
 use Phar;
 use PharData;
 use Symfony\Component\Filesystem;
@@ -156,7 +157,7 @@ final class FileArchiveProcessor implements ProcessorInterface, ChattyInterface
     {
         switch ($this->determineType($asset)) {
             case self::ZIP:
-                $archive = new PharData($asset->getTempFile(), format: Phar::ZIP);
+                $archive = new PharData($asset->getTempFile(), Phar::ZIP | FilesystemIterator::SKIP_DOTS);
                 break;
 
             case self::TAR:

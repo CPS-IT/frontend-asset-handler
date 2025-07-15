@@ -33,7 +33,7 @@ use CPSIT\FrontendAssetHandler\Traits;
  *
  * @internal
  */
-final class DefaultConfigurationAwareTraitTestClass
+final readonly class DefaultConfigurationAwareTraitTestClass
 {
     use Traits\DefaultConfigurationAwareTrait {
         applyDefaultConfiguration as public runApplyDefaultConfiguration;
@@ -44,7 +44,7 @@ final class DefaultConfigurationAwareTraitTestClass
      * @param array<string, mixed> $defaultConfiguration
      */
     public function __construct(
-        private readonly array $defaultConfiguration,
+        private array $defaultConfiguration,
     ) {}
 
     /**
