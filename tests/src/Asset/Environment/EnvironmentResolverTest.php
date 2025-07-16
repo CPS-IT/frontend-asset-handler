@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace CPSIT\FrontendAssetHandler\Tests\Asset\Environment;
 
-use CPSIT\FrontendAssetHandler\Asset\Environment\Environment;
 use CPSIT\FrontendAssetHandler\Asset\Environment\EnvironmentResolver;
 use CPSIT\FrontendAssetHandler\Asset\Environment\Map\MapFactory;
 use PHPUnit\Framework\Attributes\Test;
@@ -45,23 +44,18 @@ final class EnvironmentResolverTest extends TestCase
     }
 
     #[Test]
-    public function resolveReturnsDefaultEnvironmentIfGivenBranchDoesNotMatch(): void
-    {
-        self::assertSame(Environment::Stable->value, $this->subject->resolve('foo'));
-    }
-
-    #[Test]
     public function resolveReturnsTransformedEnvironment(): void
     {
-        self::assertSame(Environment::Stable->value, $this->subject->resolve('main'));
-        self::assertSame(Environment::Stable->value, $this->subject->resolve('master'));
-        self::assertSame(Environment::Latest->value, $this->subject->resolve('develop'));
-        self::assertSame(Environment::Latest->value, $this->subject->resolve('release/*'));
-        self::assertSame('fe-feature-foo', $this->subject->resolve('feature/foo'));
+        self::assertSame('main', $this->subject->resolve('main'));
+        self::assertSame('master', $this->subject->resolve('master'));
+        self::assertSame('develop', $this->subject->resolve('develop'));
+        self::assertSame('release-1.0.0', $this->subject->resolve('release/1.0.0'));
+        self::assertSame('feature-foo', $this->subject->resolve('feature/foo'));
         self::assertSame('preview', $this->subject->resolve('preview'));
         self::assertSame('integration', $this->subject->resolve('integration'));
         self::assertSame('1.0.0', $this->subject->resolve('1.0.0'));
-        self::assertSame(Environment::Stable->value, $this->subject->resolve('test/foo.foo.foo'));
+        self::assertSame('test-foo.foo.foo', $this->subject->resolve('test/foo.foo.foo'));
+        self::assertSame('foo', $this->subject->resolve('foo'));
     }
 
     #[Test]
