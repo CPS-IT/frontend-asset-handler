@@ -132,11 +132,7 @@ final class TrackableProgressTest extends TestCase
     {
         fseek($this->output->getStream(), 0);
 
-        $output = stream_get_contents($this->output->getStream());
-
-        self::assertIsString($output);
-
-        return $output;
+        return stream_get_contents($this->output->getStream());
     }
 
     protected function tearDown(): void
