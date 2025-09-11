@@ -56,23 +56,6 @@ final class MapTest extends TestCase
     }
 
     #[Test]
-    public function constructorSortsPairsByIndex(): void
-    {
-        $pairs = [
-            1 => new Pair('main', new PassthroughTransformer()),
-            0 => new Pair('develop', new PassthroughTransformer()),
-        ];
-        $expected = [
-            0 => $pairs[0],
-            1 => $pairs[1],
-        ];
-
-        $subject = new Map($pairs);
-
-        self::assertSame($expected, $subject->getPairs());
-    }
-
-    #[Test]
     public function mergeMergesMapsAndReturnsNewObject(): void
     {
         $other = new Map([

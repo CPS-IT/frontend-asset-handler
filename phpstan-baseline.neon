@@ -55,12 +55,6 @@ parameters:
 			path: tests/src/Asset/Environment/Map/MapFactoryTest.php
 
 		-
-			message: '#^Parameter \#1 \$pairs of class CPSIT\\FrontendAssetHandler\\Asset\\Environment\\Map\\Map constructor expects list\<CPSIT\\FrontendAssetHandler\\Asset\\Environment\\Map\\Pair\>, array\{1\: CPSIT\\FrontendAssetHandler\\Asset\\Environment\\Map\\Pair, 0\: CPSIT\\FrontendAssetHandler\\Asset\\Environment\\Map\\Pair\} given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/src/Asset/Environment/Map/MapTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with array\{\} and array\{\} will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1

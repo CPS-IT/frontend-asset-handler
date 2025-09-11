@@ -48,9 +48,9 @@ final class Map implements IteratorAggregate
      * @param list<Pair> $pairs
      */
     public function __construct(
-        private array $pairs,
+        private readonly array $pairs,
     ) {
-        $this->updateIndexes();
+        $this->fillPairPatterns();
     }
 
     public function merge(self $map): self
@@ -75,7 +75,7 @@ final class Map implements IteratorAggregate
      */
     public function toArray(): array
     {
-        return array_reduce($this->pairs, fn (array $carry, Pair $item): array => $carry + $item->toArray(), []);
+        return array_reduce($this->pairs, static fn (array $carry, Pair $item): array => $carry + $item->toArray(), []);
     }
 
     /**
@@ -91,14 +91,7 @@ final class Map implements IteratorAggregate
         return yield from $this->pairs;
     }
 
-    private function updateIndexes(): void
-    {
-        ksort($this->pairs);
-
-        $this->reIndexPairPatterns();
-    }
-
-    private function reIndexPairPatterns(): void
+    private function fillPairPatterns(): void
     {
         $this->pairPatterns = [];
 
