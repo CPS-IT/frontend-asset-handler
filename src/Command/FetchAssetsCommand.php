@@ -132,8 +132,9 @@ final class FetchAssetsCommand extends BaseAssetsCommand
             $target = $this->assetDefinitionFactory->buildTarget($assetDefinition);
 
             // Show environment
-            $environment = $source->getEnvironment();
-            $this->io->writeln(sprintf('Asset environment: <info>%s</info>', $environment));
+            if (null !== ($environment = $source->getEnvironment())) {
+                $this->io->writeln(sprintf('Asset environment: <info>%s</info>', $environment));
+            }
 
             // Show asset definition as JSON
             $this->io->writeln(

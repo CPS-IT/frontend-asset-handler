@@ -183,7 +183,7 @@ final class FileArchiveProcessorTest extends TestCase
         $this->expectException(UnsupportedAssetException::class);
         $this->expectExceptionCode(1623922009);
         $this->expectExceptionMessage(
-            sprintf('The asset with source "%s" and target "" is not supported.', $asset->getSource()),
+            sprintf('The asset with source "%s" is not supported.', $asset->getSource()),
         );
 
         $this->subject->getAssetPath($asset);

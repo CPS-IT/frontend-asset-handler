@@ -36,9 +36,12 @@ final class AssetHandlerFailedException extends RuntimeException
 {
     public static function create(Asset\Asset $asset): self
     {
-        return new self(
-            sprintf('Processing of asset from source "%s" to target "%s" failed.', $asset->getSource(), $asset->getTarget()),
-            1623861520,
-        );
+        if (null !== $asset->getTarget()) {
+            $message = sprintf('Processing of asset from source "%s" to target "%s" failed.', $asset->getSource(), $asset->getTarget());
+        } else {
+            $message = sprintf('Processing of asset from source "%s" failed.', $asset->getSource());
+        }
+
+        return new self($message, 1623861520);
     }
 }
