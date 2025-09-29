@@ -36,9 +36,12 @@ final class UnsupportedAssetException extends RuntimeException
 {
     public static function create(Asset\Asset $asset): self
     {
-        return new self(
-            sprintf('The asset with source "%s" and target "%s" is not supported.', $asset->getSource(), $asset->getTarget()),
-            1623922009,
-        );
+        if (null !== $asset->getTarget()) {
+            $message = sprintf('The asset with source "%s" and target "%s" is not supported.', $asset->getSource(), $asset->getTarget());
+        } else {
+            $message = sprintf('The asset with source "%s" is not supported.', $asset->getSource());
+        }
+
+        return new self($message, 1623922009);
     }
 }
