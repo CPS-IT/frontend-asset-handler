@@ -103,7 +103,7 @@ final class ConfigAssetsCommandTest extends Tests\CommandTesterAwareTestCase
     }
 
     /**
-     * @param array{frontend-assets: list<array<string, array<string, mixed>>>} $expected
+     * @param array{frontend-assets: list<array<string, string|array<string, mixed>>>} $expected
      */
     #[Test]
     #[DataProvider('executeUnsetsConfigurationAtGivenPathDataProvider')]
