@@ -154,7 +154,9 @@ final class Application extends Console\Application
 
     private function addClearCacheCommand(): void
     {
-        $this->add($this->createFailsafeContainer()->get(Command\ClearCacheCommand::class));
+        $this->addCommands([
+            $this->createFailsafeContainer()->get(Command\ClearCacheCommand::class),
+        ]);
     }
 
     private function isHelpRequested(): bool
