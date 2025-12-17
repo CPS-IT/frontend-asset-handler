@@ -35,7 +35,7 @@
 		"symfony/finder": "^6.4 || ^7.0 || ^8.0",
 		"symfony/process": "^6.4 || ^7.0 || ^8.0",
 		"symfony/yaml": "^6.4 || ^7.0 || ^8.0",
-		"webmozart/assert": "^2.0"
+		"webmozart/assert": "^1.10 || ^2.0"
 	},
 	"require-dev": {
 		"armin/editorconfig-cli": "^2.0",
