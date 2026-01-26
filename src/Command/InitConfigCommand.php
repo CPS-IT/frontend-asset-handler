@@ -123,7 +123,7 @@ final class InitConfigCommand extends Console\Command\Command
         $nativeDefinition = $this->getNativeDefinition();
 
         foreach ($this->initSteps as $step) {
-            if (!($step instanceof Config\Initialization\Step\InteractiveStepInterface)) {
+            if (!$step instanceof Config\Initialization\Step\InteractiveStepInterface) {
                 continue;
             }
 

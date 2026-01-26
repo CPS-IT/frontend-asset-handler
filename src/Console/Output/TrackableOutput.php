@@ -45,7 +45,7 @@ final class TrackableOutput extends SymfonyConsole\Output\ConsoleOutput
 
     public function startProgress(string $text): Progress\TrackableProgress
     {
-        if (!($this->output instanceof SymfonyConsole\Output\ConsoleOutputInterface)) {
+        if (!$this->output instanceof SymfonyConsole\Output\ConsoleOutputInterface) {
             throw Exception\IOException::forUnsupportedOutput($this->output);
         }
 

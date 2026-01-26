@@ -78,7 +78,7 @@ final class FileArchiveProcessor implements ProcessorInterface, ChattyInterface
         // Only assets of type "TemporaryAsset" can be processed by this processor
         // since it can only handle temporary archives which were previously fetched
         // and need to be extracted to the appropriate target path
-        if (!($asset instanceof Asset\TemporaryAsset)) {
+        if (!$asset instanceof Asset\TemporaryAsset) {
             throw Exception\UnsupportedAssetException::create($asset);
         }
 
