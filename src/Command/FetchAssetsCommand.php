@@ -208,7 +208,7 @@ final class FetchAssetsCommand extends BaseAssetsCommand
             return true;
         }
 
-        if (!($asset instanceof Asset\ProcessedAsset)) {
+        if (!$asset instanceof Asset\ProcessedAsset) {
             $this->io->error('Error while fetching assets: The asset handler was unable to handle this asset source.');
 
             return false;

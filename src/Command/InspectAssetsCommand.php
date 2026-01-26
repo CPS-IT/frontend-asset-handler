@@ -154,7 +154,7 @@ final class InspectAssetsCommand extends BaseAssetsCommand
             $vcsProvider = $this->vcsProviderFactory->get($vcs->getType(), $vcs);
 
             // Continue loop if VCS provider is not deployable
-            if (!($vcsProvider instanceof Vcs\DeployableVcsProviderInterface)) {
+            if (!$vcsProvider instanceof Vcs\DeployableVcsProviderInterface) {
                 continue;
             }
 

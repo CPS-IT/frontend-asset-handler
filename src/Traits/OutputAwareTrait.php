@@ -38,7 +38,7 @@ trait OutputAwareTrait
 
     public function setOutput(SymfonyConsole\Output\OutputInterface $output): void
     {
-        if (!($output instanceof Console\Output\TrackableOutput)) {
+        if (!$output instanceof Console\Output\TrackableOutput) {
             $output = new Console\Output\TrackableOutput($output);
         }
 
