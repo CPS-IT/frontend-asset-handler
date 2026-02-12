@@ -85,7 +85,7 @@ abstract class AssetDefinition implements ArrayAccess, IteratorAggregate, JsonSe
 
     public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->config[$offset] = $value;
+        $this->config[(string) $offset] = $value;
     }
 
     public function offsetUnset(mixed $offset): void
