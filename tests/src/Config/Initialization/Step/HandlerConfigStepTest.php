@@ -77,7 +77,7 @@ final class HandlerConfigStepTest extends Tests\ContainerAwareTestCase
 
         self::assertInstanceOf(Console\Input\StreamableInputInterface::class, $input);
 
-        self::setInputs(['foo'], $input);
+        self::setInputs(['foo', ''], $input);
 
         self::assertTrue($this->subject->execute($this->request));
 
