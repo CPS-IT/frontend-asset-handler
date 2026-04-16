@@ -31,7 +31,7 @@ jobs:
 
       # Install dependencies
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@v4
         with:
           dependency-versions: ${{ matrix.dependencies }}
 
@@ -57,7 +57,7 @@ jobs:
 
       # Install dependencies
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@v4
 
       # Run tests
       - name: Build coverage directory
@@ -117,7 +117,7 @@ jobs:
       - name: Install box
         run: phive install --trust-gpg-keys 2DF45277AEF09A2F humbug/box
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@v4
         with:
           composer-options: "--no-dev"
       - name: Compile PHAR
