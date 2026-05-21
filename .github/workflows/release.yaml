@@ -10,7 +10,7 @@ jobs:
     name: Compile PHAR
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
 
@@ -24,7 +24,7 @@ jobs:
 
       # Prepare environment
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # v2
         with:
           php-version: 8.2
           tools: composer:v2, phive
@@ -33,7 +33,7 @@ jobs:
       - name: Install box
         run: phive install --trust-gpg-keys 2DF45277AEF09A2F humbug/box
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v4
+        uses: ramsey/composer-install@5c2bcf28d7b060ef3c601d7b476d5430a7b46c27 # v4
         with:
           composer-options: "--no-dev"
       - name: Compile PHAR
@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: phar
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
 
@@ -75,7 +75,7 @@ jobs:
 
       # Sign PHAR file
       - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v7
+        uses: crazy-max/ghaction-import-gpg@2dc316deee8e90f13e1a351ab510b4d5bc0c82cd # v7
         with:
           gpg_private_key: ${{ secrets.PHAR_GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.PHAR_GPG_PASSPHRASE }}
@@ -84,7 +84,7 @@ jobs:
 
       # Create release
       - name: Create release
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1
         with:
           token: ${{ secrets.RELEASE_TOKEN }}
           generateReleaseNotes: true
