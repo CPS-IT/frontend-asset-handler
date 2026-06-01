@@ -83,6 +83,6 @@ final class VersionTransformerTest extends TestCase
     public static function fromArrayThrowsExceptionIfVersionIsMissingOrInvalidDataProvider(): Generator
     {
         yield 'no version' => [[]];
-        yield 'invalid version' => [['value' => false]];
+        yield 'invalid version' => [['version' => false]];
     }
 }
