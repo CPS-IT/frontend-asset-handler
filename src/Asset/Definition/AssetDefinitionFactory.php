@@ -78,7 +78,7 @@ final readonly class AssetDefinitionFactory
     }
 
     /**
-     * @param array{environments?: array<string, mixed>, source?: array<string, mixed>} $config
+     * @param array{environments?: array<string, mixed>, source?: array<string, mixed>, ...} $config
      */
     private function resolveEnvironment(array $config, string $branch): string
     {
@@ -91,7 +91,7 @@ final readonly class AssetDefinitionFactory
     }
 
     /**
-     * @param array{map?: array<string, mixed>, merge?: bool} $configuration
+     * @param array{map?: array<string, mixed>, merge?: bool, ...} $configuration
      *
      * @throws Exception\MissingConfigurationException
      */
