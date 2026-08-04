@@ -27,18 +27,14 @@ use CPSIT\FrontendAssetHandler\Asset;
 use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Helper;
 use CPSIT\FrontendAssetHandler\Traits;
-use GraphQL\Client;
-use GraphQL\QueryBuilder;
-use GraphQL\RawObject;
-use GraphQL\Results;
-use GraphQL\Util;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7;
+use GuzzleHttp\RequestOptions;
 
-use function class_exists;
 use function explode;
 use function in_array;
 use function is_array;
+use function json_decode;
 
 /**
  * GithubVcsProvider.
@@ -64,7 +60,39 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
         'repository' => null,
     ];
 
-    private ?Client $graphQlClient = null;
+    private const QUERY_REPOSITORY_URL = <<<'GRAPHQL'
+        query($owner: String!, $name: String!) {
+            repository(owner: $owner, name: $name) {
+                url
+            }
+        }
+    GRAPHQL;
+
+    private const QUERY_DEPLOYMENTS = <<<'GRAPHQL'
+        query($owner: String!, $name: String!, $environment: String!) {
+            repository(owner: $owner, name: $name) {
+                deployments(environments: [$environment], first: 30, orderBy: {field: CREATED_AT, direction: DESC}) {
+                    nodes {
+                        commitOid
+                        latestStatus {
+                            state
+                            logUrl
+                        }
+                    }
+                }
+            }
+        }
+    GRAPHQL;
+
+    private const QUERY_HAS_REVISION = <<<'GRAPHQL'
+        query($owner: String!, $name: String!, $oid: GitObjectID!) {
+            repository(owner: $owner, name: $name) {
+                object(oid: $oid) {
+                    id
+                }
+            }
+        }
+    GRAPHQL;
 
     public function __construct(
         private readonly ClientInterface $client,
@@ -82,7 +110,6 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
 
         // Apply VCS configuration
         $clone = clone $this;
-        $clone->graphQlClient = null;
         $clone->accessToken = (string) $vcs['access-token'];
         [$clone->owner, $clone->name] = explode('/', (string) $vcs['repository'], 2);
         $clone->environment = $vcs->getEnvironment();
@@ -97,40 +124,24 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
 
     public function getSourceUrl(): string
     {
-        $results = $this->sendRequest(
-            $this->createQueryBuilder()->selectField('url'),
-        );
+        $data = $this->request(self::QUERY_REPOSITORY_URL, [
+            'owner' => $this->owner,
+            'name' => $this->name,
+        ]);
 
-        return Helper\ArrayHelper::getArrayValueByPath(
-            $this->parseGraphQLData($results),
-            'repository/url',
-        );
+        return Helper\ArrayHelper::getArrayValueByPath($data, 'repository/url');
     }
 
     public function getLatestRevision(?string $environment = null): ?Asset\Revision\Revision
     {
         try {
-            $results = $this->sendRequest(
-                $this->createQueryBuilder()->selectField(
-                    (new QueryBuilder\QueryBuilder('deployments'))
-                        ->setArgument('environments', $environment ?? $this->environment)
-                        ->setArgument('first', 30)
-                        ->setArgument('orderBy', new RawObject('{field:CREATED_AT, direction:DESC}'))
-                        ->selectField(
-                            (new QueryBuilder\QueryBuilder('nodes'))
-                                ->selectField('commitOid')
-                                ->selectField(
-                                    (new QueryBuilder\QueryBuilder('latestStatus'))
-                                        ->selectField('state'),
-                                ),
-                        ),
-                ),
-            );
+            $data = $this->request(self::QUERY_DEPLOYMENTS, [
+                'owner' => $this->owner,
+                'name' => $this->name,
+                'environment' => $environment ?? $this->environment,
+            ]);
 
-            $nodes = Helper\ArrayHelper::getArrayValueByPath(
-                $this->parseGraphQLData($results),
-                'repository/deployments/nodes',
-            );
+            $nodes = Helper\ArrayHelper::getArrayValueByPath($data, 'repository/deployments/nodes');
         } catch (\Exception) {
             return null;
         }
@@ -150,18 +161,13 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
     public function hasRevision(Asset\Revision\Revision $revision): bool
     {
         try {
-            $results = $this->sendRequest(
-                $this->createQueryBuilder()->selectField(
-                    (new QueryBuilder\QueryBuilder('object'))
-                        ->setArgument('oid', $revision->get())
-                        ->selectField('id'),
-                ),
-            );
+            $data = $this->request(self::QUERY_HAS_REVISION, [
+                'owner' => $this->owner,
+                'name' => $this->name,
+                'oid' => $revision->get(),
+            ]);
 
-            return null !== Helper\ArrayHelper::getArrayValueByPath(
-                $this->parseGraphQLData($results),
-                'repository/object',
-            );
+            return null !== Helper\ArrayHelper::getArrayValueByPath($data, 'repository/object');
         } catch (\Exception) {
             return false;
         }
@@ -171,28 +177,13 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
     {
         $deployments = [];
 
-        $results = $this->sendRequest(
-            $this->createQueryBuilder()->selectField(
-                (new QueryBuilder\QueryBuilder('deployments'))
-                    ->setArgument('environments', $this->environment)
-                    ->setArgument('first', 30)
-                    ->setArgument('orderBy', new RawObject('{field:CREATED_AT, direction:DESC}'))
-                    ->selectField(
-                        (new QueryBuilder\QueryBuilder('nodes'))
-                            ->selectField('commitOid')
-                            ->selectField(
-                                (new QueryBuilder\QueryBuilder('latestStatus'))
-                                    ->selectField('logUrl')
-                                    ->selectField('state'),
-                            ),
-                    ),
-            ),
-        );
+        $data = $this->request(self::QUERY_DEPLOYMENTS, [
+            'owner' => $this->owner,
+            'name' => $this->name,
+            'environment' => $this->environment,
+        ]);
 
-        $nodes = Helper\ArrayHelper::getArrayValueByPath(
-            $this->parseGraphQLData($results),
-            'repository/deployments/nodes',
-        );
+        $nodes = Helper\ArrayHelper::getArrayValueByPath($data, 'repository/deployments/nodes');
 
         foreach ($nodes as $node) {
             $state = $node['latestStatus']['state'] ?? null;
@@ -208,60 +199,29 @@ final class GithubVcsProvider implements DeployableVcsProviderInterface
         return $deployments;
     }
 
-    private function createQueryBuilder(): QueryBuilder\QueryBuilder
-    {
-        return (new QueryBuilder\QueryBuilder('repository'))
-            ->setArgument('owner', $this->owner)
-            ->setArgument('name', $this->name)
-        ;
-    }
-
-    private function sendRequest(QueryBuilder\QueryBuilder $queryBuilder): Results
-    {
-        return $this->getClient()->runQuery(
-            (new QueryBuilder\QueryBuilder())->selectField($queryBuilder),
-            true,
-        );
-    }
-
     /**
+     * @param non-empty-string     $query
+     * @param array<string, mixed> $variables
+     *
      * @return array<string, mixed>
      *
      * @throws Exception\InvalidResponseException
      */
-    private function parseGraphQLData(Results $results): array
+    private function request(string $query, array $variables): array
     {
-        $data = $results->getData();
+        $response = $this->client->request('POST', self::API_URL, [
+            RequestOptions::HEADERS => ['Authorization' => 'Bearer '.$this->accessToken],
+            RequestOptions::JSON => ['query' => $query, 'variables' => $variables],
+        ]);
 
-        if (!is_array($data)) {
-            throw Exception\InvalidResponseException::create($results->getResponseBody());
+        $body = (string) $response->getBody();
+        $decoded = json_decode($body, true);
+
+        if (!is_array($decoded) || !is_array($decoded['data'] ?? null)) {
+            throw Exception\InvalidResponseException::create($body);
         }
 
-        return $data;
-    }
-
-    /**
-     * @throws Exception\MissingPackageException
-     */
-    private function getClient(): Client
-    {
-        if (null !== $this->graphQlClient) {
-            return $this->graphQlClient;
-        }
-
-        // @codeCoverageIgnoreStart
-        if (!class_exists(Client::class)) {
-            throw Exception\MissingPackageException::create('gmostafa/php-graphql-client');
-        }
-        // @codeCoverageIgnoreEnd
-
-        $this->graphQlClient = new Client(
-            self::API_URL,
-            ['Authorization' => 'Bearer '.$this->accessToken],
-            httpClient: new Util\GuzzleAdapter($this->client),
-        );
-
-        return $this->graphQlClient;
+        return $decoded['data'];
     }
 
     /**

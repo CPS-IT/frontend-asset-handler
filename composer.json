@@ -42,7 +42,6 @@
 		"cpsit/php-cs-fixer-config": "^1.1",
 		"ergebnis/composer-normalize": "^2.18",
 		"friendsofphp/php-cs-fixer": "^3.57",
-		"gmostafa/php-graphql-client": "^1.13",
 		"phpstan/extension-installer": "^1.2",
 		"phpstan/phpstan": "^2.2",
 		"phpstan/phpstan-deprecation-rules": "^2.0",
@@ -53,9 +52,6 @@
 		"phpunit/phpunit": "^11.0 || ^12.0 || ^13.0",
 		"rector/rector": "^2.0",
 		"seld/jsonlint": "^1.10"
-	},
-	"suggest": {
-		"gmostafa/php-graphql-client": "Used to perform GraphQL requests within GithubVcsProvider (^1.13)"
 	},
 	"autoload": {
 		"psr-4": {
