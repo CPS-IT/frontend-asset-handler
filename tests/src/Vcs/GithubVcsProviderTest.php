@@ -36,6 +36,8 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message;
 use Throwable;
 
+use function json_decode;
+
 /**
  * GithubVcsProviderTest.
  *
@@ -117,27 +119,6 @@ final class GithubVcsProviderTest extends TestCase
     }
 
     #[Test]
-    public function getSourceUrlReusesInitializedGraphQLClient(): void
-    {
-        $this->expectNotToPerformAssertions();
-
-        for ($i = 0; $i < 2; ++$i) {
-            $this->mockHandler->append($response = new Psr7\Response());
-
-            $response->getBody()->write('{"data":{"repository":{"url":"foo"}}}');
-            $response->getBody()->rewind();
-        }
-
-        $subject = $this->subject->withVcs($this->vcs);
-
-        // First call creates a new client
-        $subject->getSourceUrl();
-
-        // Second call re-uses existing client
-        $subject->getSourceUrl();
-    }
-
-    #[Test]
     public function getLatestRevisionReturnsNullIfApiResponseIsUnexpected(): void
     {
         $this->mockHandler->append(new GuzzleException\TransferException());
@@ -167,7 +148,7 @@ final class GithubVcsProviderTest extends TestCase
         $expected = new Asset\Revision\Revision('1234567890');
 
         self::assertEquals($expected, $this->subject->withVcs($this->vcs)->getLatestRevision());
-        self::assertStringContainsString('environments: \\"baz\\"', (string) $this->getLastRequest()->getBody());
+        self::assertSame('baz', $this->getLastRequestVariables()['environment']);
     }
 
     #[Test]
@@ -181,7 +162,7 @@ final class GithubVcsProviderTest extends TestCase
         $expected = new Asset\Revision\Revision('1234567890');
 
         self::assertEquals($expected, $this->subject->withVcs($this->vcs)->getLatestRevision('foo'));
-        self::assertStringContainsString('environments: \\"foo\\"', (string) $this->getLastRequest()->getBody());
+        self::assertSame('foo', $this->getLastRequestVariables()['environment']);
     }
 
     #[Test]
@@ -206,10 +187,7 @@ final class GithubVcsProviderTest extends TestCase
         $revision = new Asset\Revision\Revision('1234567890');
 
         self::assertSame($expected, $this->subject->withVcs($this->vcs)->hasRevision($revision));
-        self::assertStringContainsString(
-            'object(oid: \\"1234567890\\")',
-            (string) $this->getLastRequest()->getBody(),
-        );
+        self::assertSame('1234567890', $this->getLastRequestVariables()['oid']);
     }
 
     /**
@@ -285,5 +263,18 @@ final class GithubVcsProviderTest extends TestCase
         yield 'waiting deployment' => [$createResponse(['WAITING']), [$deployment]];
         yield 'multiple deployments' => [$createResponse(['PENDING', 'QUEUED', 'IN_PROGRESS', 'WAITING']), [$deployment, $deployment, $deployment, $deployment]];
         yield 'no active deployments' => [$createResponse([]), []];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getLastRequestVariables(): array
+    {
+        $body = json_decode((string) $this->getLastRequest()->getBody(), true);
+
+        self::assertIsArray($body);
+        self::assertIsArray($body['variables']);
+
+        return $body['variables'];
     }
 }

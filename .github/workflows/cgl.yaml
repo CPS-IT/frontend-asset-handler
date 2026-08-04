@@ -30,15 +30,11 @@ jobs:
 
       # Install dependencies
       - name: Install Composer dependencies
-        run: composer require --no-progress gmostafa/php-graphql-client:"^1.13"
+        uses: ramsey/composer-install@26d8a556604053a9612623447203a691f406fbe6 # v4
 
       # Check Composer dependencies
       - name: Check dependencies
         run: composer-require-checker check
-      - name: Reset composer.json
-        run: git checkout composer.json composer.lock
-      - name: Re-install Composer dependencies
-        uses: ramsey/composer-install@26d8a556604053a9612623447203a691f406fbe6 # v4
       - name: Check for unused dependencies
         run: composer-unused --excludePackage=symfony/finder --excludePackage=symfony/yaml
 
