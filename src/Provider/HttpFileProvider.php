@@ -34,6 +34,8 @@ use GuzzleHttp\RequestOptions;
 use Psr\Http\Message;
 use Symfony\Component\Console;
 
+use function method_exists;
+
 /**
  * HttpFileProvider.
  *
@@ -108,9 +110,9 @@ final class HttpFileProvider implements ProviderInterface, ChattyInterface
         } catch (GuzzleException\RequestException $exception) {
             $progress->fail();
 
-            $response = $exception->getResponse();
+            $response = method_exists($exception, 'getResponse') ? $exception->getResponse() : null;
 
-            if (null !== $response) {
+            if ($response instanceof Message\ResponseInterface) {
                 switch ($response->getStatusCode()) {
                     case 401:
                         throw Exception\DownloadFailedException::forUnauthorizedRequest($url, $exception);

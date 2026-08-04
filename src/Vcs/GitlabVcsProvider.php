@@ -213,7 +213,7 @@ final class GitlabVcsProvider implements DeployableVcsProviderInterface
 
         return $this->client->request('GET', $requestUri, [
             RequestOptions::HEADERS => [
-                'PRIVATE-TOKEN' => $this->accessToken,
+                'PRIVATE-TOKEN' => (string) $this->accessToken,
             ],
         ]);
     }
