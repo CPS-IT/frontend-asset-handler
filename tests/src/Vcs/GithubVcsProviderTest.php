@@ -28,7 +28,6 @@ use CPSIT\FrontendAssetHandler\Exception;
 use CPSIT\FrontendAssetHandler\Tests;
 use CPSIT\FrontendAssetHandler\Vcs;
 use Generator;
-use GuzzleHttp\Exception as GuzzleException;
 use GuzzleHttp\Psr7;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -121,7 +120,7 @@ final class GithubVcsProviderTest extends TestCase
     #[Test]
     public function getLatestRevisionReturnsNullIfApiResponseIsUnexpected(): void
     {
-        $this->mockHandler->append(new GuzzleException\TransferException());
+        $this->mockHandler->append(self::createException());
 
         self::assertNull($this->subject->withVcs($this->vcs)->getLatestRevision());
     }
@@ -213,7 +212,7 @@ final class GithubVcsProviderTest extends TestCase
         $response->getBody()->write('{"data":{"repository":{"object":"foo"}}}');
         $response->getBody()->rewind();
 
-        yield 'exception' => [new GuzzleException\TransferException(), false];
+        yield 'exception' => [self::createException(), false];
         yield 'unexpected response' => [$response->withStatus(404), false];
         yield 'valid response' => [$response, true];
     }
