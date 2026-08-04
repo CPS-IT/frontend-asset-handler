@@ -24,9 +24,11 @@ declare(strict_types=1);
 namespace CPSIT\FrontendAssetHandler\Tests;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception;
 use GuzzleHttp\Handler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7;
 use Psr\Http\Message;
 
 /**
@@ -80,5 +82,14 @@ trait ClientMockTrait
     protected function enqueueResponse(Message\ResponseInterface $response, int $times = 1): void
     {
         $this->mockHandler->append(...array_fill(0, $times, $response));
+    }
+
+    protected static function createException(): Exception\BadResponseException
+    {
+        return new Exception\BadResponseException(
+            'Something went wrong.',
+            new Psr7\Request('GET', 'https://localhost'),
+            new Psr7\Response(404),
+        );
     }
 }
