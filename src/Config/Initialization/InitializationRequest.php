@@ -69,11 +69,7 @@ final class InitializationRequest
 
     public function getConfig(): Config\Config
     {
-        if (null === $this->config) {
-            $this->config = new Config\Config([], $this->configFile);
-        }
-
-        return $this->config;
+        return $this->config ??= new Config\Config([], $this->configFile);
     }
 
     public function setConfig(Config\Config $config): self

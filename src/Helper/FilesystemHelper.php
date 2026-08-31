@@ -150,10 +150,6 @@ final class FilesystemHelper
 
     private static function getFilesystem(): Filesystem\Filesystem
     {
-        if (null === self::$filesystem) {
-            self::$filesystem = new Filesystem\Filesystem();
-        }
-
-        return self::$filesystem;
+        return self::$filesystem ??= new Filesystem\Filesystem();
     }
 }

@@ -42,9 +42,7 @@ trait DefaultConfigurationAwareTrait
     protected function applyDefaultConfiguration(Asset\Definition\AssetDefinition $assetDefinition): void
     {
         foreach ($this->getDefaultConfiguration() as $configKey => $configValue) {
-            if (!isset($assetDefinition[$configKey])) {
-                $assetDefinition[$configKey] = $configValue;
-            }
+            $assetDefinition[$configKey] ??= $configValue;
         }
     }
 
