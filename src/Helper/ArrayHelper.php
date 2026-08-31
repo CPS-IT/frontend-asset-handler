@@ -99,9 +99,7 @@ final class ArrayHelper
 
         // Assure required structure in array
         foreach (str_getcsv($path, '/', escape: '\\') as $segment) {
-            if (!isset($node[$segment])) {
-                $node[$segment] = [];
-            }
+            $node[$segment] ??= [];
 
             $node = &$node[$segment];
         }
