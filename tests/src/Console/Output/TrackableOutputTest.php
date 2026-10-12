@@ -61,7 +61,7 @@ final class TrackableOutputTest extends TestCase
     #[Test]
     public function startProgressStartsProgressAndReturnsTrackableProgress(): void
     {
-        $actual = $this->subject->startProgress('Do something...');
+        $this->subject->startProgress('Do something...');
 
         self::assertSame('Do something... ', $this->output->fetch());
     }
